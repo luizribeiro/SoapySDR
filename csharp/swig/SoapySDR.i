@@ -19,6 +19,7 @@
 #include <SoapySDR/Logger.hpp>
 
 #include "CSharpExtensions.hpp"
+#include "Converter.hpp"
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -146,3 +147,14 @@
 
 %include "Device.i"
 %include "Logger.i"
+
+////////////////////////////////////////////////////////////////////////
+// Converter
+////////////////////////////////////////////////////////////////////////
+%nodefaultctor SoapySDR::CSharp::ConverterInternal;
+%typemap(csclassmodifiers) SoapySDR::CSharp::ConverterInternal "internal class"
+
+%include "Converter.hpp"
+
+%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::ConverterFunctionPriority> "internal class"
+%template(ConverterFunctionPriorityList) std::vector<SoapySDR::CSharp::ConverterFunctionPriority>;

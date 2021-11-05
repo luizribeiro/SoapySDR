@@ -36,9 +36,9 @@
 ########################################################################
 
 macro(SWIG_CSHARP_INIT)
-    set(CSHARP_SOURCE_DIRECTORY ${PROJECT_BINARY_DIR}/assembly)
-    set(CMAKE_SWIG_OUTDIR       ${CSHARP_SOURCE_DIRECTORY})
-    file(MAKE_DIRECTORY         ${CSHARP_SOURCE_DIRECTORY})
+    set(CSHARP_SWIG_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/assembly)
+    set(CMAKE_SWIG_OUTDIR       ${CSHARP_SWIG_OUTPUT_DIRECTORY})
+    file(MAKE_DIRECTORY         ${CSHARP_SWIG_OUTPUT_DIRECTORY})
     set(CSHARP_BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endmacro()
 

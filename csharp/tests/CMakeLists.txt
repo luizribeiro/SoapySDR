@@ -30,6 +30,7 @@ function(CSHARP_UNIT_TEST name)
 endfunction()
 
 CSHARP_UNIT_TEST(TestBuildInfo)
+CSHARP_UNIT_TEST(TestConverter)
 CSHARP_UNIT_TEST(TestDeviceAPI)
 CSHARP_UNIT_TEST(TestEnumerateDevices)
 CSHARP_UNIT_TEST(TestLogger)

@@ -1,6 +1,8 @@
 // Copyright (c) 2020-2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
+// TODO: remove memory
+
 using System;
 using System.Buffers;
 using System.Linq;

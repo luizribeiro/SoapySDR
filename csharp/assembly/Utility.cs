@@ -11,6 +11,8 @@ namespace SoapySDR
 {
     public class Utility
     {
+        // TODO: validate span
+
         internal static void ValidateMemory<T>(
             StreamHandle streamHandle,
             ReadOnlyMemory<T>[] mems) where T : unmanaged
