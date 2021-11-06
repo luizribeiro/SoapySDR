@@ -42,10 +42,26 @@ namespace SoapySDR
             Span<DstT> dest,
             double scalar = 1.0) where SrcT : unmanaged where DstT : unmanaged
         {
-            var priorities = ListPriorities<SrcT, DstT>();
-            var priority = priorities[priorities.Count - 1];
+            if (source.Length != dest.Length) throw new ArgumentOutOfRangeException("Source and destination must be the same length");
 
-            Convert(source, dest, priority, scalar);
+            fixed (SrcT* sourceBuffer = &MemoryMarshal.GetReference(source))
+            {
+                fixed (DstT* destBuffer = &MemoryMarshal.GetReference(dest))
+                {
+                    ConverterInternal.Convert(
+                        Utility.GetFormatString<SrcT>(),
+                        Utility.GetFormatString<DstT>(),
+#if _64BIT
+                        (ulong)(void*)sourceBuffer,
+                        (ulong)(void*)destBuffer,
+#else
+                        (uint)(void*)sourceBuffer,
+                        (uint)(void*)destBuffer,
+#endif
+                        (uint)source.Length,
+                        scalar);
+                }
+            }
         }
 
         public unsafe static void Convert<SrcT, DstT>(
@@ -82,10 +98,27 @@ namespace SoapySDR
             Span<DstT> dest,
             double scalar = 1.0) where SrcT : unmanaged where DstT : unmanaged
         {
-            var priorities = ListComplexPriorities<SrcT, DstT>();
-            var priority = priorities[priorities.Count - 1];
+            if (source.Length != dest.Length) throw new ArgumentOutOfRangeException("Source and destination must be the same length");
+            if ((source.Length % 2) == 1) throw new ArgumentOutOfRangeException("Complex interleaved buffers must be of even size");
 
-            ComplexConvert(source, dest, priority, scalar);
+            fixed (SrcT* sourceBuffer = &MemoryMarshal.GetReference(source))
+            {
+                fixed (DstT* destBuffer = &MemoryMarshal.GetReference(dest))
+                {
+                    ConverterInternal.Convert(
+                        Utility.GetComplexFormatString<SrcT>(),
+                        Utility.GetComplexFormatString<DstT>(),
+#if _64BIT
+                        (ulong)(void*)sourceBuffer,
+                        (ulong)(void*)destBuffer,
+#else
+                        (uint)(void*)sourceBuffer,
+                        (uint)(void*)destBuffer,
+#endif
+                        (uint)(source.Length / 2),
+                        scalar);
+                }
+            }
         }
 
         public unsafe static void ComplexConvert<SrcT, DstT>(
@@ -160,10 +193,18 @@ namespace SoapySDR
             uint numElems,
             double scalar = 1.0)
         {
-            var priorities = ListPriorities(sourceFormat, destFormat);
-            var priority = priorities[priorities.Count - 1];
-
-            Convert(sourceFormat, destFormat, source, dest, priority, numElems, scalar);
+            ConverterInternal.Convert(
+                sourceFormat,
+                destFormat,
+#if _64BIT
+                (ulong)(void*)source,
+                (ulong)(void*)dest,
+#else
+                (uint)(void*)source,
+                (uint)(void*)dest,
+#endif
+                numElems,
+                scalar);
         }
 
         public unsafe static void Convert(
