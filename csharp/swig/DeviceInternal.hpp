@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CSharpExtensions.hpp"
+#include "Constants.hpp"
 
 #include <SoapySDR/Device.hpp>
 

@@ -18,9 +18,8 @@
 #include <SoapySDR/Time.hpp>
 #include <SoapySDR/Logger.hpp>
 
-#include "CSharpExtensions.hpp"
+#include "Constants.hpp"
 #include "ConverterInternal.hpp"
-#include "TypeConversionInternal.hpp"
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -55,6 +54,26 @@
 %include <std_vector.i>
 %include <std_map.i>
 
+// Hide SWIG-generated STL types, they're ugly and half-done
+
+#ifdef SIZE_T_IS_UNSIGNED_INT
+%typemap(csclassmodifiers) std::vector<uint32_t> "internal class"
+%template(SizeListInternal) std::vector<uint32_t>;
+#else
+%typemap(csclassmodifiers) std::vector<uint64_t> "internal class"
+%template(SizeListInternal) std::vector<uint64_t>;
+#endif
+
+%typemap(csclassmodifiers) std::vector<std::string> "internal class"
+%template(StringListInternal) std::vector<std::string>;
+
+%typemap(csclassmodifiers) std::vector<double> "internal class"
+%template(DoubleListInternal) std::vector<double>;
+
+////////////////////////////////////////////////////////////////////////
+// SoapySDR Types
+////////////////////////////////////////////////////////////////////////
+
 %typemap(csclassmodifiers) SoapySDR::ArgInfo "internal class"
 %rename(ArgInfoInternal) SoapySDR::ArgInfo;
 
@@ -68,14 +87,6 @@
 %ignore SoapySDR::Detail::SettingToString;
 %ignore SoapySDR::Detail::StringToSetting;
 %include <SoapySDR/Types.hpp>
-
-#ifdef SIZE_T_IS_UNSIGNED_INT
-%typemap(csclassmodifiers) std::vector<uint32_t> "internal class"
-%template(SizeListInternal) std::vector<uint32_t>;
-#else
-%typemap(csclassmodifiers) std::vector<uint64_t> "internal class"
-%template(SizeListInternal) std::vector<uint64_t>;
-#endif
 
 // Hide SWIG-generated STL types, they're ugly and half-done
 
@@ -92,66 +103,108 @@
 %typemap(csclassmodifiers) std::vector<SoapySDR::Range> "internal class"
 %template(RangeListInternal) std::vector<SoapySDR::Range>;
 
-%typemap(csclassmodifiers) std::vector<std::string> "internal class"
-%template(StringListInternal) std::vector<std::string>;
-
-%typemap(csclassmodifiers) std::vector<double> "internal class"
-%template(DoubleListInternal) std::vector<double>;
-
 ////////////////////////////////////////////////////////////////////////
-// Include extensions before types that will use them
+// Build info, enums
 ////////////////////////////////////////////////////////////////////////
-%nodefaultctor SoapySDR::CSharp::BuildInfo;
-%nodefaultctor SoapySDR::CSharp::StreamHandle;
-%nodefaultctor SoapySDR::CSharp::Time;
-%nodefaultctor SoapySDR::CSharp::TypeConversionInternal;
-
-%include "Stream.i"
-
 %typemap(csclassmodifiers) SoapySDR::CSharp::BuildInfo "public partial class"
-%typemap(csclassmodifiers) SoapySDR::CSharp::TypeConversionInternal "internal class"
+%nodefaultctor SoapySDR::CSharp::BuildInfo;
 
 // TODO: make SWIGABIVersion internal
 %typemap(cscode) SoapySDR::CSharp::BuildInfo %{
     internal static readonly string AssemblyABIVersion = "@SOAPY_SDR_ABI_VERSION@";
 %}
 
-%ignore copyVector;
-%ignore toSizeTVector;
-%ignore reinterpretCastVector;
-%ignore detail::copyVector;
-%include "CSharpExtensions.hpp"
-%include "TypeConversionInternal.hpp"
-
-%template(SByteToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<int8_t>;
-%template(ShortToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<int16_t>;
-%template(IntToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<int32_t>;
-%template(LongToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<int64_t>;
-%template(ByteToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<uint8_t>;
-%template(UShortToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<uint16_t>;
-%template(UIntToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<uint32_t>;
-%template(ULongToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<uint64_t>;
-%template(BoolToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<bool>;
-%template(FloatToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<float>;
-%template(DoubleToString) SoapySDR::CSharp::TypeConversionInternal::SettingToString<double>;
-
-%template(StringToSByte) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<int8_t>;
-%template(StringToShort) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<int16_t>;
-%template(StringToInt) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<int32_t>;
-%template(StringToLong) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<int64_t>;
-%template(StringToByte) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<uint8_t>;
-%template(StringToUShort) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<uint16_t>;
-%template(StringToUInt) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<uint32_t>;
-%template(StringToULong) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<uint64_t>;
-%template(StringToBool) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<bool>;
-%template(StringToFloat) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<float>;
-%template(StringToDouble) SoapySDR::CSharp::TypeConversionInternal::StringToSetting<double>;
-
-%include "Device.i"
-%include "Logger.i"
+%include "Constants.hpp"
 
 ////////////////////////////////////////////////////////////////////////
-// Converter
+// C# needs everything in classes, so add some simple structs for
+// global functions
+////////////////////////////////////////////////////////////////////////
+%typemap(csclassmodifiers) TypeConversionInternal "internal class"
+%nodefaultctor TypeConversionInternal;
+%nodefaultctor Time;
+
+%{
+#include <SoapySDR/Time.hpp>
+#include <SoapySDR/Types.hpp>
+
+struct Time
+{
+    static __forceinline long long TicksToTimeNs(const long long ticks, const double rate)
+    {
+        return SoapySDR::ticksToTimeNs(ticks, rate);
+    }
+
+    static __forceinline long long TimeNsToTicks(const long long timeNs, const double rate)
+    {
+        return SoapySDR::timeNsToTicks(timeNs, rate);
+    }
+};
+
+struct TypeConversionInternal
+{
+    template <typename T>
+    static __forceinline std::string SettingToString(const T& setting)
+    {
+        return SoapySDR::SettingToString<T>(setting);
+    }
+
+    template <typename T>
+    static __forceinline T StringToSetting(const std::string& setting)
+    {
+        return SoapySDR::StringToSetting<T>(setting);
+    }
+
+    static __forceinline SoapySDR::Kwargs StringToKwargs(const std::string& args)
+    {
+        return SoapySDR::KwargsFromString(args);
+    }
+};
+%}
+
+struct Time
+{
+    static long long TicksToTimeNs(const long long ticks, const double rate);
+    static long long TimeNsToTicks(const long long timeNs, const double rate);
+};
+
+struct TypeConversionInternal
+{
+    template <typename T>
+    static std::string SettingToString(const T& setting);
+
+    template <typename T>
+    static T StringToSetting(const std::string& setting);
+
+    static SoapySDR::Kwargs StringToKwargs(const std::string& args);
+};
+
+%template(SByteToString) TypeConversionInternal::SettingToString<int8_t>;
+%template(ShortToString) TypeConversionInternal::SettingToString<int16_t>;
+%template(IntToString) TypeConversionInternal::SettingToString<int32_t>;
+%template(LongToString) TypeConversionInternal::SettingToString<int64_t>;
+%template(ByteToString) TypeConversionInternal::SettingToString<uint8_t>;
+%template(UShortToString) TypeConversionInternal::SettingToString<uint16_t>;
+%template(UIntToString) TypeConversionInternal::SettingToString<uint32_t>;
+%template(ULongToString) TypeConversionInternal::SettingToString<uint64_t>;
+%template(BoolToString) TypeConversionInternal::SettingToString<bool>;
+%template(FloatToString) TypeConversionInternal::SettingToString<float>;
+%template(DoubleToString) TypeConversionInternal::SettingToString<double>;
+
+%template(StringToSByte) TypeConversionInternal::StringToSetting<int8_t>;
+%template(StringToShort) TypeConversionInternal::StringToSetting<int16_t>;
+%template(StringToInt) TypeConversionInternal::StringToSetting<int32_t>;
+%template(StringToLong) TypeConversionInternal::StringToSetting<int64_t>;
+%template(StringToByte) TypeConversionInternal::StringToSetting<uint8_t>;
+%template(StringToUShort) TypeConversionInternal::StringToSetting<uint16_t>;
+%template(StringToUInt) TypeConversionInternal::StringToSetting<uint32_t>;
+%template(StringToULong) TypeConversionInternal::StringToSetting<uint64_t>;
+%template(StringToBool) TypeConversionInternal::StringToSetting<bool>;
+%template(StringToFloat) TypeConversionInternal::StringToSetting<float>;
+%template(StringToDouble) TypeConversionInternal::StringToSetting<double>;
+
+////////////////////////////////////////////////////////////////////////
+// Buffer converter
 ////////////////////////////////////////////////////////////////////////
 %nodefaultctor SoapySDR::CSharp::ConverterInternal;
 %typemap(csclassmodifiers) SoapySDR::CSharp::ConverterInternal "internal class"
@@ -160,3 +213,19 @@
 
 %typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::ConverterFunctionPriority> "internal class"
 %template(ConverterFunctionPriorityListInternal) std::vector<SoapySDR::CSharp::ConverterFunctionPriority>;
+
+////////////////////////////////////////////////////////////////////////
+// With types established, this is the bulk of it
+////////////////////////////////////////////////////////////////////////
+
+%ignore copyVector;
+%ignore toSizeTVector;
+%ignore reinterpretCastVector;
+%ignore detail::copyVector;
+%include "Utility.hpp"
+
+%nodefaultctor SoapySDR::CSharp::StreamHandle;
+
+%include "Stream.i"
+%include "Device.i"
+%include "Logger.i"

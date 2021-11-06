@@ -19,7 +19,7 @@
 %feature("director") LogHandlerBase;
 
 %inline %{
-    #include "CSharpExtensions.hpp"
+    #include "Constants.hpp"
 
     class LogHandlerBase
     {

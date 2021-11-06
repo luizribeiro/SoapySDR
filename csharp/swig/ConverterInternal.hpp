@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include "CSharpExtensions.hpp"
+#include "Constants.hpp"
+#include "Utility.hpp"
 
 #include <SoapySDR/ConverterRegistry.hpp>
 
