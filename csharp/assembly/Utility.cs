@@ -11,7 +11,38 @@ namespace SoapySDR
 {
     public class Utility
     {
-        // TODO: validate span
+        internal static void ValidateSpan<T>(
+            StreamHandle streamHandle,
+            ReadOnlySpan<T> span) where T : unmanaged
+        {
+            var numChannels = streamHandle.GetChannels().Count;
+            var format = streamHandle.GetFormat();
+
+            var scalarFormatString = GetFormatString<T>();
+            var complexFormatString = GetComplexFormatString<T>();
+
+            if(numChannels != 1)
+            {
+                throw new ArgumentException(string.Format("Expected {0} channels.", numChannels));
+            }
+            else if (!format.Equals(scalarFormatString) && !format.Equals(complexFormatString))
+            {
+                throw new ArgumentException(string.Format("Expected format \"{0}\" or \"{1}\". Found format \"{2}\"",
+                    scalarFormatString,
+                    complexFormatString,
+                    format));
+            }
+
+            if (format.Equals(complexFormatString))
+            {
+                if ((span.Length % 2) != 0)
+                    throw new ArgumentException("For complex interleaved streams, the input buffer must be of an even size");
+            }
+        }
+
+        internal static void ValidateSpan<T>(
+            StreamHandle streamHandle,
+            Span<T> span) where T : unmanaged => ValidateSpan(streamHandle, (ReadOnlySpan<T>)span);
 
         internal static void ValidateMemory<T>(
             StreamHandle streamHandle,
@@ -52,7 +83,7 @@ namespace SoapySDR
 
         internal static void ValidateMemory<T>(
             StreamHandle streamHandle,
-            Memory<T>[] mems) where T : unmanaged => ValidateMemory<T>(streamHandle, mems.Select(mem => (ReadOnlyMemory<T>)mem).ToArray());
+            Memory<T>[] mems) where T : unmanaged => ValidateMemory(streamHandle, mems.Select(mem => (ReadOnlyMemory<T>)mem).ToArray());
 
         internal static void ValidateBuffs<T>(
             StreamHandle streamHandle,

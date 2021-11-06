@@ -73,6 +73,8 @@ namespace SoapySDR
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
+            Utility.ValidateSpan(_streamHandle, span);
+
             fixed(T* data = &MemoryMarshal.GetReference(span))
             {
                 return Write((IntPtr)data, (uint)span.Length, timeNs, timeoutUs, out result);
