@@ -5,7 +5,7 @@ using System;
 
 namespace SoapySDR
 {
-    public class SoapyConvertible : System.IConvertible
+    internal class SoapyConvertible : System.IConvertible
     {
         private string _value;
 
