@@ -70,13 +70,13 @@ namespace SoapySDR
         public string[] Options
         {
             get => _argInfo.options.ToArray();
-            set => _argInfo.options = new StringList(value);
+            set => _argInfo.options = new StringListInternal(value);
         }
 
         public string[] OptionNames
         {
             get => _argInfo.optionNames.ToArray();
-            set => _argInfo.optionNames = new StringList(value);
+            set => _argInfo.optionNames = new StringListInternal(value);
         }
 
         // TODO: object overrides

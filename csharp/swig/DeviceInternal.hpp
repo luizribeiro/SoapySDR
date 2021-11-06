@@ -13,7 +13,7 @@
 #include <memory>
 #include <utility>
 
-using StreamResultPair = std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
+using StreamResultPairInternal = std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
 
 // We're separately using a separate thin wrapper for three reasons:
 // * To abstract away the make() and unmake() calls, which SWIG won't
@@ -27,22 +27,22 @@ namespace SoapySDR { namespace CSharp {
     {
         void operator()(SoapySDR::Device* pDevice)
         {
-            // unmake can throw, which is bad in destructors.
-            try { SoapySDR::Device::unmake(pDevice); }
-            catch(const std::exception& ex) { fputs(ex.what(), stderr); }
-            catch(...) { fputs("Unknown error.", stderr); }
+            if(pDevice)
+            {
+                try { SoapySDR::Device::unmake(pDevice); }
+                catch(const std::exception& ex) { fputs(ex.what(), stderr); }
+                catch(...) { fputs("Unknown error.", stderr); }
+            }
         }
     };
 
-    class Device
+    class DeviceInternal
     {
         public:
-            using DeviceVector = std::vector<SoapySDR::CSharp::Device>;
-
-            Device(const Kwargs& kwargs): _deviceSPtr(SoapySDR::Device::make(kwargs), DeviceDeleter())
+            DeviceInternal(const Kwargs& kwargs): _deviceSPtr(SoapySDR::Device::make(kwargs), DeviceDeleter())
             {}
 
-            Device(const std::string& args): _deviceSPtr(SoapySDR::Device::make(args), DeviceDeleter())
+            DeviceInternal(const std::string& args): _deviceSPtr(SoapySDR::Device::make(args), DeviceDeleter())
             {}
 
             static inline SoapySDR::KwargsList Enumerate()
@@ -220,7 +220,7 @@ namespace SoapySDR { namespace CSharp {
                     timeNs));
             }
 
-            StreamResultPair ReadStream(
+            StreamResultPairInternal ReadStream(
                 const SoapySDR::CSharp::StreamHandle& streamHandle,
                 const SWIGSizeVector& buffs,
                 const size_t numElems,
@@ -230,7 +230,7 @@ namespace SoapySDR { namespace CSharp {
             {
                 assert(_deviceSPtr);
 
-                StreamResultPair resultPair;
+                StreamResultPairInternal resultPair;
                 auto& errorCode = resultPair.first;
                 auto& result = resultPair.second;
 
@@ -251,7 +251,7 @@ namespace SoapySDR { namespace CSharp {
                 return resultPair;
             }
 
-            StreamResultPair WriteStream(
+            StreamResultPairInternal WriteStream(
                 const SoapySDR::CSharp::StreamHandle& streamHandle,
                 const SWIGSizeVector& buffs,
                 const size_t numElems,
@@ -260,7 +260,7 @@ namespace SoapySDR { namespace CSharp {
             {
                 assert(_deviceSPtr);
 
-                StreamResultPair resultPair;
+                StreamResultPairInternal resultPair;
                 auto& errorCode = resultPair.first;
                 auto& result = resultPair.second;
 
@@ -281,13 +281,13 @@ namespace SoapySDR { namespace CSharp {
                 return resultPair;
             }
 
-            StreamResultPair ReadStreamStatus(
+            StreamResultPairInternal ReadStreamStatus(
                 const SoapySDR::CSharp::StreamHandle& streamHandle,
                 const long timeoutUs)
             {
                 assert(_deviceSPtr);
 
-                StreamResultPair resultPair;
+                StreamResultPairInternal resultPair;
                 auto& errorCode = resultPair.first;
                 auto& result = resultPair.second;
 
@@ -1147,7 +1147,7 @@ namespace SoapySDR { namespace CSharp {
                 return (_deviceSPtr->getDriverKey() + ":" + _deviceSPtr->getHardwareKey());
             }
 
-            inline bool Equals(const SoapySDR::CSharp::Device& other) const
+            inline bool Equals(const SoapySDR::CSharp::DeviceInternal& other) const
             {
                 assert(_deviceSPtr);
 
@@ -1165,7 +1165,7 @@ namespace SoapySDR { namespace CSharp {
             std::shared_ptr<SoapySDR::Device> _deviceSPtr;
 
             // C# class takes ownership, will unmake
-            Device(SoapySDR::Device* pDevice): _deviceSPtr(pDevice, DeviceDeleter())
+            DeviceInternal(SoapySDR::Device* pDevice): _deviceSPtr(pDevice, DeviceDeleter())
             {}
     };
 }}

@@ -51,14 +51,14 @@ namespace SoapySDR
         public Device(IDictionary<string, string> args)
         {
             CheckABI();
-            _device = new DeviceInternal(Utility.ToKwargs(args));
+            _device = new DeviceInternal(Utility.ToKwargsInternal(args));
         }
 
         public static List<Dictionary<string, string>> Enumerate() => Utility.ToDictionaryList(DeviceInternal.Enumerate());
 
         public static List<Dictionary<string, string>> Enumerate(string args) => Utility.ToDictionaryList(DeviceInternal.Enumerate(args));
 
-        public static List<Dictionary<string, string>> Enumerate(IDictionary<string, string> args) => Utility.ToDictionaryList(DeviceInternal.Enumerate(Utility.ToKwargs(args)));
+        public static List<Dictionary<string, string>> Enumerate(IDictionary<string, string> args) => Utility.ToDictionaryList(DeviceInternal.Enumerate(Utility.ToKwargsInternal(args)));
 
         public string DriverKey => _device.GetDriverKey();
 
@@ -83,40 +83,40 @@ namespace SoapySDR
         public List<ArgInfo> GetStreamArgsInfo(Direction direction, uint channel) => Utility.ToArgInfoList(_device.GetStreamArgsInfo(direction, channel));
 
         public TxStream SetupTxStream(string format, uint[] channels, IDictionary<string, string> kwargs)
-            => new TxStream(_device, format, channels, Utility.ToKwargs(kwargs));
+            => new TxStream(_device, format, channels, Utility.ToKwargsInternal(kwargs));
 
         public TxStream SetupTxStream(string format, uint[] channels, string args)
-            => SetupTxStream(format, channels, TypeConversion.StringToKwargs(args));
+            => SetupTxStream(format, channels, TypeConversionInternal.StringToKwargs(args));
 
         public TxStream SetupTxStream<T>(uint[] channels, IDictionary<string, string> kwargs) where T : unmanaged =>
             SetupTxStream(Utility.GetFormatString<T>(), channels, kwargs);
 
         public TxStream SetupTxStream<T>(uint[] channels, string args) where T : unmanaged
-            => SetupTxStream<T>(channels, TypeConversion.StringToKwargs(args));
+            => SetupTxStream<T>(channels, TypeConversionInternal.StringToKwargs(args));
 
         public TxStream SetupComplexTxStream<T>(uint[] channels, IDictionary<string, string> kwargs) where T : unmanaged =>
             SetupTxStream(Utility.GetComplexFormatString<T>(), channels, kwargs);
 
         public TxStream SetupComplexTxStream<T>(uint[] channels, string args) where T : unmanaged
-            => SetupComplexTxStream<T>(channels, TypeConversion.StringToKwargs(args));
+            => SetupComplexTxStream<T>(channels, TypeConversionInternal.StringToKwargs(args));
 
         public RxStream SetupRxStream(string format, uint[] channels, IDictionary<string, string> kwargs)
-            => new RxStream(_device, format, channels, Utility.ToKwargs(kwargs));
+            => new RxStream(_device, format, channels, Utility.ToKwargsInternal(kwargs));
 
         public RxStream SetupRxStream(string format, uint[] channels, string args)
-            => SetupRxStream(format, channels, TypeConversion.StringToKwargs(args));
+            => SetupRxStream(format, channels, TypeConversionInternal.StringToKwargs(args));
 
         public RxStream SetupRxStream<T>(uint[] channels, IDictionary<string, string> kwargs) where T : unmanaged =>
             SetupRxStream(Utility.GetFormatString<T>(), channels, kwargs);
 
         public RxStream SetupRxStream<T>(uint[] channels, string args) where T : unmanaged
-            => SetupRxStream<T>(channels, TypeConversion.StringToKwargs(args));
+            => SetupRxStream<T>(channels, TypeConversionInternal.StringToKwargs(args));
 
         public RxStream SetupComplexRxStream<T>(uint[] channels, IDictionary<string, string> kwargs) where T : unmanaged =>
             SetupRxStream(Utility.GetComplexFormatString<T>(), channels, kwargs);
 
         public RxStream SetupComplexRxStream<T>(uint[] channels, string args) where T : unmanaged
-            => SetupComplexRxStream<T>(channels, TypeConversion.StringToKwargs(args));
+            => SetupComplexRxStream<T>(channels, TypeConversionInternal.StringToKwargs(args));
 
         public List<string> ListAntennas(Direction direction, uint channel) => new List<string>(_device.ListAntennas(direction, channel));
 
@@ -174,17 +174,17 @@ namespace SoapySDR
 
         public Range GetGainRange(Direction direction, uint channel, string name) => new Range(_device.GetGainRange(direction, channel, name));
 
-        public void SetFrequency(Direction direction, uint channel, double frequency) => SetFrequency(direction, channel, frequency, new Kwargs());
+        public void SetFrequency(Direction direction, uint channel, double frequency) => SetFrequency(direction, channel, frequency, new KwargsInternal());
 
-        public void SetFrequency(Direction direction, uint channel, double frequency, IDictionary<string, string> args) => _device.SetFrequency(direction, channel, frequency, Utility.ToKwargs(args));
+        public void SetFrequency(Direction direction, uint channel, double frequency, IDictionary<string, string> args) => _device.SetFrequency(direction, channel, frequency, Utility.ToKwargsInternal(args));
 
-        public void SetFrequency(Direction direction, uint channel, double frequency, string args) => SetFrequency(direction, channel, frequency, TypeConversion.StringToKwargs(args));
+        public void SetFrequency(Direction direction, uint channel, double frequency, string args) => SetFrequency(direction, channel, frequency, TypeConversionInternal.StringToKwargs(args));
 
-        public void SetFrequency(Direction direction, uint channel, string name, double frequency) => SetFrequency(direction, channel, name, frequency, new Kwargs());
+        public void SetFrequency(Direction direction, uint channel, string name, double frequency) => SetFrequency(direction, channel, name, frequency, new KwargsInternal());
 
-        public void SetFrequency(Direction direction, uint channel, string name, double frequency, IDictionary<string, string> args) => _device.SetFrequency(direction, channel, name, frequency, Utility.ToKwargs(args));
+        public void SetFrequency(Direction direction, uint channel, string name, double frequency, IDictionary<string, string> args) => _device.SetFrequency(direction, channel, name, frequency, Utility.ToKwargsInternal(args));
 
-        public void SetFrequency(Direction direction, uint channel, string name, double frequency, string args) => SetFrequency(direction, channel, name, frequency, TypeConversion.StringToKwargs(args));
+        public void SetFrequency(Direction direction, uint channel, string name, double frequency, string args) => SetFrequency(direction, channel, name, frequency, TypeConversionInternal.StringToKwargs(args));
 
         public double GetFrequency(Direction direction, uint channel) => _device.GetFrequency(direction, channel);
 

@@ -19,40 +19,40 @@ namespace SoapySDR
                     _value = (string)value;
                     break;
                 case bool _:
-                    _value = TypeConversion.BoolToString((bool)value);
+                    _value = TypeConversionInternal.BoolToString((bool)value);
                     break;
                 case float _:
-                    _value = TypeConversion.FloatToString((float)value);
+                    _value = TypeConversionInternal.FloatToString((float)value);
                     break;
                 case double _:
-                    _value = TypeConversion.DoubleToString((double)value);
+                    _value = TypeConversionInternal.DoubleToString((double)value);
                     break;
                 case decimal _:
-                    _value = TypeConversion.DoubleToString(Convert.ToDouble(value));
+                    _value = TypeConversionInternal.DoubleToString(Convert.ToDouble(value));
                     break;
                 case sbyte _:
-                    _value = TypeConversion.SByteToString((sbyte)value);
+                    _value = TypeConversionInternal.SByteToString((sbyte)value);
                     break;
                 case short _:
-                    _value = TypeConversion.ShortToString((short)value);
+                    _value = TypeConversionInternal.ShortToString((short)value);
                     break;
                 case int _:
-                    _value = TypeConversion.IntToString((int)value);
+                    _value = TypeConversionInternal.IntToString((int)value);
                     break;
                 case long _:
-                    _value = TypeConversion.LongToString((long)value);
+                    _value = TypeConversionInternal.LongToString((long)value);
                     break;
                 case byte _:
-                    _value = TypeConversion.ByteToString((byte)value);
+                    _value = TypeConversionInternal.ByteToString((byte)value);
                     break;
                 case ushort _:
-                    _value = TypeConversion.UShortToString((ushort)value);
+                    _value = TypeConversionInternal.UShortToString((ushort)value);
                     break;
                 case uint _:
-                    _value = TypeConversion.UIntToString((uint)value);
+                    _value = TypeConversionInternal.UIntToString((uint)value);
                     break;
                 case ulong _:
-                    _value = TypeConversion.ULongToString((ulong)value);
+                    _value = TypeConversionInternal.ULongToString((ulong)value);
                     break;
                 default:
                     _value = value.ToString(); // Good luck
@@ -77,27 +77,27 @@ namespace SoapySDR
 
         public TypeCode GetTypeCode() => TypeCode.Object;
 
-        public bool ToBoolean(IFormatProvider provider) => TypeConversion.StringToBool(_value);
+        public bool ToBoolean(IFormatProvider provider) => TypeConversionInternal.StringToBool(_value);
 
-        public byte ToByte(IFormatProvider provider) => TypeConversion.StringToByte(_value);
+        public byte ToByte(IFormatProvider provider) => TypeConversionInternal.StringToByte(_value);
 
         public char ToChar(IFormatProvider provider) => throw new NotImplementedException();
 
         public DateTime ToDateTime(IFormatProvider provider) => throw new NotImplementedException();
 
-        public decimal ToDecimal(IFormatProvider provider) => (decimal)TypeConversion.StringToDouble(_value);
+        public decimal ToDecimal(IFormatProvider provider) => (decimal)TypeConversionInternal.StringToDouble(_value);
 
-        public double ToDouble(IFormatProvider provider) => TypeConversion.StringToDouble(_value);
+        public double ToDouble(IFormatProvider provider) => TypeConversionInternal.StringToDouble(_value);
 
-        public short ToInt16(IFormatProvider provider) => TypeConversion.StringToShort(_value);
+        public short ToInt16(IFormatProvider provider) => TypeConversionInternal.StringToShort(_value);
 
-        public int ToInt32(IFormatProvider provider) => TypeConversion.StringToInt(_value);
+        public int ToInt32(IFormatProvider provider) => TypeConversionInternal.StringToInt(_value);
 
-        public long ToInt64(IFormatProvider provider) => TypeConversion.StringToLong(_value);
+        public long ToInt64(IFormatProvider provider) => TypeConversionInternal.StringToLong(_value);
 
-        public sbyte ToSByte(IFormatProvider provider) => TypeConversion.StringToSByte(_value);
+        public sbyte ToSByte(IFormatProvider provider) => TypeConversionInternal.StringToSByte(_value);
 
-        public float ToSingle(IFormatProvider provider) => TypeConversion.StringToFloat(_value);
+        public float ToSingle(IFormatProvider provider) => TypeConversionInternal.StringToFloat(_value);
 
         public string ToString(IFormatProvider provider) => _value;
 
@@ -120,11 +120,11 @@ namespace SoapySDR
             throw new NotImplementedException(conversionType.FullName);
         }
 
-        public ushort ToUInt16(IFormatProvider provider) => TypeConversion.StringToUShort(_value);
+        public ushort ToUInt16(IFormatProvider provider) => TypeConversionInternal.StringToUShort(_value);
 
-        public uint ToUInt32(IFormatProvider provider) => TypeConversion.StringToUInt(_value);
+        public uint ToUInt32(IFormatProvider provider) => TypeConversionInternal.StringToUInt(_value);
 
-        public ulong ToUInt64(IFormatProvider provider) => TypeConversion.StringToULong(_value);
+        public ulong ToUInt64(IFormatProvider provider) => TypeConversionInternal.StringToULong(_value);
 
         //
         // Object overrides

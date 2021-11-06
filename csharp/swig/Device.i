@@ -15,18 +15,17 @@ using System;"
 %apply double& OUTPUT { double& fullScaleOut };
 
 %ignore SoapySDR::CSharp::DeviceDeleter;
-%nodefaultctor SoapySDR::CSharp::Device;
+%nodefaultctor SoapySDR::CSharp::DeviceInternal;
 
 %typemap(csclassmodifiers) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult> "internal class";
-%template(StreamResultPair) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
+%template(StreamResultPairInternal) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
 
 %{
-#include "DeviceWrapper.hpp"
+#include "DeviceInternal.hpp"
 %}
 
-%rename(DeviceInternal) SoapySDR::CSharp::Device;
-%typemap(csclassmodifiers) SoapySDR::CSharp::Device "internal class"
-%include "DeviceWrapper.hpp"
+%typemap(csclassmodifiers) SoapySDR::CSharp::DeviceInternal "internal class"
+%include "DeviceInternal.hpp"
 
-%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::Device> "internal class"
-%template(DeviceInternalList) std::vector<SoapySDR::CSharp::Device>;
+%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::DeviceInternal> "internal class"
+%template(DeviceListInternal) std::vector<SoapySDR::CSharp::DeviceInternal>;

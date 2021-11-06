@@ -14,7 +14,7 @@ namespace SoapySDR
             DeviceInternal device,
             string format,
             uint[] channels,
-            Kwargs kwargs
+            KwargsInternal kwargs
         ):
             base(device, format, channels, kwargs)
         {

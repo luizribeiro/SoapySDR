@@ -23,7 +23,7 @@ namespace SoapySDR
             DeviceInternal device,
             string format,
             uint[] channels,
-            Kwargs kwargs)
+            KwargsInternal kwargs)
         {
             _device = device;
 

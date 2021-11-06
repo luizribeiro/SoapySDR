@@ -91,13 +91,13 @@ namespace SoapySDR
             }
         }
 
-        internal static unsafe void ManagedArraysToSizeList<T>(
+        internal static unsafe void ManagedArraysToSizeListInternal<T>(
             T[][] buffs,
             out GCHandle[] handles,
-            out SizeList sizeList)
+            out SizeListInternal sizeList)
         {
             handles = new GCHandle[buffs.Length];
-            sizeList = new SizeList();
+            sizeList = new SizeListInternal();
 
             for(int buffIndex = 0; buffIndex < buffs.Length; ++buffIndex)
             {
@@ -144,13 +144,13 @@ namespace SoapySDR
             else throw new Exception(string.Format("Type {0} not covered by GetComplexFormatString", type));
         }
 
-        internal static Kwargs ToKwargs(IDictionary<string, string> input)
+        internal static KwargsInternal ToKwargsInternal(IDictionary<string, string> input)
         {
-            if (input is Kwargs) return (Kwargs)input;
+            if (input is KwargsInternal) return (KwargsInternal)input;
 
-            Kwargs kwargs;
+            KwargsInternal kwargs;
 
-            var output = new Kwargs();
+            var output = new KwargsInternal();
             foreach(var pair in input)
             {
                 output.Add(pair.Key, pair.Value);
@@ -159,7 +159,7 @@ namespace SoapySDR
             return output;
         }
 
-        internal unsafe static SizeList ToSizeList<T>(
+        internal unsafe static SizeListInternal ToSizeList<T>(
             Memory<T>[] memory,
             out MemoryHandle[] memoryHandles)
         {
@@ -167,7 +167,7 @@ namespace SoapySDR
             return ToSizeList(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
         }
 
-        internal unsafe static SizeList ToSizeList<T>(
+        internal unsafe static SizeListInternal ToSizeList<T>(
             ReadOnlyMemory<T>[] memory,
             out MemoryHandle[] memoryHandles)
         {
@@ -176,27 +176,27 @@ namespace SoapySDR
         }
 
 #if _64BIT
-        internal static SizeList ToSizeList(uint[] arr) => new SizeList(arr.Select(x => (ulong)x));
+        internal static SizeListInternal ToSizeList(uint[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
 
-        internal static SizeList ToSizeList(UIntPtr[] arr) => new SizeList(arr.Select(x => (ulong)x));
+        internal static SizeListInternal ToSizeList(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
 
-        internal unsafe static SizeList ToSizeList(IntPtr[] arr) => new SizeList(arr.Select(x => (ulong)(UIntPtr)(void*)x));
+        internal unsafe static SizeListInternal ToSizeList(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)(UIntPtr)(void*)x));
 #else
-        internal static SizeList ToSizeList(uint[] arr) => new SizeList(arr);
+        internal static SizeListInternal ToSizeList(uint[] arr) => new SizeListInternal(arr);
 
-        internal static SizeList ToSizeList(UIntPtr[] arr) => new SizeList(arr.Select(x => (uint)x));
+        internal static SizeListInternal ToSizeList(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)x));
 
-        internal unsafe static SizeList ToSizeList(IntPtr[] arr) => new SizeList(arr.Select(x => (uint)(UIntPtr)(void*)x));
+        internal unsafe static SizeListInternal ToSizeList(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)(UIntPtr)(void*)x));
 #endif
 
         // TODO: how many copies are made below?
 
-        internal static Dictionary<string, string> ToDictionary(Kwargs kwargs) => kwargs.ToDictionary(entry => entry.Key, entry => entry.Value);
+        internal static Dictionary<string, string> ToDictionary(KwargsInternal kwargs) => kwargs.ToDictionary(entry => entry.Key, entry => entry.Value);
 
-        internal static List<Dictionary<string, string>> ToDictionaryList(KwargsList kwargsList) => new List<Dictionary<string, string>>(kwargsList.Select(arg => ToDictionary(arg)));
+        internal static List<Dictionary<string, string>> ToDictionaryList(KwargsListInternal kwargsList) => new List<Dictionary<string, string>>(kwargsList.Select(arg => ToDictionary(arg)));
 
-        internal static List<ArgInfo> ToArgInfoList(ArgInfoInternalList argInfoInternalList) => new List<ArgInfo>(argInfoInternalList.Select(x => new ArgInfo(x)));
+        internal static List<ArgInfo> ToArgInfoList(ArgInfoListInternal argInfoListInternal) => new List<ArgInfo>(argInfoListInternal.Select(x => new ArgInfo(x)));
 
-        internal static List<Range> ToRangeList(RangeInternalList rangeInternalList) => new List<Range>(rangeInternalList.Select(x => new Range(x)));
+        internal static List<Range> ToRangeList(RangeListInternal rangeListInternal) => new List<Range>(rangeListInternal.Select(x => new Range(x)));
     }
 }

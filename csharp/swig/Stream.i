@@ -9,6 +9,10 @@
 %csmethodmodifiers SoapySDR::CSharp::StreamHandle::GetPointer "internal";
 %nodefaultctor SoapySDR::CSharp::StreamFormat;
 
+%{
+#include "Stream.hpp"
+%}
+
 // Allows bitwise operations
 %typemap(csimports) SoapySDR::CSharp::StreamFlags "
 using System;"
@@ -35,3 +39,5 @@ using System;"
         return (GetType().GetHashCode() ^ GetPointer().GetHashCode());
     }
 %}
+
+%include "Stream.hpp"
