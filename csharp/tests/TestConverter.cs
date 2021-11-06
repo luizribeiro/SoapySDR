@@ -30,54 +30,264 @@ public class TestConverter
 
         public void TestScalarConverter()
         {
-            const uint numElems = 256;
+            const int numElems = 256;
 
-            var input = new SrcT[numElems];
-            var intermediate = new DstT[numElems];
-            var output = new SrcT[numElems];
+            var inputArr = new SrcT[numElems];
+            var intermediateArr = new DstT[numElems];
+            var outputArr = new SrcT[numElems];
 
             //
-            // Test the different overloads (TODO: with priority)
+            // Test C# arrays
             //
 
-            SoapySDR.Converter.Convert(input, ref intermediate, _scalar);
-            SoapySDR.Converter.Convert(intermediate, ref output, (1.0 / _scalar));
+            SoapySDR.Converter.Convert(
+                inputArr,
+                ref intermediateArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                intermediateArr,
+                ref outputArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
 
-            SoapySDR.Converter.Convert(new ReadOnlySpan<SrcT>(input), new Span<DstT>(intermediate), _scalar);
-            SoapySDR.Converter.Convert(new ReadOnlySpan<DstT>(intermediate), new Span<SrcT>(output), (1.0 / _scalar));
+            SoapySDR.Converter.Convert(
+                inputArr,
+                ref intermediateArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                intermediateArr,
+                ref outputArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
 
-            // TODO: raw unsafe memory
-            fixed (SrcT* inputBuffer = &MemoryMarshal.GetReference(new Span<SrcT>(input)))
-            {
-                fixed (DstT* intermediateBuffer = &MemoryMarshal.GetReference(new Span<DstT>(intermediate)))
-                {
-                    fixed (SrcT* outputBuffer = &MemoryMarshal.GetReference(new Span<SrcT>(output)))
-                    {
-                        SoapySDR.Converter.Convert(
-                            SoapySDR.Utility.GetFormatString<SrcT>(),
-                            SoapySDR.Utility.GetFormatString<DstT>(),
-                            (IntPtr)inputBuffer,
-                            (IntPtr)intermediateBuffer,
-                            numElems,
-                            _scalar);
+            //
+            // Test spans from C# arrays
+            //
 
-                        SoapySDR.Converter.Convert(
-                            SoapySDR.Utility.GetFormatString<DstT>(),
-                            SoapySDR.Utility.GetFormatString<SrcT>(),
-                            (IntPtr)intermediateBuffer,
-                            (IntPtr)outputBuffer,
-                            numElems,
-                            _scalar);
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<SrcT>(inputArr),
+                new Span<DstT>(intermediateArr),
+                _scalar);
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<DstT>(intermediateArr),
+                new Span<SrcT>(outputArr),
+                (1.0 / _scalar));
 
-                        // TODO: check values
-                    }
-                }
-            }
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<SrcT>(inputArr),
+                new Span<DstT>(intermediateArr),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<DstT>(intermediateArr),
+                new Span<SrcT>(outputArr),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
+
+            //
+            // Test raw stackallocs
+            //
+
+            SrcT* inputStackAlloc = stackalloc SrcT[numElems];
+            DstT* intermediateStackAlloc = stackalloc DstT[numElems];
+            SrcT* outputStackAlloc = stackalloc SrcT[numElems];
+
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<SrcT>(inputStackAlloc, numElems),
+                new Span<DstT>(intermediateStackAlloc, numElems),
+                _scalar);
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<DstT>(intermediateStackAlloc, numElems),
+                new Span<SrcT>(outputStackAlloc, numElems),
+                (1.0 / _scalar));
+
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<SrcT>(inputStackAlloc, numElems),
+                new Span<DstT>(intermediateStackAlloc, numElems),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                new ReadOnlySpan<DstT>(intermediateStackAlloc, numElems),
+                new Span<SrcT>(outputStackAlloc, numElems),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
+
+            //
+            // Test unmanaged allocations
+            //
+
+            IntPtr inputRawAlloc = Marshal.AllocHGlobal(numElems * sizeof(SrcT));
+            IntPtr intermediateRawAlloc = Marshal.AllocHGlobal(numElems * sizeof(DstT));
+            IntPtr outputRawAlloc = Marshal.AllocHGlobal(numElems * sizeof(SrcT));
+
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetFormatString<SrcT>(),
+                SoapySDR.Utility.GetFormatString<DstT>(),
+                inputRawAlloc,
+                intermediateRawAlloc,
+                numElems,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetFormatString<DstT>(),
+                SoapySDR.Utility.GetFormatString<SrcT>(),
+                intermediateRawAlloc,
+                outputRawAlloc,
+                numElems,
+                _scalar);
+
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetFormatString<SrcT>(),
+                SoapySDR.Utility.GetFormatString<DstT>(),
+                inputRawAlloc,
+                intermediateRawAlloc,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                numElems,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetFormatString<DstT>(),
+                SoapySDR.Utility.GetFormatString<SrcT>(),
+                intermediateRawAlloc,
+                outputRawAlloc,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                numElems,
+                _scalar);
+
+            Marshal.FreeHGlobal(outputRawAlloc);
+            Marshal.FreeHGlobal(intermediateRawAlloc);
+            Marshal.FreeHGlobal(inputRawAlloc);
         }
 
         public void TestComplexConverter()
         {
-            // TODO
+            const int numElems = 256;
+
+            var inputArr = new SrcT[numElems * 2];
+            var intermediateArr = new DstT[numElems * 2];
+            var outputArr = new SrcT[numElems * 2];
+
+            //
+            // Test C# arrays
+            //
+
+            SoapySDR.Converter.ComplexConvert(
+                inputArr,
+                ref intermediateArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.ComplexConvert(
+                intermediateArr,
+                ref outputArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
+
+            SoapySDR.Converter.ComplexConvert(
+                inputArr,
+                ref intermediateArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.ComplexConvert(
+                intermediateArr,
+                ref outputArr,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
+
+            //
+            // Test spans from C# arrays
+            //
+
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<SrcT>(inputArr),
+                new Span<DstT>(intermediateArr),
+                _scalar);
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<DstT>(intermediateArr),
+                new Span<SrcT>(outputArr),
+                (1.0 / _scalar));
+
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<SrcT>(inputArr),
+                new Span<DstT>(intermediateArr),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<DstT>(intermediateArr),
+                new Span<SrcT>(outputArr),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
+
+            //
+            // Test raw stackallocs
+            //
+
+            SrcT* inputStackAlloc = stackalloc SrcT[numElems * 2];
+            DstT* intermediateStackAlloc = stackalloc DstT[numElems * 2];
+            SrcT* outputStackAlloc = stackalloc SrcT[numElems * 2];
+
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<SrcT>(inputStackAlloc, numElems),
+                new Span<DstT>(intermediateStackAlloc, numElems),
+                _scalar);
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<DstT>(intermediateStackAlloc, numElems),
+                new Span<SrcT>(outputStackAlloc, numElems),
+                (1.0 / _scalar));
+
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<SrcT>(inputStackAlloc, numElems),
+                new Span<DstT>(intermediateStackAlloc, numElems),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                _scalar);
+            SoapySDR.Converter.ComplexConvert(
+                new ReadOnlySpan<DstT>(intermediateStackAlloc, numElems),
+                new Span<SrcT>(outputStackAlloc, numElems),
+                SoapySDR.ConverterFunctionPriority.Generic,
+                (1.0 / _scalar));
+
+            //
+            // Test unmanaged allocations
+            //
+
+            IntPtr inputRawAlloc = Marshal.AllocHGlobal(numElems * sizeof(SrcT) * 2);
+            IntPtr intermediateRawAlloc = Marshal.AllocHGlobal(numElems * sizeof(DstT) * 2);
+            IntPtr outputRawAlloc = Marshal.AllocHGlobal(numElems * sizeof(SrcT) * 2);
+
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetComplexFormatString<SrcT>(),
+                SoapySDR.Utility.GetComplexFormatString<DstT>(),
+                inputRawAlloc,
+                intermediateRawAlloc,
+                numElems,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetComplexFormatString<DstT>(),
+                SoapySDR.Utility.GetComplexFormatString<SrcT>(),
+                intermediateRawAlloc,
+                outputRawAlloc,
+                numElems,
+                _scalar);
+
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetComplexFormatString<SrcT>(),
+                SoapySDR.Utility.GetComplexFormatString<DstT>(),
+                inputRawAlloc,
+                intermediateRawAlloc,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                numElems,
+                _scalar);
+            SoapySDR.Converter.Convert(
+                SoapySDR.Utility.GetComplexFormatString<DstT>(),
+                SoapySDR.Utility.GetComplexFormatString<SrcT>(),
+                intermediateRawAlloc,
+                outputRawAlloc,
+                SoapySDR.ConverterFunctionPriority.Generic,
+                numElems,
+                _scalar);
+
+            Marshal.FreeHGlobal(outputRawAlloc);
+            Marshal.FreeHGlobal(intermediateRawAlloc);
+            Marshal.FreeHGlobal(inputRawAlloc);
         }
 
         private double _scalar = 1.0;
@@ -89,7 +299,7 @@ public class TestConverter
 
     public static IEnumerable<IGenericConverterTestCase> TestCases()
     {
-        // All covered by generic
+        // All covered by generic converters
         yield return new GenericConverterTestCase<float, float>();
         yield return new GenericConverterTestCase<int, int>();
         yield return new GenericConverterTestCase<short, short>();
