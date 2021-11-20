@@ -19,7 +19,7 @@
 #include <SoapySDR/Logger.hpp>
 
 #include "Constants.hpp"
-#include "ConverterInternal.hpp"
+#include "Utility.hpp"
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -202,17 +202,6 @@ struct TypeConversionInternal
 %template(StringToBool) TypeConversionInternal::StringToSetting<bool>;
 %template(StringToFloat) TypeConversionInternal::StringToSetting<float>;
 %template(StringToDouble) TypeConversionInternal::StringToSetting<double>;
-
-////////////////////////////////////////////////////////////////////////
-// Buffer converter
-////////////////////////////////////////////////////////////////////////
-%nodefaultctor SoapySDR::CSharp::ConverterInternal;
-%typemap(csclassmodifiers) SoapySDR::CSharp::ConverterInternal "internal class"
-
-%include "ConverterInternal.hpp"
-
-%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::ConverterFunctionPriority> "internal class"
-%template(ConverterFunctionPriorityListInternal) std::vector<SoapySDR::CSharp::ConverterFunctionPriority>;
 
 ////////////////////////////////////////////////////////////////////////
 // With types established, this is the bulk of it

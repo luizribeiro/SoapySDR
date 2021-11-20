@@ -6,9 +6,6 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ConverterFunctionPriority.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ConverterInternal.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ConverterFunctionPriorityListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Direction.cs
@@ -43,7 +40,6 @@ configure_file(
 set(csharp_srcs
     ${CMAKE_CURRENT_SOURCE_DIR}/ArgInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs
-    ${CMAKE_CURRENT_SOURCE_DIR}/Converter.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Device.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Logger.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Range.cs
