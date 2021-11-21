@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+// TODO: consistency in non-channel-related getters/setters vs functions
 // TODO: format consistency, especially where => is relative to newline
 // TODO: string overloads for all dict params
 
@@ -478,66 +479,183 @@ namespace SoapySDR
 
         public void SetFrequency(Direction direction, uint channel, string name, double frequency, string args) => SetFrequency(direction, channel, name, frequency, TypeConversionInternal.StringToKwargs(args));
 
+        /// <summary>
+        /// Get the overall center frequency of the chain.
+        /// - For RX, this specifies the down-conversion frequency.
+        /// - For TX, this specifies the up-conversion frequency.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>The center frequency in Hz</returns>
         public double GetFrequency(Direction direction, uint channel) => _device.GetFrequency(direction, channel);
 
+        /// <summary>
+        /// Get the frequency of a tunable element in the chain.
+        /// - For RX, this specifies the down-conversion frequency.
+        /// - For TX, this specifies the up-conversion frequency.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <param name="name">The name of a tunable element</param>
+        /// <returns>The tunable element's frequency in Hz</returns>
         public double GetFrequency(Direction direction, uint channel, string name) => _device.GetFrequency(direction, channel, name);
 
+        /// <summary>
+        /// List tunable elements in the chain, ordered from RF to baseband.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>A list of tunable elements</returns>
         public List<string> ListFrequencies(Direction direction, uint channel) => new List<string>(_device.ListFrequencies(direction, channel));
 
+        /// <summary>
+        /// Get the range of overall frequency values.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>A list of frequency ranges in Hz</returns>
         public List<Range> GetFrequencyRange(Direction direction, uint channel) => Utility.ToRangeList(_device.GetFrequencyRange(direction, channel));
 
+        /// <summary>
+        /// Get the range of tunable values for the specified element.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <param name="name">The name of a tunable element</param>
+        /// <returns>A list of frequency ranges in Hz</returns>
         public List<Range> GetFrequencyRange(Direction direction, uint channel, string name) => Utility.ToRangeList(_device.GetFrequencyRange(direction, channel, name));
 
+        /// <summary>
+        /// Query the argument info descriptions for tune arguments.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>A list of argument info structures</returns>
         public List<ArgInfo> GetFrequencyArgsInfo(Direction direction, uint channel) => Utility.ToArgInfoList(_device.GetFrequencyArgsInfo(direction, channel));
 
+        /// <summary>
+        /// Set the baseband sample rate of the chain.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <param name="rate">The sample rate in samples/second</param>
         public void SetSampleRate(Direction direction, uint channel, double rate) => _device.SetSampleRate(direction, channel, rate);
 
+        /// <summary>
+        /// Get the baseband sample rate of the chain.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>The sample rate in samples/second</returns>
         public double GetSampleRate(Direction direction, uint channel) => _device.GetSampleRate(direction, channel);
 
+        /// <summary>
+        /// Get the range of possible baseband sample rates.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>A list of sample rate ranges in Hz</returns>
         public List<Range> GetSampleRateRange(Direction direction, uint channel) => Utility.ToRangeList(_device.GetSampleRateRange(direction, channel));
 
+        /// <summary>
+        /// Set the baseband filter width of the chain.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <param name="bandwidth">The baseband filter width in Hz</param>
         public void SetBandwidth(Direction direction, uint channel, double bandwidth) => _device.SetBandwidth(direction, channel, bandwidth);
 
+        /// <summary>
+        /// Get the baseband filter width of the chain.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>The baseband filter width in Hz</returns>
         public double GetBandwidth(Direction direction, uint channel) => _device.GetBandwidth(direction, channel);
 
+        /// <summary>
+        /// Get the range of possible baseband filter widths.
+        /// </summary>
+        /// <param name="direction">The channel direction (RX or TX)</param>
+        /// <param name="channel">An available channel on the device</param>
+        /// <returns>A list of bandwidth ranges in Hz</returns>
         public List<Range> GetBandwidthRange(Direction direction, uint channel) => Utility.ToRangeList(_device.GetBandwidthRange(direction, channel));
 
+        /// <summary>
+        /// The master clock rate of the device in Hz
+        /// </summary>
         public double MasterClockRate
         {
             get => _device.GetMasterClockRate();
             set => _device.SetMasterClockRate(value);
         }
 
+        /// <summary>
+        /// The range of available master clock rates in Hz
+        /// </summary>
         public List<Range> MasterClockRates => Utility.ToRangeList(_device.GetMasterClockRates());
 
+        /// <summary>
+        /// The reference clock rate of the device in Hz
+        /// </summary>
         public double ReferenceClockRate
         {
             get => _device.GetReferenceClockRate();
             set => _device.SetReferenceClockRate(value);
         }
 
+        /// <summary>
+        /// The range of available reference clock rates in Hz
+        /// </summary>
         public List<Range> ReferenceClockRates => Utility.ToRangeList(_device.GetReferenceClockRates());
 
+        /// <summary>
+        /// The clock source on the device
+        /// </summary>
         public string ClockSource
         {
             get => _device.GetClockSource();
             set => _device.SetClockSource(value);
         }
 
+        /// <summary>
+        /// The list of available clock sources on the device
+        /// </summary>
         public List<string> ClockSources => new List<string>(_device.ListClockSources());
 
+        /// <summary>
+        /// The list of available time sources on the device
+        /// </summary>
         public List<string> TimeSources => new List<string>(_device.ListTimeSources());
 
+        /// <summary>
+        /// The time source on the device
+        /// </summary>
         public string TimeSource
         {
             get => _device.GetTimeSource();
             set => _device.SetTimeSource(value);
         }
 
-        public bool HasHardwareTime(string what) => _device.HasHardwareTime(what);
+        /// <summary>
+        /// Does this device have a hardware clock?
+        /// </summary>
+        /// <param name="what">Optional hardware time counter</param>
+        /// <returns>True if the device has the given hardware clock</returns>
+        public bool HasHardwareTime(string what = "") => _device.HasHardwareTime(what);
 
-        public long GetHardwareTime(string what) => _device.GetHardwareTime(what);
+        /// <summary>
+        /// Read the time from the device's hardware clock.
+        /// </summary>
+        /// <param name="what">Optional hardware time counter</param>
+        /// <returns>The hardware time in nanoseconds</returns>
+        public long GetHardwareTime(string what = "") => _device.GetHardwareTime(what);
 
+        /// <summary>
+        /// Write the time to the device's hardware clock.
+        /// </summary>
+        /// <param name="timeNs">Optional hardware time counter</param>
+        /// <param name="what">The hardware time in nanoseconds</param>
         public void SetHardwareTime(long timeNs, string what = "") => _device.SetHardwareTime(timeNs, what);
 
         public List<string> ListSensors() => new List<string>(_device.ListSensors());
