@@ -11,6 +11,60 @@ namespace SoapySDR
 {
     public class Utility
     {
+        //
+        // Public
+        //
+
+        /// <summary>
+        /// Return the SoapySDR format string that corresponds to the given type. This
+        /// string will be passed into Device's stream setup functions.
+        /// 
+        /// This function will throw if the type is unsupported.
+        /// </summary>
+        /// <typeparam name="T">The format type</typeparam>
+        /// <returns>The type's SoapySDR format string</returns>
+        public static string GetFormatString<T>() where T : unmanaged
+        {
+            var type = typeof(T);
+
+            if (typeof(T).Equals(typeof(sbyte))) return StreamFormat.S8;
+            else if (typeof(T).Equals(typeof(short))) return StreamFormat.S16;
+            else if (typeof(T).Equals(typeof(int))) return StreamFormat.S32;
+            else if (typeof(T).Equals(typeof(byte))) return StreamFormat.U8;
+            else if (typeof(T).Equals(typeof(ushort))) return StreamFormat.U16;
+            else if (typeof(T).Equals(typeof(uint))) return StreamFormat.U32;
+            else if (typeof(T).Equals(typeof(float))) return StreamFormat.F32;
+            else if (typeof(T).Equals(typeof(double))) return StreamFormat.F64;
+            else throw new Exception(string.Format("Type {0} not covered by GetFormatString", type));
+        }
+
+        /// <summary>
+        /// Return the SoapySDR complex format string that corresponds to the given type.
+        /// This string will be passed into Device's stream setup functions.
+        /// 
+        /// This function will throw if the type is unsupported.
+        /// </summary>
+        /// <typeparam name="T">The format type</typeparam>
+        /// <returns>The type's SoapySDR complex format string</returns>
+        public static string GetComplexFormatString<T>() where T : unmanaged
+        {
+            var type = typeof(T);
+
+            if (typeof(T).Equals(typeof(sbyte))) return StreamFormat.CS8;
+            else if (typeof(T).Equals(typeof(short))) return StreamFormat.CS16;
+            else if (typeof(T).Equals(typeof(int))) return StreamFormat.CS32;
+            else if (typeof(T).Equals(typeof(byte))) return StreamFormat.CU8;
+            else if (typeof(T).Equals(typeof(ushort))) return StreamFormat.CU16;
+            else if (typeof(T).Equals(typeof(uint))) return StreamFormat.CU32;
+            else if (typeof(T).Equals(typeof(float))) return StreamFormat.CF32;
+            else if (typeof(T).Equals(typeof(double))) return StreamFormat.CF64;
+            else throw new Exception(string.Format("Type {0} not covered by GetComplexFormatString", type));
+        }
+
+        //
+        // Internal
+        //
+
         internal static void ValidateSpan<T>(
             StreamHandle streamHandle,
             ReadOnlySpan<T> span) where T : unmanaged
@@ -143,36 +197,6 @@ namespace SoapySDR
                 sizeList.Add((uint)uptr);
 #endif
             }
-        }
-
-        public static string GetFormatString<T>() where T: unmanaged
-        {
-            var type = typeof(T);
-
-            if(typeof(T).Equals(typeof(sbyte)))       return StreamFormat.S8;
-            else if(typeof(T).Equals(typeof(short)))  return StreamFormat.S16;
-            else if(typeof(T).Equals(typeof(int)))    return StreamFormat.S32;
-            else if(typeof(T).Equals(typeof(byte)))   return StreamFormat.U8;
-            else if(typeof(T).Equals(typeof(ushort))) return StreamFormat.U16;
-            else if(typeof(T).Equals(typeof(uint)))   return StreamFormat.U32;
-            else if(typeof(T).Equals(typeof(float)))  return StreamFormat.F32;
-            else if(typeof(T).Equals(typeof(double))) return StreamFormat.F64;
-            else throw new Exception(string.Format("Type {0} not covered by GetFormatString", type));
-        }
-
-        public static string GetComplexFormatString<T>() where T : unmanaged
-        {
-            var type = typeof(T);
-
-            if (typeof(T).Equals(typeof(sbyte))) return StreamFormat.CS8;
-            else if (typeof(T).Equals(typeof(short))) return StreamFormat.CS16;
-            else if (typeof(T).Equals(typeof(int))) return StreamFormat.CS32;
-            else if (typeof(T).Equals(typeof(byte))) return StreamFormat.CU8;
-            else if (typeof(T).Equals(typeof(ushort))) return StreamFormat.CU16;
-            else if (typeof(T).Equals(typeof(uint))) return StreamFormat.CU32;
-            else if (typeof(T).Equals(typeof(float))) return StreamFormat.CF32;
-            else if (typeof(T).Equals(typeof(double))) return StreamFormat.CF64;
-            else throw new Exception(string.Format("Type {0} not covered by GetComplexFormatString", type));
         }
 
         internal static KwargsInternal ToKwargsInternal(IDictionary<string, string> input)
