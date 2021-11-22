@@ -46,42 +46,6 @@ public class TestSoapyTypes
         Assert.AreEqual(optionNames, argInfo.OptionNames);
     }
 
-    [Test]
-    [TestCase(SoapySDR.ArgInfo.ArgType.BOOL, false, "false")]
-    [TestCase(SoapySDR.ArgInfo.ArgType.FLOAT, 135.1, "135.100000")]
-    [TestCase(SoapySDR.ArgInfo.ArgType.INT, (long)418, "418")]
-    [TestCase(SoapySDR.ArgInfo.ArgType.STRING, "foobar", "foobar")]
-    public void Test_ArgInfo_ValueStringFromValue(SoapySDR.ArgInfo.ArgType argType, object testValue, string testValueString)
-    {
-        var argInfo = new SoapySDR.ArgInfo
-        {
-            Type = argType
-        };
-        Assert.AreEqual(argType, argInfo.Type);
-
-        argInfo.Value = testValue;
-        Assert.AreEqual(testValue, argInfo.Value);
-        Assert.AreEqual(testValueString, argInfo.ValueString);
-    }
-
-    [Test]
-    [TestCase(SoapySDR.ArgInfo.ArgType.BOOL, false, "false")]
-    [TestCase(SoapySDR.ArgInfo.ArgType.FLOAT, 135.1, "135.100000")]
-    [TestCase(SoapySDR.ArgInfo.ArgType.INT, (long)418, "418")]
-    [TestCase(SoapySDR.ArgInfo.ArgType.STRING, "foobar", "foobar")]
-    public void Test_ArgInfo_ValueFromValueString(SoapySDR.ArgInfo.ArgType argType, object testValue, string testValueString)
-    {
-        var argInfo = new SoapySDR.ArgInfo
-        {
-            Type = argType
-        };
-        Assert.AreEqual(argType, argInfo.Type);
-
-        argInfo.ValueString = testValueString;
-        Assert.AreEqual(testValue, argInfo.Value);
-        Assert.AreEqual(testValueString, argInfo.ValueString);
-    }
-
     //
     // Range
     //

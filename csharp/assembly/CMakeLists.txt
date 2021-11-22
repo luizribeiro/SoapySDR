@@ -3,7 +3,7 @@
 ########################################################################
 
 set(csharp_swig_outputs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceInternal.cs
@@ -15,7 +15,7 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/LogHandlerBase.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/LogLevel.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/RangeInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Range.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/RangeListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SizeListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SoapySDR.cs
@@ -38,11 +38,9 @@ configure_file(
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs)
 
 set(csharp_srcs
-    ${CMAKE_CURRENT_SOURCE_DIR}/ArgInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Device.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Logger.cs
-    ${CMAKE_CURRENT_SOURCE_DIR}/Range.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/RxStream.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/SoapyConvertible.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Stream.cs

@@ -24,8 +24,8 @@ using System;"
 #include "DeviceInternal.hpp"
 %}
 
-%typemap(csclassmodifiers) SoapySDR::CSharp::DeviceInternal "internal class"
+%typemap(csclassmodifiers) SoapySDR::CSharp::DeviceInternal "internal class";
 %include "DeviceInternal.hpp"
 
-%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::DeviceInternal> "internal class"
+%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::DeviceInternal> "internal class";
 %template(DeviceListInternal) std::vector<SoapySDR::CSharp::DeviceInternal>;

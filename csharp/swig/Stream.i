@@ -17,7 +17,7 @@
 %typemap(csimports) SoapySDR::CSharp::StreamFlags "
 using System;"
 %typemap(csclassmodifiers) SoapySDR::CSharp::StreamFlags "[Flags]
-public enum"
+public enum";
 
 %typemap(csimports) SoapySDR::CSharp::StreamHandle "
 using System;"

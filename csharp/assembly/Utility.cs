@@ -250,8 +250,8 @@ namespace SoapySDR
 
         internal static List<Dictionary<string, string>> ToDictionaryList(KwargsListInternal kwargsList) => new List<Dictionary<string, string>>(kwargsList.Select(arg => ToDictionary(arg)));
 
-        internal static List<ArgInfo> ToArgInfoList(ArgInfoListInternal argInfoListInternal) => new List<ArgInfo>(argInfoListInternal.Select(x => new ArgInfo(x)));
+        internal static List<ArgInfo> ToArgInfoList(ArgInfoListInternal argInfoListInternal) => new List<ArgInfo>(argInfoListInternal);
 
-        internal static List<Range> ToRangeList(RangeListInternal rangeListInternal) => new List<Range>(rangeListInternal.Select(x => new Range(x)));
+        internal static List<Range> ToRangeList(RangeListInternal rangeListInternal) => new List<Range>(rangeListInternal);
     }
 }

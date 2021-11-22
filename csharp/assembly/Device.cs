@@ -422,7 +422,7 @@ namespace SoapySDR
         /// <param name="direction">The channel direction (RX or TX)</param>
         /// <param name="channel">An available channel on the device</param>
         /// <returns>A gain range in dB</returns>
-        public Range GetGainRange(Direction direction, uint channel) => new Range(_device.GetGainRange(direction, channel));
+        public Range GetGainRange(Direction direction, uint channel) => _device.GetGainRange(direction, channel);
 
         /// <summary>
         /// Get the range of possible gain values for an individual gain amplification element.
@@ -431,7 +431,7 @@ namespace SoapySDR
         /// <param name="channel">An available channel on the device</param>
         /// <param name="name">The name of an available gain amplification element</param>
         /// <returns>A gain range in dB</returns>
-        public Range GetGainRange(Direction direction, uint channel, string name) => new Range(_device.GetGainRange(direction, channel, name));
+        public Range GetGainRange(Direction direction, uint channel, string name) => _device.GetGainRange(direction, channel, name);
 
         /// <summary>
         /// Set the center frequency of the chain.
@@ -670,7 +670,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="key">The name of an available sensor</param>
         /// <returns>An ArgInfo describing the given sensor</returns>
-        public ArgInfo GetSensorInfo(string key) => new ArgInfo(_device.GetSensorInfo(key));
+        public ArgInfo GetSensorInfo(string key) => _device.GetSensorInfo(key);
 
         /// <summary>
         /// Read a global readback sensor, given the name.
@@ -678,7 +678,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="key">The name of an available sensor</param>
         /// <returns>The value of the given sensor, casted to its underlying type</returns>
-        public object ReadSensor(string key) => new SoapyConvertible(_device.ReadSensor(key)).ToArgType(GetSensorInfo(key).Type);
+        public object ReadSensor(string key) => new SoapyConvertible(_device.ReadSensor(key)).ToArgType(GetSensorInfo(key).ArgType);
 
         /// <summary>
         /// Read a global readback sensor, given the name, and cast it to the given type.
@@ -706,7 +706,7 @@ namespace SoapySDR
         /// <param name="channel">An available channel on the device</param>
         /// <param name="key">The name of an available sensor</param>
         /// <returns>An ArgInfo describing the given sensor</returns>
-        public ArgInfo GetSensorInfo(Direction direction, uint channel, string key) => new ArgInfo(_device.GetSensorInfo(direction, channel, key));
+        public ArgInfo GetSensorInfo(Direction direction, uint channel, string key) => _device.GetSensorInfo(direction, channel, key);
 
         /// <summary>
         /// Read a channel readback sensor, given the name.
@@ -717,7 +717,7 @@ namespace SoapySDR
         /// <param name="key">The name of an available sensor</param>
         /// <returns>The value of the given sensor, casted to its underlying type</returns>
         public object ReadSensor(Direction direction, uint channel, string key)
-            => new SoapyConvertible(_device.ReadSensor(direction, channel, key)).ToArgType(GetSensorInfo(direction, channel, key).Type);
+            => new SoapyConvertible(_device.ReadSensor(direction, channel, key)).ToArgType(GetSensorInfo(direction, channel, key).ArgType);
 
         /// <summary>
         /// Read a channel readback sensor, given the name, and cast it to the given type.
@@ -807,7 +807,7 @@ namespace SoapySDR
             if (query.Any())
             {
                 var info = query.First();
-                return new SoapyConvertible(_device.ReadSetting(key)).ToArgType(info.Type);
+                return new SoapyConvertible(_device.ReadSetting(key)).ToArgType(info.ArgType);
             }
             else return null;
         }
@@ -864,7 +864,7 @@ namespace SoapySDR
             if (query.Any())
             {
                 var info = query.First();
-                return new SoapyConvertible(_device.ReadSetting(direction, channel, key)).ToArgType(info.Type);
+                return new SoapyConvertible(_device.ReadSetting(direction, channel, key)).ToArgType(info.ArgType);
             }
             else return null;
         }
