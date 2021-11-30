@@ -22,6 +22,20 @@
 #include "Utility.hpp"
 %}
 
+%ignore copyVector;
+%ignore toSizeTVector;
+%ignore reinterpretCastVector;
+%ignore detail::copyVector;
+%include "Utility.hpp"
+
+////////////////////////////////////////////////////////////////////////
+// Enforce C# naming conventions
+////////////////////////////////////////////////////////////////////////
+
+%rename("%(camelcase)s", match$kind="function", regexmatch$name="^SoapySDR::") "";
+%rename("%(camelcase)s", match$kind="class", regexmatch$name="^SoapySDR::") "";
+%rename("%(camelcase)s", match$kind="variable", regexmatch$name="^SoapySDR::") "";
+
 ////////////////////////////////////////////////////////////////////////
 // http://www.swig.org/Doc2.0/Library.html#Library_stl_exceptions
 ////////////////////////////////////////////////////////////////////////
@@ -51,24 +65,43 @@
 %include <stdint.i>
 %include <std_complex.i>
 %include <std_string.i>
-%include <std_vector.i>
 %include <std_map.i>
 
 // Hide SWIG-generated STL types, they're ugly and half-done
 
+//
+// size_t
+//
+
 #ifdef SIZE_T_IS_UNSIGNED_INT
-%typemap(csclassmodifiers) std::vector<uint32_t> "internal class";
-%template(SizeListInternal) std::vector<uint32_t>;
+typedef unsigned int size_t;
 #else
-%typemap(csclassmodifiers) std::vector<uint64_t> "internal class";
-%template(SizeListInternal) std::vector<uint64_t>;
+typedef unsigned long long size_t;
 #endif
+
+%typemap(csclassmodifiers) std::vector<size_t> "internal class";
+%template(SizeListInternal) std::vector<size_t>;
+
+%typemap(cstype) const std::vector<size_t> & "uint[]"
+%typemap(csin,
+    pre="
+        var temp$csinput = new SizeListInternal();
+        foreach(var x in $csinput) temp$csinput.Add(x);
+    ") const std::vector<size_t> & "$csclassname.getCPtr(temp$csinput)"
+
+//
+// std::string
+//
 
 %typemap(csclassmodifiers) std::vector<std::string> "internal class";
 %template(StringListInternal) std::vector<std::string>;
 
-%typemap(csclassmodifiers) std::vector<double> "internal class";
-%template(DoubleListInternal) std::vector<double>;
+%typemap(cstype) std::vector<std::string> "System.Collections.Generic.List<string>"
+%typemap(csout, excode=SWIGEXCODE) std::vector<std::string> {
+    var stringListPtr = $imcall;$excode;
+
+    return new System.Collections.Generic.List<string>(new StringListInternal(stringListPtr, false));
+}
 
 ////////////////////////////////////////////////////////////////////////
 // SoapySDR Types
@@ -119,7 +152,6 @@ struct Time
 ////////////////////////////////////////////////////////////////////////
 // With types established, this is the bulk of it
 ////////////////////////////////////////////////////////////////////////
-
 
 %nodefaultctor SoapySDR::CSharp::StreamHandle;
 

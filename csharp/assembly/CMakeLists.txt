@@ -8,8 +8,8 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceListInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceTemp.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Direction.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DoubleListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ErrorCode.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsListInternal.cs

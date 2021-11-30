@@ -7,45 +7,34 @@
 #include <SoapySDR/Types.hpp>
 %}
 
-%ignore copyVector;
-%ignore toSizeTVector;
-%ignore reinterpretCastVector;
-%ignore detail::copyVector;
-%include "Utility.hpp"
-
 %include <attribute.i>
 %include <std_map.i>
 %include <std_string.i>
-%include <std_vector.i>
+//%include <std_vector.i>
 
 //
 // ArgInfo
 //
 
-%rename(Key) SoapySDR::ArgInfo::key;
-%rename(Value) SoapySDR::ArgInfo::value;
-%rename(Name) SoapySDR::ArgInfo::name;
-%rename(Description) SoapySDR::ArgInfo::description;
-%rename(Units) SoapySDR::ArgInfo::units;
-%rename(ArgType) SoapySDR::ArgInfo::type;
-%rename(Range) SoapySDR::ArgInfo::range;
-
 // Don't expose internal types
 %csmethodmodifiers SoapySDR::ArgInfo::options "private";
 %csmethodmodifiers SoapySDR::ArgInfo::optionNames "private";
+
+%rename(__Options) SoapySDR::ArgInfo::options;
+%rename(__OptionNames) SoapySDR::ArgInfo::optionNames;
 
 %typemap(cscode) SoapySDR::ArgInfo
 %{
     public string[] Options
     {
-        get => options.ToArray();
-        set => options = new StringListInternal(value);
+        get => __Options.ToArray();
+        set => __Options = new StringListInternal(value);
     }
     
     public string[] OptionNames
     {
-        get => optionNames.ToArray();
-        set => optionNames = new StringListInternal(value);
+        get => __OptionNames.ToArray();
+        set => __OptionNames = new StringListInternal(value);
     }
 
     //
@@ -54,22 +43,30 @@
 
     public override string ToString()
     {
-        return string.Format("{0} ({1})", Name, ArgType);
+        return string.Format("{0} ({1})", Name, Type);
     }
 
     public override bool Equals(object obj)
     {
         var objAsArgInfo = obj as ArgInfo;
-        if(objAsArgInfo != null) return Key.Equals(objAsArgInfo.Key) && ArgType.Equals(objAsArgInfo.ArgType);
+        if(objAsArgInfo != null) return Key.Equals(objAsArgInfo.Key) && Type.Equals(objAsArgInfo.Type);
         else                     return false;
     }
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ Key.GetHashCode() ^ ArgType.GetHashCode();
+    public override int GetHashCode() => GetType().GetHashCode() ^ (Key.GetHashCode() << 1) ^ (Type.GetHashCode() << 2);
 %}
 
 // Hide SWIG-generated STL types, they're ugly and half-done
+
 %typemap(csclassmodifiers) std::vector<SoapySDR::ArgInfo> "internal class";
 %template(ArgInfoListInternal) std::vector<SoapySDR::ArgInfo>;
+
+%typemap(cstype) std::vector<SoapySDR::ArgInfo> "System.Collections.Generic.List<ArgInfo>"
+%typemap(csout, excode=SWIGEXCODE) std::vector<SoapySDR::ArgInfo> {
+    var argInfoListPtr = $imcall;$excode;
+
+    return new System.Collections.Generic.List<ArgInfo>(new ArgInfoListInternal(argInfoListPtr, false));
+}
 
 //
 // Kwargs
@@ -83,10 +80,31 @@
 %typemap(csclassmodifiers) std::vector<std::map<std::string, std::string>> "internal class";
 %template(KwargsListInternal) std::vector<std::map<std::string, std::string>>;
 
+%typemap(cstype) const std::map<std::string, std::string> & "System.Collections.Generic.IDictionary<string, string>"
+%typemap(csin,
+    pre="
+        KwargsInternal temp$csinput = Utility.ToKwargsInternal($csinput);
+    ") const std::map<std::string, std::string> & "$csclassname.getCPtr(temp$csinput)"
+
+%typemap(cstype) std::map<std::string, std::string> "System.Collections.Generic.Dictionary<string, string>"
+%typemap(csout, excode=SWIGEXCODE) std::map<std::string, std::string> {
+    var kwargsPtr = $imcall;$excode;
+
+    return Utility.ToDictionary(new KwargsInternal(kwargsPtr, false));
+}
+
+%typemap(cstype) std::vector<std::map<std::string, std::string>> "System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, string>>"
+%typemap(csout, excode=SWIGEXCODE) std::vector<std::map<std::string, std::string>> {
+    var kwargsListPtr = $imcall;$excode;
+
+    return Utility.ToDictionaryList(new KwargsListInternal(kwargsListPtr, false));
+}
+
 //
 // Range
 //
 
+// TODO: make private, manually add properties with docs
 %attribute(SoapySDR::Range, double, Minimum, minimum);
 %attribute(SoapySDR::Range, double, Maximum, maximum);
 %attribute(SoapySDR::Range, double, Step, step);
@@ -109,7 +127,7 @@
         else                   return false;
     }
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ Minimum.GetHashCode() ^ Maximum.GetHashCode() ^ Step.GetHashCode();
+    public override int GetHashCode() => GetType().GetHashCode() ^ (Minimum.GetHashCode() << 1) ^ (Maximum.GetHashCode() << 2) ^ (Step.GetHashCode() << 3);
 %}
 
 // Hide SWIG-generated STL types, they're ugly and half-done
