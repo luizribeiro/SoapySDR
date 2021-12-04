@@ -168,8 +168,8 @@ namespace SoapySDR
         public override string ToString()
         {
             return string.Format("{0}:{1} {2} TX stream (format: {3}, channels: {4})",
-                _device.GetDriverKey(),
-                _device.GetHardwareKey(),
+                _device.DriverKey,
+                _device.HardwareKey,
                 (_active ? "active" : "inactive"),
                 Format,
                 Channels);

@@ -20,7 +20,6 @@
 #include <SoapySDR/Time.hpp>
 #include <SoapySDR/Logger.hpp>
 
-#include "DeviceInternal.hpp"
 #include "Constants.hpp"
 #include "Utility.hpp"
 %}

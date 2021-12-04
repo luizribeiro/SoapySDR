@@ -104,15 +104,5 @@ namespace SoapySDR
         public override bool Equals(object other) => ReferenceEquals(this, other);
 
         public override int GetHashCode() => GetType().GetHashCode() ^ (_streamHandle?.GetHashCode() ?? 0);
-
-        public override string ToString()
-        {
-            return string.Format("{0}:{1} {2} stream (format: {3}, channels: {4})",
-                _device.GetDriverKey(),
-                _device.GetHardwareKey(),
-                (_active ? "active" : "inactive"),
-                Format,
-                Channels);
-        }
     }
 }

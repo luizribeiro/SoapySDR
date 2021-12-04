@@ -6,6 +6,7 @@
 #include "Utility.hpp"
 %}
 
+%include <attribute.i>
 %include <std_pair.i>
 %include <stdint.i>
 %include <typemaps.i>
@@ -60,13 +61,23 @@ using System.Linq;"
 // Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNativeDeviceHandle;
 
+// csout typemaps don't apply to properties, so this is necessary
+%csmethodmodifiers SoapySDR::Device::MasterClockRatesInternal "private";
+%csmethodmodifiers SoapySDR::Device::ReferenceClockRatesInternal "private";
+
+// Per C# convention, convert trivial getters and setters to properties
+%attributestring(SoapySDR::Device, std::string, DriverKey, getDriverKey);
+%attributestring(SoapySDR::Device, std::string, HardwareKey, getHardwareKey);
+%attribute(SoapySDR::Device, double, MasterClockRate, getMasterClockRate, setMasterClockRate);
+%attributeval(SoapySDR::Device, std::vector<SoapySDR::Range>, MasterClockRatesInternal, getMasterClockRates);
+%attribute(SoapySDR::Device, double, ReferenceClockRate, getReferenceClockRate, setReferenceClockRate);
+%attributeval(SoapySDR::Device, std::vector<SoapySDR::Range>, ReferenceClockRatesInternal, getReferenceClockRates);
+
 %typemap(cscode) SoapySDR::Device
 %{
-    public string DriverKey => GetDriverKey();
+    public List<Range> MasterClockRates => new List<Range>(MasterClockRatesInternal);
 
-    public string HardwareKey => GetHardwareKey();
-
-    public Dictionary<string, string> HardwareInfo => GetHardwareInfo();
+    public List<Range> ReferenceClockRates => new List<Range>(ReferenceClockRatesInternal);
 %}
 
 %nodefaultctor SoapySDR::Device;

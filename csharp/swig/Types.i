@@ -95,7 +95,7 @@
 // Range
 //
 
-// TODO: make private, manually add properties with docs
+// TODO: docs
 %attribute(SoapySDR::Range, double, Minimum, minimum);
 %attribute(SoapySDR::Range, double, Maximum, maximum);
 %attribute(SoapySDR::Range, double, Step, step);
