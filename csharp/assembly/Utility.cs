@@ -231,21 +231,13 @@ namespace SoapySDR
         }
 
 #if _64BIT
-        internal static SizeListInternal ToSizeListInternal(uint[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
-
         internal static SizeListInternal ToSizeListInternal(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
 
         internal unsafe static SizeListInternal ToSizeListInternal(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)(UIntPtr)(void*)x));
 #else
-        internal static SizeListInternal ToSizeListInternal(uint[] arr) => new SizeListInternal(arr);
-
         internal static SizeListInternal ToSizeListInternal(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)x));
 
         internal unsafe static SizeListInternal ToSizeListInternal(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)(UIntPtr)(void*)x));
 #endif
-
-        // TODO: how many copies are made below?
-
-        internal static Dictionary<string, string> ToDictionary(Kwargs kwargs) => kwargs.ToDictionary(entry => entry.Key, entry => entry.Value);
     }
 }
