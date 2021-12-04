@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Constants.hpp"
+#include "Utility.hpp"
 
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>

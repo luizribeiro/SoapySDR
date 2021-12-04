@@ -18,6 +18,7 @@
 #include <SoapySDR/Time.hpp>
 #include <SoapySDR/Logger.hpp>
 
+#include "DeviceInternal.hpp"
 #include "Constants.hpp"
 #include "Utility.hpp"
 %}
@@ -27,14 +28,6 @@
 %ignore reinterpretCastVector;
 %ignore detail::copyVector;
 %include "Utility.hpp"
-
-////////////////////////////////////////////////////////////////////////
-// Enforce C# naming conventions
-////////////////////////////////////////////////////////////////////////
-
-%rename("%(camelcase)s", match$kind="function", regexmatch$name="^SoapySDR::") "";
-%rename("%(camelcase)s", match$kind="class", regexmatch$name="^SoapySDR::") "";
-%rename("%(camelcase)s", match$kind="variable", regexmatch$name="^SoapySDR::") "";
 
 ////////////////////////////////////////////////////////////////////////
 // http://www.swig.org/Doc2.0/Library.html#Library_stl_exceptions
@@ -104,11 +97,6 @@ typedef unsigned long long size_t;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// SoapySDR Types
-////////////////////////////////////////////////////////////////////////
-%include "Types.i"
-
-////////////////////////////////////////////////////////////////////////
 // Build info, enums
 ////////////////////////////////////////////////////////////////////////
 %nodefaultctor SoapySDR::CSharp::BuildInfo;
@@ -149,12 +137,93 @@ struct Time
     static long long TimeNsToTicks(const long long timeNs, const double rate);
 };
 
+%typemap(csclassmodifiers) TypeConversionInternal "internal class";
+%nodefaultctor TypeConversionInternal;
+
+%{
+struct TypeConversionInternal
+{
+    template <typename T>
+    static __forceinline std::string SettingToString(const T& setting)
+    {
+        return SoapySDR::SettingToString<T>(setting);
+    }
+
+    template <typename T>
+    static __forceinline T StringToSetting(const std::string& setting)
+    {
+        return SoapySDR::StringToSetting<T>(setting);
+    }
+
+    static __forceinline SoapySDR::Kwargs StringToKwargs(const std::string& args)
+    {
+        return SoapySDR::KwargsFromString(args);
+    }
+};
+%}
+
+struct TypeConversionInternal
+{
+    template <typename T>
+    static std::string SettingToString(const T& setting);
+
+    template <typename T>
+    static T StringToSetting(const std::string& setting);
+
+    static SoapySDR::Kwargs StringToKwargs(const std::string& args);
+};
+
+%template(SByteToString) TypeConversionInternal::SettingToString<int8_t>;
+%template(ShortToString) TypeConversionInternal::SettingToString<int16_t>;
+%template(IntToString) TypeConversionInternal::SettingToString<int32_t>;
+%template(LongToString) TypeConversionInternal::SettingToString<int64_t>;
+%template(ByteToString) TypeConversionInternal::SettingToString<uint8_t>;
+%template(UShortToString) TypeConversionInternal::SettingToString<uint16_t>;
+%template(UIntToString) TypeConversionInternal::SettingToString<uint32_t>;
+%template(ULongToString) TypeConversionInternal::SettingToString<uint64_t>;
+%template(BoolToString) TypeConversionInternal::SettingToString<bool>;
+%template(FloatToString) TypeConversionInternal::SettingToString<float>;
+%template(DoubleToString) TypeConversionInternal::SettingToString<double>;
+
+%template(StringToSByte) TypeConversionInternal::StringToSetting<int8_t>;
+%template(StringToShort) TypeConversionInternal::StringToSetting<int16_t>;
+%template(StringToInt) TypeConversionInternal::StringToSetting<int32_t>;
+%template(StringToLong) TypeConversionInternal::StringToSetting<int64_t>;
+%template(StringToByte) TypeConversionInternal::StringToSetting<uint8_t>;
+%template(StringToUShort) TypeConversionInternal::StringToSetting<uint16_t>;
+%template(StringToUInt) TypeConversionInternal::StringToSetting<uint32_t>;
+%template(StringToULong) TypeConversionInternal::StringToSetting<uint64_t>;
+%template(StringToBool) TypeConversionInternal::StringToSetting<bool>;
+%template(StringToFloat) TypeConversionInternal::StringToSetting<float>;
+%template(StringToDouble) TypeConversionInternal::StringToSetting<double>;
+
+////////////////////////////////////////////////////////////////////////
+// We need all vector declarations before the rename call
+////////////////////////////////////////////////////////////////////////
+
+%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::DeviceInternal> "internal class";
+%template(DeviceListInternal) std::vector<SoapySDR::CSharp::DeviceInternal>;
+
+%typemap(csclassmodifiers) std::vector<SoapySDR::ArgInfo> "internal class";
+%template(ArgInfoListInternal) std::vector<SoapySDR::ArgInfo>;
+
+%typemap(csclassmodifiers) std::vector<std::map<std::string, std::string>> "internal class";
+%template(KwargsListInternal) std::vector<std::map<std::string, std::string>>;
+
+%typemap(csclassmodifiers) std::vector<SoapySDR::Range> "internal class";
+%template(RangeListInternal) std::vector<SoapySDR::Range>;
+
+////////////////////////////////////////////////////////////////////////
+// Enforce C# naming conventions
+////////////////////////////////////////////////////////////////////////
+
+%rename("%(camelcase)s", %$ispublic) "";
+
 ////////////////////////////////////////////////////////////////////////
 // With types established, this is the bulk of it
 ////////////////////////////////////////////////////////////////////////
 
-%nodefaultctor SoapySDR::CSharp::StreamHandle;
-
+%include "Types.i"
 %include "Stream.i"
 %include "Device.i"
 %include "Logger.i"

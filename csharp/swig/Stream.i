@@ -1,6 +1,9 @@
 // Copyright (c) 2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
+%typemap(csclassmodifiers) SoapySDR::CSharp::StreamHandle "internal class";
+%nodefaultctor SoapySDR::CSharp::StreamHandle;
+
 %ignore SoapySDR::CSharp::StreamHandle::stream;
 %ignore SoapySDR::CSharp::StreamHandle::channels;
 %csmethodmodifiers SoapySDR::CSharp::StreamHandle::GetChannels "internal";
@@ -22,22 +25,11 @@ public enum";
 %typemap(csimports) SoapySDR::CSharp::StreamHandle "
 using System;"
 %typemap(cscode) SoapySDR::CSharp::StreamHandle %{
-    public override string ToString()
-    {
-        return string.Format("Opaque SoapySDR stream handle at {0}", GetPointer());
-    }
+    public override string ToString() => string.Format("Opaque SoapySDR stream handle at {0}", GetPointer());
 
-    public override bool Equals(object other)
-    {
-        var otherAsStreamHandle = other as StreamHandle;
-        if(otherAsStreamHandle != null) return (GetHashCode() == other.GetHashCode());
-        else                            throw new ArgumentException("Not a StreamHandle");
-    }
+    public override bool Equals(object other) => Object.ReferenceEquals(this, other);
 
-    public override int GetHashCode()
-    {
-        return (GetType().GetHashCode() ^ GetPointer().GetHashCode());
-    }
+    public override int GetHashCode() => (GetType().GetHashCode() ^ (GetPointer().GetHashCode() << 1));
 %}
 
 %include "Stream.hpp"

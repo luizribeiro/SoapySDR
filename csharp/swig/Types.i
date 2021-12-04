@@ -10,11 +10,14 @@
 %include <attribute.i>
 %include <std_map.i>
 %include <std_string.i>
-//%include <std_vector.i>
 
 //
 // ArgInfo
 //
+
+// Needed because the "type" variable would be renamed to Type, which
+// conflicts with the enum type name
+%rename(ArgType) SoapySDR::ArgInfo::type;
 
 // Don't expose internal types
 %csmethodmodifiers SoapySDR::ArgInfo::options "private";
@@ -43,24 +46,20 @@
 
     public override string ToString()
     {
-        return string.Format("{0} ({1})", Name, Type);
+        return string.Format("{0} ({1})", Name, ArgType);
     }
 
     public override bool Equals(object obj)
     {
         var objAsArgInfo = obj as ArgInfo;
-        if(objAsArgInfo != null) return Key.Equals(objAsArgInfo.Key) && Type.Equals(objAsArgInfo.Type);
+        if(objAsArgInfo != null) return Key.Equals(objAsArgInfo.Key) && ArgType.Equals(objAsArgInfo.ArgType);
         else                     return false;
     }
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ (Key.GetHashCode() << 1) ^ (Type.GetHashCode() << 2);
+    public override int GetHashCode() => GetType().GetHashCode() ^ (Key.GetHashCode() << 1) ^ (ArgType.GetHashCode() << 2);
 %}
 
 // Hide SWIG-generated STL types, they're ugly and half-done
-
-%typemap(csclassmodifiers) std::vector<SoapySDR::ArgInfo> "internal class";
-%template(ArgInfoListInternal) std::vector<SoapySDR::ArgInfo>;
-
 %typemap(cstype) std::vector<SoapySDR::ArgInfo> "System.Collections.Generic.List<ArgInfo>"
 %typemap(csout, excode=SWIGEXCODE) std::vector<SoapySDR::ArgInfo> {
     var argInfoListPtr = $imcall;$excode;
@@ -73,12 +72,8 @@
 //
 
 // Hide SWIG-generated STL types, they're ugly and half-done
-
 %typemap(csclassmodifiers) std::map<std::string, std::string> "internal class";
 %template(KwargsInternal) std::map<std::string, std::string>;
-
-%typemap(csclassmodifiers) std::vector<std::map<std::string, std::string>> "internal class";
-%template(KwargsListInternal) std::vector<std::map<std::string, std::string>>;
 
 %typemap(cstype) const std::map<std::string, std::string> & "System.Collections.Generic.IDictionary<string, string>"
 %typemap(csin,
@@ -131,72 +126,12 @@
 %}
 
 // Hide SWIG-generated STL types, they're ugly and half-done
-%typemap(csclassmodifiers) std::vector<SoapySDR::Range> "internal class";
-%template(RangeListInternal) std::vector<SoapySDR::Range>;
+%typemap(cstype) std::vector<SoapySDR::Range> "System.Collections.Generic.List<Range>"
+%typemap(csout, excode=SWIGEXCODE) std::vector<SoapySDR::Range> {
+    var rangeListPtr = $imcall;$excode;
 
-//
-// Type conversion
-//
-
-%typemap(csclassmodifiers) TypeConversionInternal "internal class";
-%nodefaultctor TypeConversionInternal;
-
-%{
-struct TypeConversionInternal
-{
-    template <typename T>
-    static __forceinline std::string SettingToString(const T& setting)
-    {
-        return SoapySDR::SettingToString<T>(setting);
-    }
-
-    template <typename T>
-    static __forceinline T StringToSetting(const std::string& setting)
-    {
-        return SoapySDR::StringToSetting<T>(setting);
-    }
-
-    static __forceinline SoapySDR::Kwargs StringToKwargs(const std::string& args)
-    {
-        return SoapySDR::KwargsFromString(args);
-    }
-};
-%}
-
-struct TypeConversionInternal
-{
-    template <typename T>
-    static std::string SettingToString(const T& setting);
-
-    template <typename T>
-    static T StringToSetting(const std::string& setting);
-
-    static SoapySDR::Kwargs StringToKwargs(const std::string& args);
-};
-
-%template(SByteToString) TypeConversionInternal::SettingToString<int8_t>;
-%template(ShortToString) TypeConversionInternal::SettingToString<int16_t>;
-%template(IntToString) TypeConversionInternal::SettingToString<int32_t>;
-%template(LongToString) TypeConversionInternal::SettingToString<int64_t>;
-%template(ByteToString) TypeConversionInternal::SettingToString<uint8_t>;
-%template(UShortToString) TypeConversionInternal::SettingToString<uint16_t>;
-%template(UIntToString) TypeConversionInternal::SettingToString<uint32_t>;
-%template(ULongToString) TypeConversionInternal::SettingToString<uint64_t>;
-%template(BoolToString) TypeConversionInternal::SettingToString<bool>;
-%template(FloatToString) TypeConversionInternal::SettingToString<float>;
-%template(DoubleToString) TypeConversionInternal::SettingToString<double>;
-
-%template(StringToSByte) TypeConversionInternal::StringToSetting<int8_t>;
-%template(StringToShort) TypeConversionInternal::StringToSetting<int16_t>;
-%template(StringToInt) TypeConversionInternal::StringToSetting<int32_t>;
-%template(StringToLong) TypeConversionInternal::StringToSetting<int64_t>;
-%template(StringToByte) TypeConversionInternal::StringToSetting<uint8_t>;
-%template(StringToUShort) TypeConversionInternal::StringToSetting<uint16_t>;
-%template(StringToUInt) TypeConversionInternal::StringToSetting<uint32_t>;
-%template(StringToULong) TypeConversionInternal::StringToSetting<uint64_t>;
-%template(StringToBool) TypeConversionInternal::StringToSetting<bool>;
-%template(StringToFloat) TypeConversionInternal::StringToSetting<float>;
-%template(StringToDouble) TypeConversionInternal::StringToSetting<double>;
+    return new System.Collections.Generic.List<Range>(new RangeListInternal(rangeListPtr, false));
+}
 
 //
 // Finally, include the header
