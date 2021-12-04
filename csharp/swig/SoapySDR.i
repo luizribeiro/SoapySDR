@@ -72,6 +72,7 @@ typedef unsigned int size_t;
 typedef unsigned long long size_t;
 #endif
 
+// Keep size_t stuff internal due to workaround
 %typemap(csclassmodifiers) std::vector<size_t> "internal class";
 %template(SizeListInternal) std::vector<size_t>;
 
@@ -99,15 +100,7 @@ typedef unsigned long long size_t;
 // std::string
 //
 
-%typemap(csclassmodifiers) std::vector<std::string> "internal class";
-%template(StringListInternal) std::vector<std::string>;
 
-%typemap(cstype) std::vector<std::string> "System.Collections.Generic.List<string>"
-%typemap(csout, excode=SWIGEXCODE) std::vector<std::string> {
-    var stringListPtr = $imcall;$excode;
-
-    return new System.Collections.Generic.List<string>(new StringListInternal(stringListPtr, false));
-}
 
 ////////////////////////////////////////////////////////////////////////
 // Build info, enums
@@ -214,20 +207,12 @@ struct TypeConversionInternal
 // We need all STL declarations before the rename call
 ////////////////////////////////////////////////////////////////////////
 
-%typemap(csclassmodifiers) std::vector<SoapySDR::Device*> "internal class";
-%template(DeviceListInternal) std::vector<SoapySDR::Device*>;
-
-%typemap(csclassmodifiers) std::vector<SoapySDR::ArgInfo> "internal class";
-%template(ArgInfoListInternal) std::vector<SoapySDR::ArgInfo>;
-
-%typemap(csclassmodifiers) std::vector<std::map<std::string, std::string>> "internal class";
-%template(KwargsListInternal) std::vector<std::map<std::string, std::string>>;
-
-%typemap(csclassmodifiers) std::vector<SoapySDR::Range> "internal class";
-%template(RangeListInternal) std::vector<SoapySDR::Range>;
-
-%typemap(csclassmodifiers) std::map<std::string, std::string> "internal class";
-%template(KwargsInternal) std::map<std::string, std::string>;
+%template(StringList) std::vector<std::string>;
+%template(Kwargs) std::map<std::string, std::string>;
+%template(DeviceList) std::vector<SoapySDR::Device*>;
+%template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
+%template(KwargsList) std::vector<std::map<std::string, std::string>>;
+%template(RangeList) std::vector<SoapySDR::Range>;
 
 ////////////////////////////////////////////////////////////////////////
 // Enforce C# naming conventions

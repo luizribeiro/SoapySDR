@@ -14,7 +14,7 @@ namespace SoapySDR
             Device device,
             string format,
             uint[] channels,
-            KwargsInternal kwargs
+            Kwargs kwargs
         ):
             base(device, format, channels, kwargs)
         {
@@ -46,7 +46,7 @@ namespace SoapySDR
             {
                 Utility.ValidateMemory(_streamHandle, memory);
 
-                var memsAsSizes = Utility.ToSizeList(
+                var memsAsSizes = Utility.ToSizeListInternal(
                     memory,
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                     out MemoryHandle[] memoryHandles);
@@ -127,7 +127,7 @@ namespace SoapySDR
             {
                 var deviceOutput = _device.WriteStreamInternal(
                     _streamHandle,
-                    Utility.ToSizeList(ptrs),
+                    Utility.ToSizeListInternal(ptrs),
                     numElems,
                     timeNs,
                     timeoutUs);

@@ -19,27 +19,8 @@
 // conflicts with the enum type name
 %rename(ArgType) SoapySDR::ArgInfo::type;
 
-// Don't expose internal types
-%csmethodmodifiers SoapySDR::ArgInfo::options "private";
-%csmethodmodifiers SoapySDR::ArgInfo::optionNames "private";
-
-%rename(__Options) SoapySDR::ArgInfo::options;
-%rename(__OptionNames) SoapySDR::ArgInfo::optionNames;
-
 %typemap(cscode) SoapySDR::ArgInfo
 %{
-    public string[] Options
-    {
-        get => __Options.ToArray();
-        set => __Options = new StringListInternal(value);
-    }
-    
-    public string[] OptionNames
-    {
-        get => __OptionNames.ToArray();
-        set => __OptionNames = new StringListInternal(value);
-    }
-
     //
     // Object overrides
     //
@@ -59,37 +40,16 @@
     public override int GetHashCode() => GetType().GetHashCode() ^ (Key.GetHashCode() << 1) ^ (ArgType.GetHashCode() << 2);
 %}
 
-// Hide SWIG-generated STL types, they're ugly and half-done
-%typemap(cstype) std::vector<SoapySDR::ArgInfo> "System.Collections.Generic.List<ArgInfo>"
-%typemap(csout, excode=SWIGEXCODE) std::vector<SoapySDR::ArgInfo> {
-    var argInfoListPtr = $imcall;$excode;
-
-    return new System.Collections.Generic.List<ArgInfo>(new ArgInfoListInternal(argInfoListPtr, false));
-}
-
 //
 // Kwargs
 //
 
+// Accept any Dictionary and convert it internally
 %typemap(cstype) const std::map<std::string, std::string> & "System.Collections.Generic.IDictionary<string, string>"
 %typemap(csin,
     pre="
-        KwargsInternal temp$csinput = Utility.ToKwargsInternal($csinput);
+        Kwargs temp$csinput = Utility.ToKwargs($csinput);
     ") const std::map<std::string, std::string> & "$csclassname.getCPtr(temp$csinput)"
-
-%typemap(cstype) std::map<std::string, std::string> "System.Collections.Generic.Dictionary<string, string>"
-%typemap(csout, excode=SWIGEXCODE) std::map<std::string, std::string> {
-    var kwargsPtr = $imcall;$excode;
-
-    return Utility.ToDictionary(new KwargsInternal(kwargsPtr, false));
-}
-
-%typemap(cstype) std::vector<std::map<std::string, std::string>> "System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, string>>"
-%typemap(csout, excode=SWIGEXCODE) std::vector<std::map<std::string, std::string>> {
-    var kwargsListPtr = $imcall;$excode;
-
-    return Utility.ToDictionaryList(new KwargsListInternal(kwargsListPtr, false));
-}
 
 //
 // Range
@@ -120,14 +80,6 @@
 
     public override int GetHashCode() => GetType().GetHashCode() ^ (Minimum.GetHashCode() << 1) ^ (Maximum.GetHashCode() << 2) ^ (Step.GetHashCode() << 3);
 %}
-
-// Hide SWIG-generated STL types, they're ugly and half-done
-%typemap(cstype) std::vector<SoapySDR::Range> "System.Collections.Generic.List<Range>"
-%typemap(csout, excode=SWIGEXCODE) std::vector<SoapySDR::Range> {
-    var rangeListPtr = $imcall;$excode;
-
-    return new System.Collections.Generic.List<Range>(new RangeListInternal(rangeListPtr, false));
-}
 
 //
 // Finally, include the header

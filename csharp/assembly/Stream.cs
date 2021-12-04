@@ -14,7 +14,7 @@ namespace SoapySDR
 
         public string Format { get; }
         public uint[] Channels { get; }
-        public Dictionary<string, string> StreamArgs { get; }
+        public Kwargs StreamArgs { get; }
         public bool Active { get { return _active; } }
 
         // We already used these parameters to create the stream,
@@ -23,13 +23,13 @@ namespace SoapySDR
             Device device,
             string format,
             uint[] channels,
-            KwargsInternal kwargs)
+            Kwargs kwargs)
         {
             _device = device;
 
             Format = format;
             Channels = channels;
-            StreamArgs = Utility.ToDictionary(kwargs);
+            StreamArgs = kwargs;
         }
 
         /*

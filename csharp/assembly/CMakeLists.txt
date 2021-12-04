@@ -4,18 +4,18 @@
 
 set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfo.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoListInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Device.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceListInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Direction.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ErrorCode.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsInternal.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsListInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Kwargs.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/LogHandlerBase.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/LogLevel.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Range.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/RangeListInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/RangeList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SizeListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SoapySDR.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SoapySDRPINVOKE.cs
@@ -24,7 +24,7 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StreamHandle.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StreamResult.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StreamResultPairInternal.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StringListInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StringList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Time.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/TypeConversionInternal.cs)
 

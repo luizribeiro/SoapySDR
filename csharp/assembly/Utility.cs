@@ -199,13 +199,13 @@ namespace SoapySDR
             }
         }
 
-        internal static KwargsInternal ToKwargsInternal(IDictionary<string, string> input)
+        internal static Kwargs ToKwargs(IDictionary<string, string> input)
         {
-            if (input is KwargsInternal) return (KwargsInternal)input;
+            if (input is Kwargs) return (Kwargs)input;
 
-            KwargsInternal kwargs;
+            Kwargs kwargs;
 
-            var output = new KwargsInternal();
+            var output = new Kwargs();
             foreach(var pair in input)
             {
                 output.Add(pair.Key, pair.Value);
@@ -214,44 +214,38 @@ namespace SoapySDR
             return output;
         }
 
-        internal unsafe static SizeListInternal ToSizeList<T>(
+        internal unsafe static SizeListInternal ToSizeListInternal<T>(
             Memory<T>[] memory,
             out MemoryHandle[] memoryHandles)
         {
             memoryHandles = memory.Select(mem => mem.Pin()).ToArray();
-            return ToSizeList(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
+            return ToSizeListInternal(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
         }
 
-        internal unsafe static SizeListInternal ToSizeList<T>(
+        internal unsafe static SizeListInternal ToSizeListInternal<T>(
             ReadOnlyMemory<T>[] memory,
             out MemoryHandle[] memoryHandles)
         {
             memoryHandles = memory.Select(mem => mem.Pin()).ToArray();
-            return ToSizeList(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
+            return ToSizeListInternal(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
         }
 
 #if _64BIT
-        internal static SizeListInternal ToSizeList(uint[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
+        internal static SizeListInternal ToSizeListInternal(uint[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
 
-        internal static SizeListInternal ToSizeList(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
+        internal static SizeListInternal ToSizeListInternal(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
 
-        internal unsafe static SizeListInternal ToSizeList(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)(UIntPtr)(void*)x));
+        internal unsafe static SizeListInternal ToSizeListInternal(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)(UIntPtr)(void*)x));
 #else
-        internal static SizeListInternal ToSizeList(uint[] arr) => new SizeListInternal(arr);
+        internal static SizeListInternal ToSizeListInternal(uint[] arr) => new SizeListInternal(arr);
 
-        internal static SizeListInternal ToSizeList(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)x));
+        internal static SizeListInternal ToSizeListInternal(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)x));
 
-        internal unsafe static SizeListInternal ToSizeList(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)(UIntPtr)(void*)x));
+        internal unsafe static SizeListInternal ToSizeListInternal(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)(UIntPtr)(void*)x));
 #endif
 
         // TODO: how many copies are made below?
 
-        internal static Dictionary<string, string> ToDictionary(KwargsInternal kwargs) => kwargs.ToDictionary(entry => entry.Key, entry => entry.Value);
-
-        internal static List<Dictionary<string, string>> ToDictionaryList(KwargsListInternal kwargsList) => new List<Dictionary<string, string>>(kwargsList.Select(arg => ToDictionary(arg)));
-
-        internal static List<ArgInfo> ToArgInfoList(ArgInfoListInternal argInfoListInternal) => new List<ArgInfo>(argInfoListInternal);
-
-        internal static List<Range> ToRangeList(RangeListInternal rangeListInternal) => new List<Range>(rangeListInternal);
+        internal static Dictionary<string, string> ToDictionary(Kwargs kwargs) => kwargs.ToDictionary(entry => entry.Key, entry => entry.Value);
     }
 }

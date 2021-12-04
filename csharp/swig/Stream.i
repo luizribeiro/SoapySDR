@@ -3,13 +3,10 @@
 
 %typemap(csclassmodifiers) SoapySDR::CSharp::StreamHandle "internal class";
 %nodefaultctor SoapySDR::CSharp::StreamHandle;
-
 %ignore SoapySDR::CSharp::StreamHandle::stream;
 %ignore SoapySDR::CSharp::StreamHandle::channels;
-%csmethodmodifiers SoapySDR::CSharp::StreamHandle::GetChannels "internal";
 %ignore SoapySDR::CSharp::StreamHandle::format;
-%csmethodmodifiers SoapySDR::CSharp::StreamHandle::GetFormat "internal";
-%csmethodmodifiers SoapySDR::CSharp::StreamHandle::GetPointer "internal";
+
 %nodefaultctor SoapySDR::CSharp::StreamFormat;
 
 %{
