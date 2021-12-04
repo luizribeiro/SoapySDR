@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: BSL-1.0
 
 %module(directors="1") SoapySDR
+%feature("compactdefaultargs");
 
 %include <typemaps.i>
-%include <std_vector.i>
+%include <std_map.i>
+%include "soapy_std_vector.i"
 
 ////////////////////////////////////////////////////////////////////////
 // Include all major headers to compile against
@@ -58,14 +60,13 @@
 %include <stdint.i>
 %include <std_complex.i>
 %include <std_string.i>
-%include <std_map.i>
-
-// Hide SWIG-generated STL types, they're ugly and half-done
 
 //
 // size_t
 //
 
+// Without this, size_t always typedefs to unsigned int, but we need it to
+// match the size of void* for our buffer functions.
 #ifdef SIZE_T_IS_UNSIGNED_INT
 typedef unsigned int size_t;
 #else
@@ -75,12 +76,25 @@ typedef unsigned long long size_t;
 %typemap(csclassmodifiers) std::vector<size_t> "internal class";
 %template(SizeListInternal) std::vector<size_t>;
 
-%typemap(cstype) const std::vector<size_t> & "uint[]"
+//
+// Do different things for different std::vector<size_t> parameters
+//
+
+// Buffer functions do their own thing
+%typemap(cstype) const std::vector<size_t> &channels "uint[]" // SetupStream
+%typemap(cstype) const std::vector<size_t> &value "uint[]"    // WriteRegisters
 %typemap(csin,
     pre="
         var temp$csinput = new SizeListInternal();
         foreach(var x in $csinput) temp$csinput.Add(x);
     ") const std::vector<size_t> & "$csclassname.getCPtr(temp$csinput)"
+
+%typemap(cstype) std::vector<size_t> "uint[]"
+%typemap(csout, excode=SWIGEXCODE) std::vector<size_t> {
+    var sizeListPtr = $imcall;$excode;
+
+    return new SizeListInternal(sizeListPtr, false).Select(x => (uint)x).ToArray();
+}
 
 //
 // std::string
@@ -198,11 +212,11 @@ struct TypeConversionInternal
 %template(StringToDouble) TypeConversionInternal::StringToSetting<double>;
 
 ////////////////////////////////////////////////////////////////////////
-// We need all vector declarations before the rename call
+// We need all STL declarations before the rename call
 ////////////////////////////////////////////////////////////////////////
 
-%typemap(csclassmodifiers) std::vector<SoapySDR::CSharp::DeviceInternal> "internal class";
-%template(DeviceListInternal) std::vector<SoapySDR::CSharp::DeviceInternal>;
+%typemap(csclassmodifiers) std::vector<SoapySDR::Device*> "internal class";
+%template(DeviceListInternal) std::vector<SoapySDR::Device*>;
 
 %typemap(csclassmodifiers) std::vector<SoapySDR::ArgInfo> "internal class";
 %template(ArgInfoListInternal) std::vector<SoapySDR::ArgInfo>;
@@ -212,6 +226,9 @@ struct TypeConversionInternal
 
 %typemap(csclassmodifiers) std::vector<SoapySDR::Range> "internal class";
 %template(RangeListInternal) std::vector<SoapySDR::Range>;
+
+%typemap(csclassmodifiers) std::map<std::string, std::string> "internal class";
+%template(KwargsInternal) std::map<std::string, std::string>;
 
 ////////////////////////////////////////////////////////////////////////
 // Enforce C# naming conventions

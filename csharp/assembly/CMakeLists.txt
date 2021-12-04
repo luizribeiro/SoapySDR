@@ -6,9 +6,8 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Device.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceListInternal.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceTemp.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Direction.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ErrorCode.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsInternal.cs
@@ -39,7 +38,6 @@ configure_file(
 
 set(csharp_srcs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs
-    ${CMAKE_CURRENT_SOURCE_DIR}/Device.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Logger.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/RxStream.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/SoapyConvertible.cs

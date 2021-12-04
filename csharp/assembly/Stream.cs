@@ -8,8 +8,8 @@ namespace SoapySDR
 {
     public class Stream
     {
-        internal DeviceInternal _device = null;
-        protected StreamHandle _streamHandle = null;
+        internal Device _device = null;
+        internal StreamHandle _streamHandle = null;
         protected bool _active = false;
 
         public string Format { get; }
@@ -20,7 +20,7 @@ namespace SoapySDR
         // We already used these parameters to create the stream,
         // this is just for the sake of getters.
         internal Stream(
-            DeviceInternal device,
+            Device device,
             string format,
             uint[] channels,
             KwargsInternal kwargs)
@@ -40,7 +40,7 @@ namespace SoapySDR
         }
         */
 
-        public ulong MTU => _device.GetStreamMTU(_streamHandle);
+        public ulong MTU => _device.GetStreamMTUInternal(_streamHandle);
 
         public ErrorCode Activate(
             StreamFlags flags,
@@ -52,7 +52,7 @@ namespace SoapySDR
             {
                 if(!_active)
                 {
-                    ret = _device.ActivateStream(
+                    ret = _device.ActivateStreamInternal(
                         _streamHandle,
                         flags,
                         timeNs,
@@ -76,7 +76,7 @@ namespace SoapySDR
             {
                 if(!_active)
                 {
-                    ret = _device.DeactivateStream(
+                    ret = _device.DeactivateStreamInternal(
                         _streamHandle,
                         flags,
                         timeNs);
@@ -92,7 +92,7 @@ namespace SoapySDR
 
         public void Close()
         {
-            if(_streamHandle != null) _device.CloseStream(_streamHandle);
+            if(_streamHandle != null) _device.CloseStreamInternal(_streamHandle);
             else throw new InvalidOperationException("Stream is already closed");
         }
 

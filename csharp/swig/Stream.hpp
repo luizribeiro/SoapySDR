@@ -9,6 +9,8 @@
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>
 
+#include <utility>
+
 namespace SoapySDR { namespace CSharp { 
 
     enum class StreamFlags
@@ -96,6 +98,8 @@ namespace SoapySDR { namespace CSharp {
         long TimeoutUs{0};
         size_t ChanMask{0U};
     };
+    
+    using StreamResultPairInternal = std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
 }}
 
 ENUM_CHECK(SoapySDR::CSharp::StreamFlags::EndBurst, SOAPY_SDR_END_BURST);

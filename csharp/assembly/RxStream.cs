@@ -11,14 +11,14 @@ namespace SoapySDR
     public class RxStream: Stream
     {
         internal RxStream(
-            DeviceInternal device,
+            Device device,
             string format,
             uint[] channels,
             KwargsInternal kwargs
         ):
             base(device, format, channels, kwargs)
         {
-            _streamHandle = device.SetupStream(Direction.Rx, format, Utility.ToSizeList(channels), kwargs);
+            _streamHandle = device.SetupStreamInternal(Direction.Rx, format, channels, kwargs);
         }
 
         public unsafe ErrorCode Read<T>(
@@ -55,7 +55,7 @@ namespace SoapySDR
                     out MemoryHandle[] memoryHandles);
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 
-                var deviceOutput = _device.ReadStream(
+                var deviceOutput = _device.ReadStreamInternal(
                     _streamHandle,
                     memsAsSizes,
                     (uint)memory[0].Length,
@@ -63,8 +63,8 @@ namespace SoapySDR
                     timeNs,
                     timeoutUs);
 
-                result = deviceOutput.second;
-                ret = deviceOutput.first;
+                result = deviceOutput.Second;
+                ret = deviceOutput.First;
             }
             else throw new InvalidOperationException("Stream is closed");
 
@@ -135,7 +135,7 @@ namespace SoapySDR
 
             if (_streamHandle != null)
             {
-                var deviceOutput = _device.ReadStream(
+                var deviceOutput = _device.ReadStreamInternal(
                     _streamHandle,
                     Utility.ToSizeList(ptrs),
                     numElems,
@@ -143,8 +143,8 @@ namespace SoapySDR
                     timeNs,
                     timeoutUs);
 
-                result = deviceOutput.second;
-                ret = deviceOutput.first;
+                result = deviceOutput.Second;
+                ret = deviceOutput.First;
             }
             else throw new InvalidOperationException("Stream is closed");
 

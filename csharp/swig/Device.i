@@ -7,11 +7,13 @@
 %}
 
 %include <std_pair.i>
-%include <std_vector.i>        
 %include <stdint.i>
 %include <typemaps.i>
 
 %apply double& OUTPUT { double& fullScale };
+
+%typemap(csclassmodifiers) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult> "internal class";
+%template(StreamResultPairInternal) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
 
 // 
 // Use the C# enum for direction
@@ -25,9 +27,8 @@
 
 %typemap(csimports) SoapySDR::Device "
 using System;
-using System.Collections.Generic;"
-         
-%rename(DeviceTemp) SoapySDR::Device;
+using System.Collections.Generic;
+using System.Linq;"
 
 %csmethodmodifiers SoapySDR::Device::make "private";
 %csmethodmodifiers SoapySDR::Device::unmake "private";
@@ -52,6 +53,11 @@ using System.Collections.Generic;"
 %ignore SoapySDR::Device::acquireWriteBuffer;
 %ignore SoapySDR::Device::releaseWriteBuffer;
 
+// Ignore functions explicitly using std::vector<unsigned> due to size_t workaround
+%ignore SoapySDR::Device::writeRegisters;
+%ignore SoapySDR::Device::readRegisters;
+
+// Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNativeDeviceHandle;
 
 %typemap(cscode) SoapySDR::Device
@@ -75,17 +81,17 @@ using System.Collections.Generic;"
 %csmethodmodifiers SoapySDR::Device::WriteStreamInternal "internal";
 %csmethodmodifiers SoapySDR::Device::ReadStreamStatusInternal "internal";
 
-// Internal stream-related bridge functions to make the C# part easier
+// Internal bridge functions to make the C# part easier
 %extend SoapySDR::Device
 {
     SoapySDR::CSharp::StreamHandle SetupStreamInternal(
-        int direction,
+        const SoapySDR::CSharp::Direction direction,
         const std::string& format,
         const SWIGSizeVector& channels,
         const SoapySDR::Kwargs& kwargs)
     {
         SoapySDR::CSharp::StreamHandle streamHandle;
-        streamHandle.stream = self->setupStream(direction, format, copyVector<size_t>(channels), kwargs);
+        streamHandle.stream = self->setupStream(int(direction), format, copyVector<size_t>(channels), kwargs);
         streamHandle.format = format;
         streamHandle.channels = channels;
 
@@ -126,7 +132,7 @@ using System.Collections.Generic;"
             timeNs));
     }
 
-    StreamResultPairInternal ReadStreamInternal(
+    SoapySDR::CSharp::StreamResultPairInternal ReadStreamInternal(
         const SoapySDR::CSharp::StreamHandle& streamHandle,
         const SWIGSizeVector& buffs,
         const size_t numElems,
@@ -134,7 +140,7 @@ using System.Collections.Generic;"
         const long long timeNs,
         const long timeoutUs)
     {
-        StreamResultPairInternal resultPair;
+        SoapySDR::CSharp::StreamResultPairInternal resultPair;
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
@@ -155,14 +161,14 @@ using System.Collections.Generic;"
         return resultPair;
     }
 
-    StreamResultPairInternal WriteStreamInternal(
+    SoapySDR::CSharp::StreamResultPairInternal WriteStreamInternal(
         const SoapySDR::CSharp::StreamHandle& streamHandle,
         const SWIGSizeVector& buffs,
         const size_t numElems,
         const long long timeNs,
         const long timeoutUs)
     {
-        StreamResultPairInternal resultPair;
+        SoapySDR::CSharp::StreamResultPairInternal resultPair;
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
@@ -183,11 +189,11 @@ using System.Collections.Generic;"
         return resultPair;
     }
 
-    StreamResultPairInternal ReadStreamStatusInternal(
+    SoapySDR::CSharp::StreamResultPairInternal ReadStreamStatusInternal(
         const SoapySDR::CSharp::StreamHandle& streamHandle,
         const long timeoutUs)
     {
-        StreamResultPairInternal resultPair;
+        SoapySDR::CSharp::StreamResultPairInternal resultPair;
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
@@ -202,24 +208,20 @@ using System.Collections.Generic;"
 
         return resultPair;
     }
+
+    void WriteRegisters(
+        const std::string &name,
+        const unsigned addr,
+        const SWIGSizeVector &value)
+    {
+        self->writeRegisters(name, addr, copyVector<unsigned>(value));
+    }
+
+    SWIGSizeVector ReadRegisters(
+        const std::string &name,
+        const unsigned addr,
+        const size_t length) const
+    {
+        return copyVector<SWIGSize>(self->readRegisters(name, addr, length));
+    }
 };
-
-//
-// Wrapper class
-//
-
-%typemap(csimports) SoapySDR::CSharp::Device "
-using System;"
-
-%ignore SoapySDR::CSharp::DeviceDeleter;
-%nodefaultctor SoapySDR::CSharp::DeviceInternal;
-
-%typemap(csclassmodifiers) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult> "internal class";
-%template(StreamResultPairInternal) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
-
-%{
-#include "DeviceInternal.hpp"
-%}
-
-%typemap(csclassmodifiers) SoapySDR::CSharp::DeviceInternal "internal class";
-%include "DeviceInternal.hpp"

@@ -11,14 +11,14 @@ namespace SoapySDR
     public class TxStream: Stream
     {
         internal TxStream(
-            DeviceInternal device,
+            Device device,
             string format,
             uint[] channels,
             KwargsInternal kwargs
         ):
             base(device, format, channels, kwargs)
         {
-            _streamHandle = device.SetupStream(Direction.Tx, format, Utility.ToSizeList(channels), kwargs);
+            _streamHandle = device.SetupStreamInternal(Direction.Tx, format, channels, kwargs);
         }
 
         public unsafe ErrorCode Write<T>(
@@ -52,15 +52,15 @@ namespace SoapySDR
                     out MemoryHandle[] memoryHandles);
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 
-                var deviceOutput = _device.WriteStream(
+                var deviceOutput = _device.WriteStreamInternal(
                     _streamHandle,
                     memsAsSizes,
                     (uint)memory[0].Length,
                     timeNs,
                     timeoutUs);
 
-                result = deviceOutput.second;
-                ret = deviceOutput.first;
+                result = deviceOutput.Second;
+                ret = deviceOutput.First;
             }
             else throw new InvalidOperationException("Stream is closed");
 
@@ -125,15 +125,15 @@ namespace SoapySDR
 
             if (_streamHandle != null)
             {
-                var deviceOutput = _device.WriteStream(
+                var deviceOutput = _device.WriteStreamInternal(
                     _streamHandle,
                     Utility.ToSizeList(ptrs),
                     numElems,
                     timeNs,
                     timeoutUs);
 
-                result = deviceOutput.second;
-                ret = deviceOutput.first;
+                result = deviceOutput.Second;
+                ret = deviceOutput.First;
             }
             else throw new InvalidOperationException("Stream is closed");
 
@@ -147,10 +147,10 @@ namespace SoapySDR
 
             if (_streamHandle != null)
             {
-                var deviceOutput = _device.ReadStreamStatus(_streamHandle, timeoutUs);
+                var deviceOutput = _device.ReadStreamStatusInternal(_streamHandle, timeoutUs);
 
-                result = deviceOutput.second;
-                ret = deviceOutput.first;
+                result = deviceOutput.Second;
+                ret = deviceOutput.First;
             }
             else throw new InvalidOperationException("Stream is closed");
 

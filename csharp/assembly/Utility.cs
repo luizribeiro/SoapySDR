@@ -69,7 +69,7 @@ namespace SoapySDR
             StreamHandle streamHandle,
             ReadOnlySpan<T> span) where T : unmanaged
         {
-            var numChannels = streamHandle.GetChannels().Count;
+            var numChannels = streamHandle.GetChannels().Length;
             var format = streamHandle.GetFormat();
 
             var scalarFormatString = GetFormatString<T>();
@@ -102,7 +102,7 @@ namespace SoapySDR
             StreamHandle streamHandle,
             ReadOnlyMemory<T>[] mems) where T : unmanaged
         {
-            var numChannels = streamHandle.GetChannels().Count;
+            var numChannels = streamHandle.GetChannels().Length;
             var format = streamHandle.GetFormat();
 
             var scalarFormatString = GetFormatString<T>();
@@ -143,7 +143,7 @@ namespace SoapySDR
             StreamHandle streamHandle,
             T[][] buffs) where T: unmanaged
         {
-            var numChannels = streamHandle.GetChannels().Count;
+            var numChannels = streamHandle.GetChannels().Length;
             var format = streamHandle.GetFormat();
 
             var scalarFormatString = GetFormatString<T>();

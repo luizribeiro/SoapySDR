@@ -23,13 +23,7 @@ using System;"
 public enum";
 
 %typemap(csimports) SoapySDR::CSharp::StreamHandle "
-using System;"
-%typemap(cscode) SoapySDR::CSharp::StreamHandle %{
-    public override string ToString() => string.Format("Opaque SoapySDR stream handle at {0}", GetPointer());
-
-    public override bool Equals(object other) => Object.ReferenceEquals(this, other);
-
-    public override int GetHashCode() => (GetType().GetHashCode() ^ (GetPointer().GetHashCode() << 1));
-%}
+using System;
+using System.Linq;"
 
 %include "Stream.hpp"

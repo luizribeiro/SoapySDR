@@ -71,10 +71,6 @@
 // Kwargs
 //
 
-// Hide SWIG-generated STL types, they're ugly and half-done
-%typemap(csclassmodifiers) std::map<std::string, std::string> "internal class";
-%template(KwargsInternal) std::map<std::string, std::string>;
-
 %typemap(cstype) const std::map<std::string, std::string> & "System.Collections.Generic.IDictionary<string, string>"
 %typemap(csin,
     pre="
