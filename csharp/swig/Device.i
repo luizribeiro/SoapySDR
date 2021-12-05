@@ -164,12 +164,23 @@ using System.Linq;"
     {
         WriteSetting(direction, channel, key, new SoapyConvertible(value).ToString());
     }
+
+    //
+    // Object overrides
+    //
+
+    public override string ToString() => string.Format("{0}:{1}", DriverKey, HardwareKey);
+
+    public override bool Equals(object obj) => object.ReferenceEquals(this, obj);
+
+    public override int GetHashCode() => GetType().GetHashCode() ^ (Pointer().GetHashCode() << 1);
 %}
 
 %nodefaultctor SoapySDR::Device;
 %ignore SoapySDR::Device::make;
 %ignore SoapySDR::Device::unmake(const std::vector<Device *> &);
 %csmethodmodifiers SoapySDR::Device::unmake "private";
+%csmethodmodifiers SoapySDR::Device::Pointer "private";
 
 %feature("compactdefaultargs", "0") setHardwareTime;
 %feature("compactdefaultargs", "0") readUART;
@@ -342,5 +353,10 @@ using System.Linq;"
         const size_t length) const
     {
         return copyVector<SWIGSize>(self->readRegisters(name, addr, length));
+    }
+
+    SWIGSize Pointer() const
+    {
+        return reinterpret_cast<SWIGSize>(self);
     }
 };

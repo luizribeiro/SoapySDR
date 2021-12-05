@@ -30,7 +30,7 @@ public class TestStreamingAPI
         // Make sure either method works.
         TestDeviceKeys(new SoapySDR.Device("driver=null,type=null"));
 
-        var args = new Dictionary<string, string>();
+        var args = new SoapySDR.Kwargs();
         args.Add("driver", "null");
         args.Add("type", "null");
 
@@ -44,7 +44,7 @@ public class TestStreamingAPI
         out uint[] oneChannel,
         out uint[] twoChannels,
         out string streamArgsString,
-        out Dictionary<string, string> streamArgsMap,
+        out SoapySDR.Kwargs streamArgsMap,
         out SoapySDR.StreamFlags streamFlags,
         out long timeNs,
         out int timeoutUs,
@@ -55,7 +55,7 @@ public class TestStreamingAPI
 
         streamArgsString = "bufflen=8192,buffers=15";
 
-        streamArgsMap = new Dictionary<string, string>();
+        streamArgsMap = new SoapySDR.Kwargs();
         streamArgsMap["bufflen"] = "8192";
         streamArgsMap["buffers"] = "15";
 
@@ -78,7 +78,7 @@ public class TestStreamingAPI
             out uint[] channel,
             out uint[] channels,
             out string streamArgsString,
-            out Dictionary<string, string> streamArgsMap,
+            out SoapySDR.Kwargs streamArgsMap,
             out SoapySDR.StreamFlags streamFlags,
             out long timeNs,
             out int timeoutUs,
@@ -192,7 +192,7 @@ public class TestStreamingAPI
             out uint[] channel,
             out uint[] channels,
             out string streamArgsString,
-            out Dictionary<string, string> streamArgsMap,
+            out SoapySDR.Kwargs streamArgsMap,
             out SoapySDR.StreamFlags streamFlags,
             out long timeNs,
             out int timeoutUs,
@@ -318,7 +318,7 @@ public class TestStreamingAPI
                 out uint[] oneChannel,
                 out uint[] twoChannels,
                 out string streamArgsString,
-                out Dictionary<string, string> streamArgsMap,
+                out SoapySDR.Kwargs streamArgsMap,
                 out SoapySDR.StreamFlags streamFlags,
                 out long timeNs,
                 out int timeoutUs,
@@ -402,7 +402,7 @@ public class TestStreamingAPI
                 out uint[] oneChannel,
                 out uint[] twoChannels,
                 out string streamArgsString,
-                out Dictionary<string, string> streamArgsMap,
+                out SoapySDR.Kwargs streamArgsMap,
                 out SoapySDR.StreamFlags streamFlags,
                 out long timeNs,
                 out int timeoutUs,
@@ -486,7 +486,7 @@ public class TestStreamingAPI
                 out uint[] oneChannel,
                 out uint[] twoChannels,
                 out string streamArgsString,
-                out Dictionary<string, string> streamArgsMap,
+                out SoapySDR.Kwargs streamArgsMap,
                 out SoapySDR.StreamFlags streamFlags,
                 out long timeNs,
                 out int timeoutUs,
@@ -576,7 +576,7 @@ public class TestStreamingAPI
                 out uint[] oneChannel,
                 out uint[] twoChannels,
                 out string streamArgsString,
-                out Dictionary<string, string> streamArgsMap,
+                out SoapySDR.Kwargs streamArgsMap,
                 out SoapySDR.StreamFlags streamFlags,
                 out long timeNs,
                 out int timeoutUs,
