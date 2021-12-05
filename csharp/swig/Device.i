@@ -171,6 +171,9 @@ using System.Linq;"
 %ignore SoapySDR::Device::unmake(const std::vector<Device *> &);
 %csmethodmodifiers SoapySDR::Device::unmake "private";
 
+%feature("compactdefaultargs", "0") setHardwareTime;
+%feature("compactdefaultargs", "0") readUART;
+
 %include <SoapySDR/Device.hpp>
 
 %csmethodmodifiers SoapySDR::Device::SetupStreamInternal "internal";
