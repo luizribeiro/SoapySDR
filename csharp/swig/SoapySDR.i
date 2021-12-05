@@ -209,7 +209,6 @@ struct TypeConversionInternal
 
 %template(StringList) std::vector<std::string>;
 %template(Kwargs) std::map<std::string, std::string>;
-%template(DeviceList) std::vector<SoapySDR::Device*>;
 %template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
 %template(KwargsList) std::vector<std::map<std::string, std::string>>;
 %template(RangeList) std::vector<SoapySDR::Range>;

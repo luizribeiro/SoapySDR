@@ -7,7 +7,6 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ArgInfoList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Device.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/DeviceList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Direction.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/ErrorCode.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Kwargs.cs

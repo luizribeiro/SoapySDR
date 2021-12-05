@@ -31,8 +31,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;"
 
-%csmethodmodifiers SoapySDR::Device::make "private";
-%csmethodmodifiers SoapySDR::Device::unmake "private";
+%typemap(csdisposing, methodname="Dispose", methodmodifiers="protected", parameters="bool disposing") SoapySDR::Device {
+    lock(this) {
+      if (swigCPtr.Handle != global::System.IntPtr.Zero) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          Unmake(this);
+        }
+        swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
+      }
+    }
+  }
+
+%typemap(csdisposing_derived, methodname="Dispose", methodmodifiers="protected", parameters="bool disposing") SoapySDR::Device {
+    lock(this) {
+      if (swigCPtr.Handle != global::System.IntPtr.Zero) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          Unmake(this);
+        }
+        swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
+      }
+      base.Dispose(disposing);
+    }
+  }
 
 // Don't wrap deprecated functions
 %ignore SoapySDR::Device::listSampleRates;
@@ -64,6 +86,7 @@ using System.Linq;"
 // Per C# convention, convert trivial getters and setters to properties
 %attributestring(SoapySDR::Device, std::string, DriverKey, getDriverKey);
 %attributestring(SoapySDR::Device, std::string, HardwareKey, getHardwareKey);
+%attributeval(SoapySDR::Device, SoapySDR::Kwargs, HardwareInfo, getHardwareInfo);
 %attribute(SoapySDR::Device, double, MasterClockRate, getMasterClockRate, setMasterClockRate);
 %attributeval(SoapySDR::Device, std::vector<SoapySDR::Range>, MasterClockRates, getMasterClockRates);
 %attribute(SoapySDR::Device, double, ReferenceClockRate, getReferenceClockRate, setReferenceClockRate);
@@ -144,6 +167,10 @@ using System.Linq;"
 %}
 
 %nodefaultctor SoapySDR::Device;
+%ignore SoapySDR::Device::make;
+%ignore SoapySDR::Device::unmake(const std::vector<Device *> &);
+%csmethodmodifiers SoapySDR::Device::unmake "private";
+
 %include <SoapySDR/Device.hpp>
 
 %csmethodmodifiers SoapySDR::Device::SetupStreamInternal "internal";
@@ -158,6 +185,21 @@ using System.Linq;"
 // Internal bridge functions to make the C# part easier
 %extend SoapySDR::Device
 {
+    Device()
+    {
+        return SoapySDR::Device::make("");
+    }
+
+    Device(const SoapySDR::Kwargs &kwargs)
+    {
+        return SoapySDR::Device::make(kwargs);
+    }
+
+    Device(const std::string &args)
+    {
+        return SoapySDR::Device::make(args);
+    }
+
     SoapySDR::CSharp::StreamHandle SetupStreamInternal(
         const SoapySDR::CSharp::Direction direction,
         const std::string& format,
