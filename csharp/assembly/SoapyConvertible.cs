@@ -60,17 +60,6 @@ namespace SoapySDR
             }
         }
 
-        public object ToArgType(ArgInfo.Type argType)
-        {
-            switch (argType)
-            {
-                case ArgInfo.Type.BOOL: return ToType(typeof(bool), null);
-                case ArgInfo.Type.INT: return ToType(typeof(long), null);
-                case ArgInfo.Type.FLOAT: return ToType(typeof(double), null);
-                default: return _value;
-            }
-        }
-
         //
         // IConvertible overrides
         //

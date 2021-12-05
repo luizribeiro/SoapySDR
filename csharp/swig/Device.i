@@ -171,9 +171,9 @@ using System.Linq;"
 
     public override string ToString() => string.Format("{0}:{1}", DriverKey, HardwareKey);
 
-    public override bool Equals(object obj) => object.ReferenceEquals(this, obj);
+    public override bool Equals(object obj) => (obj as Device)?.swigCPtr.Equals(swigCPtr) ?? false;
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ (Pointer().GetHashCode() << 1);
+    public override int GetHashCode() => GetType().GetHashCode() ^ (swigCPtr.GetHashCode() << 1);
 %}
 
 %nodefaultctor SoapySDR::Device;
@@ -353,10 +353,5 @@ using System.Linq;"
         const size_t length) const
     {
         return copyVector<SWIGSize>(self->readRegisters(name, addr, length));
-    }
-
-    SWIGSize Pointer() const
-    {
-        return reinterpret_cast<SWIGSize>(self);
     }
 };
