@@ -31,8 +31,8 @@ public class TestSoapyTypes
             Description = description,
             Units = units,
             Range = range,
-            Options = options,
-            OptionNames = optionNames
+            Options = new SoapySDR.StringList(options),
+            OptionNames = new SoapySDR.StringList(optionNames)
         };
 
         Assert.AreEqual(key, argInfo.Key);

@@ -61,6 +61,8 @@ namespace SoapySDR
             else throw new Exception(string.Format("Type {0} not covered by GetComplexFormatString", type));
         }
 
+        public static Kwargs ToKwargs(string args) => TypeConversionInternal.StringToKwargs(args);
+
         //
         // Internal
         //

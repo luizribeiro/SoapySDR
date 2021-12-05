@@ -68,6 +68,80 @@ using System.Linq;"
 %attributeval(SoapySDR::Device, std::vector<SoapySDR::Range>, MasterClockRates, getMasterClockRates);
 %attribute(SoapySDR::Device, double, ReferenceClockRate, getReferenceClockRate, setReferenceClockRate);
 %attributeval(SoapySDR::Device, std::vector<SoapySDR::Range>, ReferenceClockRates, getReferenceClockRates);
+%attributestring(SoapySDR::Device, std::string, ClockSource, getClockSource, setClockSource);
+%attributeval(SoapySDR::Device, std::vector<std::string>, ClockSources, listClockSources);
+%attributestring(SoapySDR::Device, std::string, TimeSource, getTimeSource, setTimeSource);
+%attributeval(SoapySDR::Device, std::vector<std::string>, TimeSources, listTimeSources);
+%attributeval(SoapySDR::Device, std::vector<std::string>, RegisterInterfaces, listRegisterInterfaces);
+%attributeval(SoapySDR::Device, std::vector<std::string>, GPIOBanks, listGPIOBanks);
+%attributeval(SoapySDR::Device, std::vector<std::string>, UARTs, listUARTs);
+
+%typemap(cscode) SoapySDR::Device
+%{
+    public static KwargsList Enumerate() => Enumerate("");
+
+    public TxStream SetupTxStream(
+        string format,
+        uint[] channels,
+        IDictionary<string, string> kwargs)
+    {
+        return new TxStream(this, format, channels, Utility.ToKwargs(kwargs));
+    }
+
+    public TxStream SetupTxStream(
+        string format,
+        uint[] channels,
+        string args) => SetupTxStream(format, channels, Utility.ToKwargs(args));
+
+    public RxStream SetupRxStream(
+        string format,
+        uint[] channels,
+        IDictionary<string, string> kwargs)
+    {
+        return new RxStream(this, format, channels, Utility.ToKwargs(kwargs));
+    }
+
+    public RxStream SetupRxStream(
+        string format,
+        uint[] channels,
+        string args) => SetupRxStream(format, channels, Utility.ToKwargs(args));
+
+    public void SetFrequency(Direction direction, uint channel, double frequency, string args = "") =>
+        SetFrequency(direction, channel, frequency, Utility.ToKwargs(args));
+
+    public void SetFrequency(Direction direction, uint channel, string name, double frequency, string args = "") =>
+        SetFrequency(direction, channel, name, frequency, Utility.ToKwargs(args));
+
+    public T ReadSensor<T>(string key)
+    {
+        return (T)(new SoapyConvertible(ReadSensor(key)).ToType(typeof(T), null));
+    }
+
+    public T ReadSensor<T>(Direction direction, uint channel, string key)
+    {
+        return (T)(new SoapyConvertible(ReadSensor(direction, channel, key)).ToType(typeof(T), null));
+    }
+
+    public T ReadSetting<T>(string key)
+    {
+        return (T)(new SoapyConvertible(ReadSetting(key)).ToType(typeof(T), null));
+    }
+
+    public T ReadSetting<T>(Direction direction, uint channel, string key)
+    {
+        return (T)(new SoapyConvertible(ReadSetting(direction, channel, key)).ToType(typeof(T), null));
+    }
+
+    public void WriteSetting<T>(string key, T value)
+    {
+        WriteSetting(key, new SoapyConvertible(value).ToString());
+    }
+
+    public void WriteSetting<T>(Direction direction, uint channel, string key, T value)
+    {
+        WriteSetting(direction, channel, key, new SoapyConvertible(value).ToString());
+    }
+%}
 
 %nodefaultctor SoapySDR::Device;
 %include <SoapySDR/Device.hpp>

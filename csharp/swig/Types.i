@@ -85,6 +85,8 @@
 // Finally, include the header
 //
 
+%feature("compactdefaultargs", "0") Range;
+
 %ignore SoapySDR::KwargsFromString;
 %ignore SoapySDR::KwargsToString;
 %ignore SoapySDR::SettingToString;
