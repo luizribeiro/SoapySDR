@@ -91,7 +91,7 @@ typedef unsigned long long size_t;
 
 %typemap(cstype) std::vector<size_t> "uint[]"
 %typemap(csout, excode=SWIGEXCODE) std::vector<size_t> {
-    var sizeListPtr = $imcall;$excode;
+    var sizeListPtr = $imcall;$excode
 
     return new SizeListInternal(sizeListPtr, false).Select(x => (uint)x).ToArray();
 }
