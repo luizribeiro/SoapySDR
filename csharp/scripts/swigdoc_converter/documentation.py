@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2015-2016 Nicholas Corgan (n.corgan@gmail.com)
+# Copyright (c) 2015-2016,2021 Nicholas Corgan (n.corgan@gmail.com)
 #
 # Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
 # or copy at http://opensource.org/licenses/MIT)
@@ -201,13 +201,12 @@ class documentation():
     """
     def __csharp_docs(self):
         output = ""
-        if self.__short_doc != "":
-            output += "/// <summary>%s</summary>" % self.__remove_html(self.__short_doc).replace("\n","")
         if self.__long_doc != "":
-            output += "\n/// <remarks>\n"
+            output += "\n/// <summary>\n"
             for line in self.__long_doc.split("\n"):
-                output += "/// %s\n" % self.__remove_html(line).replace("\n","")
-            output += "/// </remarks>"
+                if line:
+                    output += "/// %s\n" % self.__remove_html(line).replace("\n","")
+            output += "/// </summary>"
 
         if self.__class:
             return "using System;\nusing System.Runtime.InteropServices;\n%s" % output

@@ -59,6 +59,8 @@ using System.Linq;"
 // Don't wrap deprecated functions
 %ignore SoapySDR::Device::listSampleRates;
 %ignore SoapySDR::Device::listBandwidths;
+%ignore SoapySDR::Device::writeRegister(const unsigned, const unsigned);
+%ignore SoapySDR::Device::readRegister(const unsigned) const;
 
 // Ignore stream-related functions, we're rewriting
 %ignore SoapySDR::Device::setupStream;
