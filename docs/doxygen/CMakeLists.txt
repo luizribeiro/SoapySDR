@@ -14,8 +14,8 @@ endif()
 ########################################################################
 include(FeatureSummary)
 include(CMakeDependentOption)
-cmake_dependent_option(ENABLE_DOCS "Enable doxygen documentation" ON "DOXYGEN_FOUND" OFF)
-add_feature_info(Docs ENABLE_DOCS "doxygen documentation")
+cmake_dependent_option(ENABLE_DOCS "Enable C++ Doxygen documentation" ON "DOXYGEN_FOUND" OFF)
+add_feature_info("C++ Docs" ENABLE_DOCS "C++ Doxygen documentation")
 if (NOT ENABLE_DOCS)
     return()
 endif()
@@ -39,7 +39,7 @@ if (DOXYGEN_FOUND)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR_DOXYGEN}
         DEPENDS ${SOAPY_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
         COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-        COMMENT "Generating documentation with doxygen"
+        COMMENT "Generating C++ documentation with doxygen"
     )
     add_custom_target(docs ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR_DOXYGEN})
 endif()
