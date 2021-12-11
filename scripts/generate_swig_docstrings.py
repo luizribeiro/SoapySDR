@@ -25,21 +25,23 @@ ignored_files = []
 
 CppHeaderParser.ignoreSymbols += ["SOAPY_SDR_API"]
 
+functions_to_ignore = ["make", "unmake"]
+
 def get_csharp_docs(header):
     output = ""
 
     for fcn in header.functions:
-        if "operator" not in fcn["name"].lower() and "anon" not in fcn["name"].lower() and "doxygen" in fcn:
+        if fcn["name"] not in functions_to_ignore and "operator" not in fcn["name"].lower() and "anon" not in fcn["name"].lower() and "doxygen" in fcn:
             output += "%s\n" % swigdoc_converter.documentation(fcn).swig_csharp_docs()
 
     for cls in header.classes:
         if "doxygen" in header.classes[cls]:
-            cls_csharp_docs = "%s\n" % swigdoc_converter.documentation(header.classes[cls]).swig_csharp_docs()
+            cls_csharp_docs = "%s\n\n////////////////////////////////////////////////////\n" % swigdoc_converter.documentation(header.classes[cls]).swig_csharp_docs()
             output += cls_csharp_docs
 
         for fcn in header.classes[cls]["methods"]["public"]:
-            if "operator" not in fcn["name"].lower() and not fcn["destructor"] and "doxygen" in fcn:
-                output += "%s\n" % swigdoc_converter.documentation(fcn).swig_csharp_docs()
+            if fcn["name"] not in functions_to_ignore and "operator" not in fcn["name"].lower() and not fcn["destructor"] and "doxygen" in fcn:
+                output += "%s\n\n////////////////////////////////////////////////////\n" % swigdoc_converter.documentation(fcn).swig_csharp_docs()
 
     return output
 
@@ -47,7 +49,7 @@ def get_javadocs(header):
     output = ""
 
     for fcn in header.functions:
-        if "operator" not in fcn["name"].lower() and "anon" not in fcn["name"].lower() and "doxygen" in fcn:
+        if fcn["name"] not in functions_to_ignore and "operator" not in fcn["name"].lower() and "anon" not in fcn["name"].lower() and "doxygen" in fcn:
             output += "%s\n" % swigdoc_converter.documentation(fcn).swig_javadoc()
 
     for cls in header.classes:
@@ -56,7 +58,7 @@ def get_javadocs(header):
             output += cls_javadoc
 
         for fcn in header.classes[cls]["methods"]["public"]:
-            if "operator" not in fcn["name"].lower() and not fcn["destructor"] and "doxygen" in fcn:
+            if fcn["name"] not in functions_to_ignore and "operator" not in fcn["name"].lower() and not fcn["destructor"] and "doxygen" in fcn:
                 output += "%s\n" % swigdoc_converter.documentation(fcn).swig_javadoc()
 
     return output
@@ -65,7 +67,7 @@ def get_python_docstrings(header):
     output = ""
 
     for fcn in header.functions:
-        if "operator" not in fcn["name"].lower() and "anon" not in fcn["name"].lower() and "doxygen" in fcn:
+        if fcn["name"] not in functions_to_ignore and "operator" not in fcn["name"].lower() and "anon" not in fcn["name"].lower() and "doxygen" in fcn:
             output += "%s\n" % swigdoc_converter.documentation(fcn).swig_python_docstring()
 
     for cls in header.classes:
@@ -74,7 +76,7 @@ def get_python_docstrings(header):
             output += cls_python_docstring
 
         for fcn in header.classes[cls]["methods"]["public"]:
-            if "operator" not in fcn["name"].lower() and not fcn["destructor"] and "doxygen" in fcn:
+            if fcn["name"] not in functions_to_ignore and "operator" not in fcn["name"].lower() and not fcn["destructor"] and "doxygen" in fcn:
                 output += "%s\n" % swigdoc_converter.documentation(fcn).swig_python_docstring()
 
         for var in header.classes[cls]["properties"]["public"]:
@@ -87,16 +89,12 @@ SWIG_DOC_FUNCTIONS = dict(csharp = get_csharp_docs,
                           java = get_javadocs,
                           python = get_python_docstrings)
 
-SWIG_DOC_FILENAMES = dict(csharp = "soapysdr_csharp_docs.i",
-                          java = "soapysdr_javadocs.i",
-                          python = "soapysdr_python_docstrings.i")
-
 if __name__ == "__main__":
 
     parser = OptionParser()
     parser.add_option("--include-dir", type="string", help="SoapySDR include directory")
-    parser.add_option("--output-dir", type="string", help="Output directory")
     parser.add_option("--language", type="string", help="Language")
+    parser.add_option("--output", type="string", help="Output filepath")
     (options,args) = parser.parse_args()
 
     output = header_text + "\n\n"
@@ -109,7 +107,6 @@ if __name__ == "__main__":
                 if not ("&&" in new_output or "& &" in new_output):
                     output += "{0}\n".format(new_output)
 
-    os.chdir(options.output_dir)
-    f = open(SWIG_DOC_FILENAMES[options.language], 'w')
+    f = open(options.output, 'w')
     f.write(output)
     f.close()

@@ -77,10 +77,11 @@ def assemble_full_name(cpp_input, is_class):
         full_name = "%s::%s" % (assemble_full_name(cpp_input["parent"], True), cpp_input["name"])
         if not is_class:
             full_name += "("
-            for param in cpp_input["parameters"]:
-                full_name += "%s %s, " % (param["type"], param["name"])
-            if len(cpp_input["parameters"]) > 0:
-                full_name = full_name[:-2]
+            if not ((len(cpp_input["parameters"])== 1) and (cpp_input["parameters"][0]["type"] == "void")):
+                for param in cpp_input["parameters"]:
+                    full_name += "%s %s, " % (param["type"], param["name"])
+                if len(cpp_input["parameters"]) > 0:
+                    full_name = full_name[:-2]
             full_name += ")"
             if cpp_input["const"]:
                 full_name += " const"
@@ -227,7 +228,7 @@ class documentation():
         if self.__class:
             return "%%typemap(csimports) %s \"\n%s\"" % (self.__full_name, self.__csharp_docs())
         else:
-            return "%%csmethodmodifiers %s \"\n%s\npublic\";" % (self.__full_name, self.__csharp_docs())
+            return "\n\n%%csmethodmodifiers %s \"\n%s\npublic\";" % (self.__full_name, self.__csharp_docs())
 
     def __javadoc(self):
         output = "/**\n"
