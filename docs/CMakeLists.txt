@@ -43,4 +43,3 @@ if (DOXYGEN_FOUND)
     )
     add_custom_target(docs ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR_DOXYGEN})
 endif()
->>>>>>> parent of 5c66efc... Move doxygen to docs/ subdirectory so other docs can live in parallel
