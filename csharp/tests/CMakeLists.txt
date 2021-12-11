@@ -1,5 +1,4 @@
 function(CSHARP_UNIT_TEST name)
-    # NUnit tests are DLLs processed by executable
     set(test_name CSharp_${name})
     add_executable(${test_name} ${name}.cs TestRunner.cs)
     target_link_libraries(${test_name} SoapySDR.CSharp)
