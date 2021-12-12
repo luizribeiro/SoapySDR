@@ -71,5 +71,9 @@ install(TARGETS SoapySDR.CSharp
     EXPORT SoapySDRCSharpExport
     DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+# TODO: cmake dir
+install(FILES ${PROJECT_SOURCE_DIR}/csharp/SoapySDRCSharpConfig.cmake
+        DESTINATION ${CMAKE_LIB_DEST})
+
 # Export target to SoapySDR project config
 install(EXPORT SoapySDRCSharpExport DESTINATION ${CMAKE_LIB_DEST})

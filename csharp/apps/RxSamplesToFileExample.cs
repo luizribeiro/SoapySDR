@@ -119,14 +119,6 @@ public class RxSamplesToFileExample
             var floatSpan = MemoryMarshal.Cast<byte, float>(new Span<byte>(buffer));
 
             uint totalSamps = 0;
-            bool running = true;
-
-            // Handle Ctrl+C
-            System.Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
-            {
-                e.Cancel = true;
-                running = false;
-            };
 
             while(totalSamps < numSamps)
             {

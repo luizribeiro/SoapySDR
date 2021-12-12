@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.3.0)
 project(SoapySDRCSharpApps CSharp)
 
+find_package(SoapySDRCSharp)
+
 function(CSHARP_BUILD_APP name)
     set(target_name CSharp_${name})
     add_executable(${target_name} ${name}.cs)
