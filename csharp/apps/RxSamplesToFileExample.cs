@@ -14,7 +14,7 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-public class SamplesToFileExample
+public class RxSamplesToFileExample
 {
     //
     // Utility code
@@ -38,7 +38,7 @@ public class SamplesToFileExample
     // Actual app logic
     //
 
-    private static int SamplesToFileApp(
+    private static int RxSamplesToFileApp(
         string args,
         FileInfo file,
         uint numSamps,
@@ -176,7 +176,7 @@ public class SamplesToFileExample
          * Since these types can't be nullable in the C# standard we're targeting, we'll just need to use a default
          * value and check for it in the function itself.
          */
-        var rootCmd = new RootCommand() { TreatUnmatchedTokensAsErrors = true }.WithHandler(nameof(SamplesToFileApp));
+        var rootCmd = new RootCommand() { TreatUnmatchedTokensAsErrors = true }.WithHandler(nameof(RxSamplesToFileApp));
         rootCmd.Description = "A simple example that reads samples and writes to file to demonstrate the SoapySDR C# API.\n\nNote: " +
                               "(REQUIRED) in the option descriptions below refers to a value being necessary " +
                               "for the option, not the option itself being required.";
@@ -207,7 +207,7 @@ static class CommandLineHelpers
 {
     public static RootCommand WithHandler(this RootCommand command, string methodName)
     {
-        var method = typeof(SamplesToFileExample).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+        var method = typeof(RxSamplesToFileExample).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
         var handler = CommandHandler.Create(method);
         command.Handler = handler;
         return command;

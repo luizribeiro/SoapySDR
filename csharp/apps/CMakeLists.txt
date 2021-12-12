@@ -18,5 +18,5 @@ function(CSHARP_BUILD_APP name)
         "System.CommandLine_2.0.0-beta1.21308.1")
 endfunction()
 
+CSHARP_BUILD_APP(RxSamplesToFileExample)
 CSHARP_BUILD_APP(SiggenExample)
-CSHARP_BUILD_APP(SamplesToFileExample)
