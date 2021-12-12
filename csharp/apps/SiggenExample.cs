@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 
-public class SimpleSiggen
+public class SiggenExample
 {
     //
     // Utility code
@@ -227,7 +227,7 @@ static class CommandLineHelpers
 {
     public static RootCommand WithHandler(this RootCommand command, string methodName)
     {
-        var method = typeof(SimpleSiggen).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+        var method = typeof(SiggenExample).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
         var handler = CommandHandler.Create(method);
         command.Handler = handler;
         return command;

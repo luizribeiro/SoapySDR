@@ -17,4 +17,4 @@ function(CSHARP_BUILD_APP name)
         "System.CommandLine_2.0.0-beta1.21308.1")
 endfunction()
 
-CSHARP_BUILD_APP(SimpleSiggen)
+CSHARP_BUILD_APP(SiggenExample)
