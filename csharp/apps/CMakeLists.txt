@@ -10,7 +10,8 @@ function(CSHARP_BUILD_APP name)
     set_property(
         TARGET ${target_name}
         PROPERTY VS_DOTNET_REFERENCES
-        "System")
+        "System"
+        "System.Runtime")
     set_property(
         TARGET ${target_name}
         PROPERTY VS_PACKAGE_REFERENCES
@@ -18,3 +19,4 @@ function(CSHARP_BUILD_APP name)
 endfunction()
 
 CSHARP_BUILD_APP(SiggenExample)
+CSHARP_BUILD_APP(SamplesToFileExample)
