@@ -61,10 +61,16 @@ namespace SoapySDR
             else throw new Exception(string.Format("Type {0} not covered by GetComplexFormatString", type));
         }
 
+        /// <summary>
+        /// Convert a markup string to a key-value map.
+        /// The markup format is: "key0=value0, key1=value1".
+        /// </summary>
+        /// <param name="args">The markup string</param>
+        /// <returns>An equivalent key-value map</returns>
         public static Kwargs ToKwargs(string args) => TypeConversionInternal.StringToKwargs(args);
 
         //
-        // Internal
+        // Internal (TODO: move some of these into Stream class)
         //
 
         internal static void ValidateSpan<T>(

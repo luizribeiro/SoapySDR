@@ -8,6 +8,10 @@ using System.Runtime.InteropServices;
 
 namespace SoapySDR
 {
+    /// <summary>
+    /// A class representing a transmit stream. With this class, you can write
+    /// samples to your device to transmit.
+    /// </summary>
     public class TxStream: Stream
     {
         internal TxStream(
@@ -21,21 +25,45 @@ namespace SoapySDR
             _streamHandle = device.SetupStreamInternal(Direction.Tx, format, channels, kwargs);
         }
 
+        /// <summary>
+        /// Write data from an arbitrary memory source for a single-channel transmission.
+        /// </summary>
+        /// <typeparam name="T">The type of the underlying buffer to send. This type must match the stream's format type.</typeparam>
+        /// <param name="memory">The buffer to transmit. For complex types, this buffer is interleaved.</param>
+        /// <param name="flags">Optional input flags.</param>
+        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store stream metadata.</param>
+        /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Write<T>(
             ReadOnlyMemory<T> memory,
+            StreamFlags flags,
             long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
             return Write(
                 memory.Span,
+                flags,
                 timeNs,
                 timeoutUs,
                 out result);
         }
 
+        /// <summary>
+        /// Write data from an arbitrary memory source for a multi-channel transmission.
+        /// </summary>
+        /// <typeparam name="T">The type of the underlying buffers to send. This type must match the stream's format type.</typeparam>
+        /// <param name="memory">The buffers to transmit. For complex types, this buffer is interleaved. The array length must match the number of channels, and all ReadOnlyMemory<> instances must be of the same length.</param>
+        /// <param name="flags">Optional input flags.</param>
+        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store stream metadata.</param>
+        /// <returns>An error code for the stream operation.</returns>
+        /// <returns></returns>
         public unsafe ErrorCode Write<T>(
             ReadOnlyMemory<T>[] memory,
+            StreamFlags flags,
             long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
@@ -56,6 +84,7 @@ namespace SoapySDR
                     _streamHandle,
                     memsAsSizes,
                     (uint)memory[0].Length,
+                    flags,
                     timeNs,
                     timeoutUs);
 
@@ -67,8 +96,19 @@ namespace SoapySDR
             return ret;
         }
 
+        /// <summary>
+        /// Write data from an arbitrary memory source for a single-channel transmission.
+        /// </summary>
+        /// <typeparam name="T">The type of the underlying buffer to send. This type must match the stream's format type.</typeparam>
+        /// <param name="span">The buffer to transmit. For complex types, this buffer is interleaved.</param>
+        /// <param name="flags">Optional input flags.</param>
+        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store stream metadata.</param>
+        /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Write<T>(
             ReadOnlySpan<T> span,
+            StreamFlags flags,
             long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
@@ -77,31 +117,64 @@ namespace SoapySDR
 
             fixed(T* data = &MemoryMarshal.GetReference(span))
             {
-                return Write((IntPtr)data, (uint)span.Length, timeNs, timeoutUs, out result);
+                return Write((IntPtr)data, (uint)span.Length, flags, timeNs, timeoutUs, out result);
             }
         }
 
+        /// <summary>
+        /// Write data from a managed C# array for a single-channel transmission.
+        /// </summary>
+        /// <typeparam name="T">The type of the underlying array to send. This type must match the stream's format type.</typeparam>
+        /// <param name="buff">The managed array to transmit. For complex types, this buffer is interleaved.</param>
+        /// <param name="flags">Optional input flags.</param>
+        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store stream metadata.</param>
+        /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Write<T>(
             T[] buff,
+            StreamFlags flags,
             long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
-            return Write(new ReadOnlySpan<T>(buff), timeNs, timeoutUs, out result);
+            return Write(new ReadOnlySpan<T>(buff), flags, timeNs, timeoutUs, out result);
         }
 
+        /// <summary>
+        /// Write data from a managed C# array for a multi-channel transmission.
+        /// </summary>
+        /// <typeparam name="T">The type of the underlying arrays to send. This type must match the stream's format type.</typeparam>
+        /// <param name="buffs">The managed arrays to transmit. For complex types, this buffer is interleaved. The outer array dimension must match the number of channels, and all inner arrays must be of the same length.</param>
+        /// <param name="flags">Optional input flags.</param>
+        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store stream metadata.</param>
+        /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Write<T>(
             T[][] buffs,
+            StreamFlags flags,
             long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
-            return Write(buffs.Select(buff => new ReadOnlyMemory<T>(buff)).ToArray(), timeNs, timeoutUs, out result);
+            return Write(buffs.Select(buff => new ReadOnlyMemory<T>(buff)).ToArray(), flags, timeNs, timeoutUs, out result);
         }
 
+        /// <summary>
+        /// Write data from an unmanaged pointer for a single-channel transmission. No validation is performed on input parameters.
+        /// </summary>
+        /// <param name="ptr">A pointer to the buffer to send.</param>
+        /// <param name="numElems">The number of elements (of the stream format's size) in the underlying buffer.</param>
+        /// <param name="flags">Optional input flags.</param>
+        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store stream metadata.</param>
+        /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Write(
             IntPtr ptr,
             uint numElems,
+            StreamFlags flags,
             long timeNs,
             int timeoutUs,
             out StreamResult result)
@@ -109,14 +182,26 @@ namespace SoapySDR
             return Write(
                 new IntPtr[] { ptr },
                 numElems,
+                flags,
                 timeNs,
                 timeoutUs,
                 out result);
         }
 
+        /// <summary>
+        /// Write data from unmanaged pointers for a multi-channel transmission. No validation is performed on input parameters except channel count.
+        /// </summary>
+        /// <param name="ptrs">Pointers to the buffers to send.</param>
+        /// <param name="numElems">The number of elements (of the stream format's size) in each underlying buffer.</param>
+        /// <param name="flags">Optional input flags.</param>
+        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store stream metadata.</param>
+        /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Write(
             IntPtr[] ptrs,
             uint numElems,
+            StreamFlags flags,
             long timeNs,
             int timeoutUs,
             out StreamResult result)
@@ -125,10 +210,13 @@ namespace SoapySDR
 
             if (_streamHandle != null)
             {
+                ValidateIntPtrArray(ptrs);
+
                 var deviceOutput = _device.WriteStreamInternal(
                     _streamHandle,
                     Utility.ToSizeListInternal(ptrs),
                     numElems,
+                    flags,
                     timeNs,
                     timeoutUs);
 
@@ -140,6 +228,12 @@ namespace SoapySDR
             return ret;
         }
 
+        /// <summary>
+        /// Read status information about the stream.
+        /// </summary>
+        /// <param name="timeoutUs">The operation timeout in microseconds.</param>
+        /// <param name="result">An output to store the requested data.</param>
+        /// <returns>An error code for the stream operation.</returns>
         public ErrorCode ReadStatus(int timeoutUs, out StreamResult result)
         {
             ErrorCode ret;

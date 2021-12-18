@@ -297,6 +297,7 @@ using System.Linq;"
         const SoapySDR::CSharp::StreamHandle& streamHandle,
         const SWIGSizeVector& buffs,
         const size_t numElems,
+        const SoapySDR::CSharp::StreamFlags flags,
         const long long timeNs,
         const long timeoutUs)
     {
@@ -305,7 +306,7 @@ using System.Linq;"
         auto& result = resultPair.second;
 
         const auto buffPtrs = reinterpretCastVector<const void>(buffs);
-        int intFlags = 0;
+        auto intFlags = int(flags);
         auto cppRet = self->writeStream(
             streamHandle.stream,
             buffPtrs.data(),

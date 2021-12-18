@@ -148,7 +148,7 @@ public class SiggenExample
                 while (phaseAcc > (Math.PI * 2.0F)) phaseAcc -= (float)(Math.PI * 2.0F);
 
                 var streamResult = new SoapySDR.StreamResult();
-                var status = txStream.Write(samples, 0, 1000000, out streamResult);
+                var status = txStream.Write(samples, SoapySDR.StreamFlags.None, 0, 1000000, out streamResult);
                 if (status != SoapySDR.ErrorCode.None)
                 {
                     throw new ApplicationException(string.Format("Write returned: {0}", status));
