@@ -72,7 +72,7 @@ namespace SoapySDR
 
             if (_streamHandle != null)
             {
-                Utility.ValidateMemory(_streamHandle, memory);
+                ValidateMemory(memory);
 
                 var memsAsSizes = Utility.ToSizeListInternal(
                     memory,
@@ -113,7 +113,7 @@ namespace SoapySDR
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
-            Utility.ValidateSpan(_streamHandle, span);
+            ValidateSpan(span);
 
             fixed(T* data = &MemoryMarshal.GetReference(span))
             {

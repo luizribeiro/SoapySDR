@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SoapySDR
 {
@@ -139,12 +140,76 @@ namespace SoapySDR
         // Utility
         //
 
+        protected void ValidateSpan<T>(ReadOnlySpan<T> span) where T : unmanaged
+        {
+            var numChannels = _streamHandle.GetChannels().Length;
+            var format = _streamHandle.GetFormat();
+
+            var scalarFormatString = Utility.GetFormatString<T>();
+            var complexFormatString = Utility.GetComplexFormatString<T>();
+
+            if(numChannels != 1)
+            {
+                throw new ArgumentException(string.Format("Stream is configured for {0} channel(s). Cannot accept 1 buffer(s).", numChannels));
+            }
+            else if (!format.Equals(scalarFormatString) && !format.Equals(complexFormatString))
+            {
+                throw new ArgumentException(string.Format("Stream format \"{0}\" is incompatible with buffer type {1}.",
+                    format,
+                    typeof(T)));
+            }
+
+            if (format.Equals(complexFormatString))
+            {
+                if ((span.Length % 2) != 0)
+                    throw new ArgumentException("For complex interleaved streams, input buffers must be of an even size.");
+            }
+        }
+
+        protected void ValidateSpan<T>(Span<T> span) where T : unmanaged => ValidateSpan((ReadOnlySpan<T>)span);
+
+        protected void ValidateMemory<T>(ReadOnlyMemory<T>[] mems) where T : unmanaged
+        {
+            var numChannels = _streamHandle.GetChannels().Length;
+            var format = _streamHandle.GetFormat();
+
+            var scalarFormatString = Utility.GetFormatString<T>();
+            var complexFormatString = Utility.GetComplexFormatString<T>();
+
+            if (mems == null)
+            {
+                throw new ArgumentNullException("mems");
+            }
+            else if (numChannels != mems.Length)
+            {
+                throw new ArgumentException(string.Format("Stream is configured for {0} channel(s). Cannot accept {1} buffer(s).", numChannels, mems.Length));
+            }
+            else if (!format.Equals(scalarFormatString) && !format.Equals(complexFormatString))
+            {
+                throw new ArgumentException(string.Format("Stream format \"{0}\" is incompatible with buffer type {1}.",
+                    format,
+                    typeof(T)));
+            }
+
+            HashSet<int> uniqueSizes = new HashSet<int>(mems.Select(buff => buff.Length));
+            if ((uniqueSizes.Count > 1) || (uniqueSizes.First() == 0))
+                throw new ArgumentException("All buffers must be non-null and of the same length");
+
+            if (format.Equals(complexFormatString))
+            {
+                if ((uniqueSizes.First() % 2) != 0)
+                    throw new ArgumentException("For complex interleaved streams, input buffers must be of an even size.");
+            }
+        }
+
+        protected void ValidateMemory<T>(Memory<T>[] mems) where T : unmanaged => ValidateMemory(mems.Select(mem => (ReadOnlyMemory<T>)mem).ToArray());
+
         protected void ValidateIntPtrArray(IntPtr[] intPtrs)
         {
             var numChannels = _streamHandle.GetChannels().Length;
             if(intPtrs.Length != numChannels)
             {
-                throw new ArgumentException(string.Format("Expected {0} channels. Found {1} buffers.", numChannels, intPtrs.Length));
+                throw new ArgumentException(string.Format("Stream is configured for {0} channel(s). Cannot accept {1} buffer(s).", numChannels, intPtrs.Length));
             }
         }
 
