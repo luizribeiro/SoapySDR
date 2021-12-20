@@ -116,7 +116,7 @@ using System.Linq;"
     public TxStream SetupTxStream(
         string format,
         uint[] channels,
-        string args) => SetupTxStream(format, channels, Utility.ToKwargs(args));
+        string args) => SetupTxStream(format, channels, Utility.StringToKwargs(args));
 
     public RxStream SetupRxStream(
         string format,
@@ -129,13 +129,13 @@ using System.Linq;"
     public RxStream SetupRxStream(
         string format,
         uint[] channels,
-        string args) => SetupRxStream(format, channels, Utility.ToKwargs(args));
+        string args) => SetupRxStream(format, channels, Utility.StringToKwargs(args));
 
     public void SetFrequency(Direction direction, uint channel, double frequency, string args = "") =>
-        SetFrequency(direction, channel, frequency, Utility.ToKwargs(args));
+        SetFrequency(direction, channel, frequency, Utility.StringToKwargs(args));
 
     public void SetFrequency(Direction direction, uint channel, string name, double frequency, string args = "") =>
-        SetFrequency(direction, channel, name, frequency, Utility.ToKwargs(args));
+        SetFrequency(direction, channel, name, frequency, Utility.StringToKwargs(args));
 
     public T ReadSensor<T>(string key)
     {

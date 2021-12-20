@@ -67,7 +67,15 @@ namespace SoapySDR
         /// </summary>
         /// <param name="args">The markup string</param>
         /// <returns>An equivalent key-value map</returns>
-        public static Kwargs ToKwargs(string args) => TypeConversionInternal.StringToKwargs(args);
+        public static Kwargs StringToKwargs(string args) => TypeConversionInternal.StringToKwargs(args);
+
+        /// <summary>
+        /// Convert a key-value map to a markup string.
+        /// The markup format is: "key0=value0, key1=value1".
+        /// </summary>
+        /// <param name="kwargs">The key-value map</param>
+        /// <returns>An equivalent markup string</returns>
+        public static string KwargsToString(IDictionary<string, string> kwargs) => TypeConversionInternal.KwargsToString(ToKwargs(kwargs));
 
         //
         // Internal (TODO: move some of these into Stream class)

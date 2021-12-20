@@ -144,20 +144,25 @@ struct Time
 struct TypeConversionInternal
 {
     template <typename T>
-    static __forceinline std::string SettingToString(const T& setting)
+    static __forceinline std::string SettingToString(const T &setting)
     {
         return SoapySDR::SettingToString<T>(setting);
     }
 
     template <typename T>
-    static __forceinline T StringToSetting(const std::string& setting)
+    static __forceinline T StringToSetting(const std::string &setting)
     {
         return SoapySDR::StringToSetting<T>(setting);
     }
 
-    static __forceinline SoapySDR::Kwargs StringToKwargs(const std::string& args)
+    static __forceinline SoapySDR::Kwargs StringToKwargs(const std::string &args)
     {
         return SoapySDR::KwargsFromString(args);
+    }
+
+    static __forceinline std::string KwargsToString(const SoapySDR::Kwargs &kwargs)
+    {
+        return SoapySDR::KwargsToString(kwargs);
     }
 };
 %}
@@ -165,12 +170,14 @@ struct TypeConversionInternal
 struct TypeConversionInternal
 {
     template <typename T>
-    static std::string SettingToString(const T& setting);
+    static std::string SettingToString(const T &setting);
 
     template <typename T>
-    static T StringToSetting(const std::string& setting);
+    static T StringToSetting(const std::string &setting);
 
-    static SoapySDR::Kwargs StringToKwargs(const std::string& args);
+    static SoapySDR::Kwargs StringToKwargs(const std::string &args);
+
+    static std::string KwargsToString(const SoapySDR::Kwargs &kwargs);
 };
 
 %template(SByteToString) TypeConversionInternal::SettingToString<int8_t>;
