@@ -99,8 +99,10 @@ typedef unsigned long long size_t;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Build info, enums
+// Build info
 ////////////////////////////////////////////////////////////////////////
+// TODO: ABI checks on device construction
+%csmethodmodifiers SoapySDR::CSharp::BuildInfo::SWIGABIVersion "internal";
 %nodefaultctor SoapySDR::CSharp::BuildInfo;
 
 // TODO: make SWIGABIVersion internal
@@ -115,7 +117,6 @@ typedef unsigned long long size_t;
 // global functions
 ////////////////////////////////////////////////////////////////////////
 %nodefaultctor Time;
-
 %{
 #include <SoapySDR/Time.hpp>
 

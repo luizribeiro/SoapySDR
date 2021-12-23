@@ -5,6 +5,32 @@
 // TODO: automate this with SWIG doc generator when brought in
 //
 
+%typemap(csclassmodifiers) Time "
+/// <summary>
+/// Utility functions to convert time and ticks.
+/// </summary>
+public class";
+
+%csmethodmodifiers Time::TicksToTimeNs "
+/// <summary>Convert a tick count into a time in nanoseconds using the tick rate.</summary>
+/// <param name=\"ticks\">An integer tick count</param>
+/// <param name=\"rate\">The ticks per second</param>
+/// <returns>The time in nanoseconds</returns>
+public";
+
+%csmethodmodifiers Time::TimeNsToTicks "
+/// <summary>Convert a time in nanoseconds into a tick count using the tick rate.</summary>
+/// <param name=\"timeNs\">The time in nanoseconds</param>
+/// <param name=\"rate\">The ticks per second</param>
+/// <returns>The integer tick count</returns>
+public";
+
+%typemap(csclassmodifiers) SoapySDR::Device "
+/// <summary>
+/// Abstraction for an SDR transceiver device - configuration and streaming.
+/// </summary>
+public class";
+
 %csmethodmodifiers SoapySDR::Device::enumerate(const Kwargs&) "
 /// <summary>
 /// Enumerate a list of devices on the system, given a set of filters.

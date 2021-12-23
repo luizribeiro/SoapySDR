@@ -9,6 +9,9 @@ using System.Runtime.InteropServices;
 
 namespace SoapySDR
 {
+    /// <summary>
+    /// Utility functions to generate SoapySDR.Device parameters
+    /// </summary>
     public class Utility
     {
         //
@@ -18,11 +21,11 @@ namespace SoapySDR
         /// <summary>
         /// Return the SoapySDR format string that corresponds to the given type. This
         /// string will be passed into Device's stream setup functions.
-        /// 
+        ///
         /// This function will throw if the type is unsupported.
         /// </summary>
         /// <typeparam name="T">The format type</typeparam>
-        /// <returns>The type's SoapySDR format string</returns>
+        /// <returns>The type's format string (see SoapySDR.StreamFormat)</returns>
         public static string GetFormatString<T>() where T : unmanaged
         {
             var type = typeof(T);
@@ -41,11 +44,11 @@ namespace SoapySDR
         /// <summary>
         /// Return the SoapySDR complex format string that corresponds to the given type.
         /// This string will be passed into Device's stream setup functions.
-        /// 
+        ///
         /// This function will throw if the type is unsupported.
         /// </summary>
         /// <typeparam name="T">The format type</typeparam>
-        /// <returns>The type's SoapySDR complex format string</returns>
+        /// <returns>The type's complex format string (see SoapySDR.StreamFormat)</returns>
         public static string GetComplexFormatString<T>() where T : unmanaged
         {
             var type = typeof(T);
@@ -63,6 +66,7 @@ namespace SoapySDR
 
         /// <summary>
         /// Convert a markup string to a key-value map.
+        ///
         /// The markup format is: "key0=value0, key1=value1".
         /// </summary>
         /// <param name="args">The markup string</param>
@@ -71,6 +75,7 @@ namespace SoapySDR
 
         /// <summary>
         /// Convert a key-value map to a markup string.
+        ///
         /// The markup format is: "key0=value0, key1=value1".
         /// </summary>
         /// <param name="kwargs">The key-value map</param>
