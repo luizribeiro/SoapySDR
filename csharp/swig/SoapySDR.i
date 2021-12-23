@@ -24,6 +24,7 @@
 
 #include "Constants.hpp"
 #include "Utility.hpp"
+#include "Versions.hpp"
 %}
 
 %ignore copyVector;
@@ -101,14 +102,10 @@ typedef unsigned long long size_t;
 ////////////////////////////////////////////////////////////////////////
 // Build info
 ////////////////////////////////////////////////////////////////////////
-// TODO: ABI checks on device construction
-%csmethodmodifiers SoapySDR::CSharp::BuildInfo::SWIGABIVersion "internal";
-%nodefaultctor SoapySDR::CSharp::BuildInfo;
-
-// TODO: make SWIGABIVersion internal
-%typemap(cscode) SoapySDR::CSharp::BuildInfo %{
-    internal static readonly string AssemblyABIVersion = "@SOAPY_SDR_ABI_VERSION@";
-%}
+%ignore __getCompileTimeAPIVersion;
+%nodefaultctor BuildInfo;
+%typemap(csclassmodifiers) BuildInfo "public partial class";
+%include "Versions.hpp"
 
 %include "Constants.hpp"
 

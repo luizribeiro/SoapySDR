@@ -13,21 +13,6 @@
 
 namespace SoapySDR { namespace CSharp {
 
-    struct BuildInfo
-    {
-        static const std::string APIVersion;
-        static const std::string ABIVersion;
-        static const std::string LibVersion;
-
-        static const std::string SWIGABIVersion;
-    };
-
-    const std::string BuildInfo::APIVersion = SoapySDR::getAPIVersion();
-    const std::string BuildInfo::ABIVersion = SoapySDR::getABIVersion();
-    const std::string BuildInfo::LibVersion = SoapySDR::getLibVersion();
-
-    const std::string BuildInfo::SWIGABIVersion(SOAPY_SDR_ABI_VERSION);
-
     enum class Direction
     {
         Tx = 0,

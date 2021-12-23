@@ -32,11 +32,26 @@ set_source_files_properties(
     PROPERTIES GENERATED TRUE)
 
 configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/AssemblyInfo.cs
+    ${CMAKE_CURRENT_SOURCE_DIR}/AssemblyInfo.in.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs)
+    
+file(READ "${PROJECT_SOURCE_DIR}/include/SoapySDR/Version.h" version_h_txt)
+string(REGEX MATCH "define SOAPY_SDR_API_VERSION (0x[^\\n\\r]+) " version_h_match "${version_h_txt}")
+if(NOT version_h_match)
+    message(FATAL_ERROR "Failed to extract SOAPY_SDR_API_VERSION from version.h")
+endif()
+set(SOAPY_SDR_API_VERSION ${CMAKE_MATCH_1})
+string(FIND "${SOAPY_SDR_API_VERSION}" "\n" newline_pos)
+string(SUBSTRING ${SOAPY_SDR_API_VERSION} 0 ${newline_pos} SOAPY_SDR_API_VERSION)
 
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/BuildInfo.Assembly.in.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.Assembly.cs)
+
+# TODO: move all files into binary directory, only point Doxygen at binary directory
 set(csharp_srcs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.Assembly.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Logger.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/RxStream.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/SoapyConvertible.cs
