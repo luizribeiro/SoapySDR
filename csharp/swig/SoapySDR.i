@@ -4,6 +4,8 @@
 %module(directors="1") SoapySDR
 %feature("compactdefaultargs");
 
+%include "Docs.i"
+
 %include <typemaps.i>
 %include <std_map.i>
 %include "soapy_std_vector.i"

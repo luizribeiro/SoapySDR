@@ -103,6 +103,9 @@ using System.Linq;"
 
 %typemap(cscode) SoapySDR::Device
 %{
+    /// <summary>
+    /// Enumerate a list of all available devices on the system.
+    /// </summary>
     public static KwargsList Enumerate() => Enumerate("");
 
     public TxStream SetupTxStream(
