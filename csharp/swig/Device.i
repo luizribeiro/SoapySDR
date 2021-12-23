@@ -20,6 +20,11 @@
 // Use the C# enum for direction
 //
 
+%typemap(csconstruct, excode=SWIGEXCODE,directorconnect="\n    SwigDirectorConnect();") SoapySDR::Device %{: this($imcall, true) {
+    $excode$directorconnect
+    BuildInfo.ValidateABI();
+}%}
+
 %typemap(cstype) const int direction "Direction"
 %typemap(csin,
          pre="int temp$csinput = (int)$csinput;")
