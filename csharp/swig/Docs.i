@@ -314,6 +314,160 @@ public";
 /// <returns>The correction in PPM</returns>
 public";
 
+%csmethodmodifiers SoapySDR::Device::listGains "
+/// <summary>
+/// List available amplification elements, ordered from RF to baseband.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>The correction in PPM</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::hasGainMode "
+/// <summary>
+/// Does the device support automatic gain control?
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>True if automatic correction is supported</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setGainMode "
+/// <summary>
+/// Enable or disable automatic gain control on the chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"automatic\">True to enable automatic gain control, false to disable</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getGainMode "
+/// <summary>
+/// Is automatic gain control enabled on the chain?
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>True if automatic gain control is enabled, false if disabled</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setGain(const int, const size_t, const double) "
+/// <summary>
+/// Set the overall amplification in a chain.
+///
+/// The gain will be distributed automatically across available elements.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"value\">The new amplification value in dB</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setGain(const int, const size_t, const std::string &, const double) "
+/// <summary>
+/// Set the value of an amplification element in a chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"name\">The name of an amplification element</param>
+/// <param name=\"value\">The new amplification value in dB</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getGain(const int, const size_t) const "
+/// <summary>
+/// Get the overall value of the gain elements in a chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>The value of the gain in dB</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getGain(const int, const size_t, const std::string &) const "
+/// <summary>
+/// Get the value of an individual amplification element in a chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"name\">The name of an amplification element</param>
+/// <returns>The value of the gain in dB</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getGainRange(const int, const size_t) const "
+/// <summary>
+/// Get the overall range of possible gain values.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of gain ranges in dB</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getGainRange(const int, const size_t, const std::string &) const "
+/// <summary>
+/// Get the range of possible gain values for a specific element.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"name\">The name of an amplification element</param>
+/// <returns>A list of gain ranges in dB</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setFrequency(const int, const size_t, const double, const Kwargs &) "
+/// <summary>
+/// Set the center frequency of the chain.
+///  - For RX, this specifies the down-conversion frequency.
+///  - For TX, this specifies the up-conversion frequency.
+///
+/// When no args are provided, setFrequency() will tune the \"RF\"
+/// component as close as possible to the requested center frequency.
+/// Tuning inaccuracies will be compensated for with the \"BB\" component.
+///
+/// The args can be used to augment the tuning algorithm.
+///  - Use \"OFFSET\" to specify an \"RF\" tuning offset,
+///    usually with the intention of moving the LO out of the passband.
+///    The offset will be compensated for using the \"BB\" component.
+///  - Use the name of a component for the key and a frequency in Hz
+///    as the value (any format) to enforce a specific frequency.
+///    The other components will be tuned with compensation
+///    to achieve the specified overall frequency.
+///  - Use the name of a component for the key and the value \"IGNORE\"
+///    so that the tuning algorithm will avoid altering the component.
+///  - Vendor specific implementations can also use the same args to augment
+///    tuning in other ways such as specifying fractional vs integer N tuning.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"frequency\">The center frequency in Hz</param>
+/// <param name=\"args\">Optional tuner arguments</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setFrequency(const int, const size_t, const std::string &, const double, const Kwargs &) "
+/// <summary>
+/// Tune the center frequency of the specified element.
+///  - For RX, this specifies the down-conversion frequency.
+///  - For TX, this specifies the up-conversion frequency.
+///
+/// When no args are provided, setFrequency() will tune the \"RF\"
+/// component as close as possible to the requested center frequency.
+/// Tuning inaccuracies will be compensated for with the \"BB\" component.
+///
+/// The args can be used to augment the tuning algorithm.
+///  - Use \"OFFSET\" to specify an \"RF\" tuning offset,
+///    usually with the intention of moving the LO out of the passband.
+///    The offset will be compensated for using the \"BB\" component.
+///  - Use the name of a component for the key and a frequency in Hz
+///    as the value (any format) to enforce a specific frequency.
+///    The other components will be tuned with compensation
+///    to achieve the specified overall frequency.
+///  - Use the name of a component for the key and the value \"IGNORE\"
+///    so that the tuning algorithm will avoid altering the component.
+///  - Vendor specific implementations can also use the same args to augment
+///    tuning in other ways such as specifying fractional vs integer N tuning.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"name\">The name of a tunable element</param>
+/// <param name=\"frequency\">The center frequency in Hz</param>
+/// <param name=\"args\">Optional tuner arguments</param>
+public";
+
 %csmethodmodifiers SoapySDR::Device::MasterClockRate "
 /// <summary>
 /// The device's master clock rate in Hz.

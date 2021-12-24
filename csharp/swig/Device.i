@@ -139,9 +139,62 @@ using System.Linq;"
         uint[] channels,
         string args) => SetupRxStream(format, channels, Utility.StringToKwargs(args));
 
+    /// <summary>
+    /// Set the center frequency of the chain.
+    ///  - For RX, this specifies the down-conversion frequency.
+    ///  - For TX, this specifies the up-conversion frequency.
+    ///
+    /// When no args are provided, setFrequency() will tune the "RF"
+    /// component as close as possible to the requested center frequency.
+    /// Tuning inaccuracies will be compensated for with the "BB" component.
+    ///
+    /// The args can be used to augment the tuning algorithm.
+    ///  - Use "OFFSET" to specify an "RF" tuning offset,
+    ///    usually with the intention of moving the LO out of the passband.
+    ///    The offset will be compensated for using the "BB" component.
+    ///  - Use the name of a component for the key and a frequency in Hz
+    ///    as the value (any format) to enforce a specific frequency.
+    ///    The other components will be tuned with compensation
+    ///    to achieve the specified overall frequency.
+    ///  - Use the name of a component for the key and the value "IGNORE"
+    ///    so that the tuning algorithm will avoid altering the component.
+    ///  - Vendor specific implementations can also use the same args to augment
+    ///    tuning in other ways such as specifying fractional vs integer N tuning.
+    /// </summary>
+    /// <param name="direction">The channel direction (RX or TX)</param>
+    /// <param name="channel">An available channel on the device</param>
+    /// <param name="frequency">The center frequency in Hz</param>
+    /// <param name="args">Optional tuner arguments</param>
     public void SetFrequency(Direction direction, uint channel, double frequency, string args = "") =>
         SetFrequency(direction, channel, frequency, Utility.StringToKwargs(args));
 
+    /// <summary>
+    /// Tune the center frequency of the specified element.
+    ///  - For RX, this specifies the down-conversion frequency.
+    ///  - For TX, this specifies the up-conversion frequency.
+    ///
+    /// When no args are provided, setFrequency() will tune the "RF"
+    /// component as close as possible to the requested center frequency.
+    /// Tuning inaccuracies will be compensated for with the "BB" component.
+    ///
+    /// The args can be used to augment the tuning algorithm.
+    ///  - Use "OFFSET" to specify an "RF" tuning offset,
+    ///    usually with the intention of moving the LO out of the passband.
+    ///    The offset will be compensated for using the "BB" component.
+    ///  - Use the name of a component for the key and a frequency in Hz
+    ///    as the value (any format) to enforce a specific frequency.
+    ///    The other components will be tuned with compensation
+    ///    to achieve the specified overall frequency.
+    ///  - Use the name of a component for the key and the value "IGNORE"
+    ///    so that the tuning algorithm will avoid altering the component.
+    ///  - Vendor specific implementations can also use the same args to augment
+    ///    tuning in other ways such as specifying fractional vs integer N tuning.
+    /// </summary>
+    /// <param name="direction">The channel direction (RX or TX)</param>
+    /// <param name="channel">An available channel on the device</param>
+    /// <param name="name">The name of a tunable element</param>
+    /// <param name="frequency">The center frequency in Hz</param>
+    /// <param name="args">Optional tuner arguments</param>
     public void SetFrequency(Direction direction, uint channel, string name, double frequency, string args = "") =>
         SetFrequency(direction, channel, name, frequency, Utility.StringToKwargs(args));
 
