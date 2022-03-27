@@ -139,29 +139,19 @@ add_subdirectory(tests)
 add_subdirectory(docs)
 
 ########################################################################
-# SWIG bindings support (optional)
+# SWIG wrappers (optional)
+########################################################################
+add_subdirectory(swig)
+
+########################################################################
+# LuaJIT support (optional)
 ########################################################################
 message(STATUS "")
 message(STATUS "#############################################")
-message(STATUS "## Begin configuration for C# support...")
+message(STATUS "## Begin configuration for LuaJIT support...")
 message(STATUS "#############################################")
-message(STATUS "Enabling optional C# bindings if possible...")
-add_subdirectory(csharp)
-
-message(STATUS "")
-message(STATUS "#############################################")
-message(STATUS "## Begin configuration for Python support...")
-message(STATUS "#############################################")
-message(STATUS "Enabling optional Python bindings if possible...")
-add_subdirectory(python)
-
-message(STATUS "")
-message(STATUS "#############################################")
-message(STATUS "## Begin configuration for Python3 support...")
-message(STATUS "#############################################")
-message(STATUS "Enabling optional Python3 bindings if possible...")
-add_subdirectory(python3)
-
+message(STATUS "Enabling optional LuaJIT bindings if possible...")
+add_subdirectory(luajit)
 
 ########################################################################
 # uninstall target

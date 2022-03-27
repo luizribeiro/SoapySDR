@@ -87,7 +87,7 @@ install(TARGETS SoapySDR.CSharp
     DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # TODO: cmake dir
-install(FILES ${PROJECT_SOURCE_DIR}/csharp/SoapySDRCSharpConfig.cmake
+install(FILES ${PROJECT_SOURCE_DIR}/swig/csharp/SoapySDRCSharpConfig.cmake
         DESTINATION ${CMAKE_LIB_DEST})
 
 # Export target to SoapySDR project config
