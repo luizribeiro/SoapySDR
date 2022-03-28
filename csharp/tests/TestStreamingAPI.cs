@@ -214,7 +214,7 @@ public class TestStreamingAPI
         byte[] buf = new byte[numElems * SoapySDR.StreamFormat.FormatToSize(format)];
         fixed (void* ptr = &buf[0])
         {
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read((IntPtr)ptr, numElems, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read((IntPtr)ptr, numElems, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
         }
@@ -244,7 +244,7 @@ public class TestStreamingAPI
             fixed (void* ptr1 = &buf[1])
             {
                 var intPtrs = new IntPtr[] { (IntPtr)ptr0, (IntPtr)ptr1 };
-                Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(intPtrs, numElems, streamFlags, timeNs, timeoutUs, out streamResult));
+                Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(intPtrs, numElems, timeoutUs, out streamResult));
                 Assert.AreEqual(0, streamResult.NumSamples);
                 Assert.AreEqual(streamFlags, streamResult.Flags);
             }
@@ -509,15 +509,15 @@ public class TestStreamingAPI
             var mem = new Memory<T>(buff);
             var span = new Span<T>(buff);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buff, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buff, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mem, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mem, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(span, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(span, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
@@ -544,11 +544,11 @@ public class TestStreamingAPI
             buffs[1] = new T[numElems];
             Memory<T>[] mems = buffs.Select(buff_ => new Memory<T>(buff_)).ToArray();
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buffs, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buffs, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mems, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mems, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
@@ -599,15 +599,15 @@ public class TestStreamingAPI
             var mem = new Memory<T>(buff);
             var span = new Span<T>(buff);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buff, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buff, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mem, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mem, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(span, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(span, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
@@ -634,11 +634,11 @@ public class TestStreamingAPI
             buffs[1] = new T[numElems * 2];
             Memory<T>[] mems = buffs.Select(buff_ => new Memory<T>(buff_)).ToArray();
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buffs, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(ref buffs, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 
-            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mems, streamFlags, timeNs, timeoutUs, out streamResult));
+            Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, rxStream.Read(mems, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(streamFlags, streamResult.Flags);
 

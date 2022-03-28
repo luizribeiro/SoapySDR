@@ -49,6 +49,32 @@ public";
 /// <returns>A list of argument maps, each unique to a device</returns>
 public";
 
+%csmethodmodifiers SoapySDR::Device::Device() "
+/// <summary>
+/// Create a device instance from the first device SoapySDR finds.
+/// </summary>
+public";
+
+%csmethodmodifiers SoapySDR::Device::Device(const SoapySDR::Kwargs &) "
+/// <summary>
+/// Create a device instance based on the given construction args.
+/// </summary>
+/// <param name=\"args\">Device construction args</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::Device(const std::string &) "
+/// <summary>
+/// Create a device instance based on the given construction args.
+/// </summary>
+/// <param name=\"args\">Device construction args</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::Device() "
+/// <summary>
+/// Create a device instance from the first device SoapySDR finds.
+/// </summary>
+public";
+
 %csmethodmodifiers SoapySDR::Device::DriverKey "
 /// <summary>
 /// A key that uniquely identifies the device driver.
@@ -320,7 +346,7 @@ public";
 /// </summary>
 /// <param name=\"direction\">The channel direction (RX or TX)</param>
 /// <param name=\"channel\">An available channel on the device</param>
-/// <returns>The correction in PPM</returns>
+/// <returns>A list of gain string names</returns>
 public";
 
 %csmethodmodifiers SoapySDR::Device::hasGainMode "
@@ -468,6 +494,120 @@ public";
 /// <param name=\"args\">Optional tuner arguments</param>
 public";
 
+%csmethodmodifiers SoapySDR::Device::getFrequency(const int, const size_t) const "
+/// <summary>
+/// Get the overall center frequency of the chain.
+///  - For RX, this specifies the down-conversion frequency.
+///  - For TX, this specifies the up-conversion frequency.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>The center frequency in Hz</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getFrequency(const int, const size_t, const std::string &) const "
+/// <summary>
+/// Get the center frequency in a tunable element of the chain.
+///  - For RX, this specifies the down-conversion frequency.
+///  - For TX, this specifies the up-conversion frequency.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"name\">The name of a tunable element</param>
+/// <returns>The center frequency in Hz</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::listFrequencies "
+/// <summary>
+/// List available tunable elements in the chain, ordered from RF to baseband.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of tunable elements by name</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getFrequencyRange(const int, const size_t) const "
+/// <summary>
+/// Get the range of overall frequency values.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of frequency ranges in Hz</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getFrequencyRange(const int, const size_t, const std::string &) const "
+/// <summary>
+/// Get the range of tunable values for the specified element.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"name\">The name of a tunable elements</param>
+/// <returns>A list of frequency ranges in Hz</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getFrequencyArgsInfo "
+/// <summary>
+/// Query the argument info description for tune args.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of argument info structs</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setSampleRate "
+/// <summary>
+/// Set the baseband sample rate of the chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"rate\">The rate in samples per second</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSampleRate "
+/// <summary>
+/// Get the baseband sample rate of the chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>The rate in samples per second</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSampleRateRange "
+/// <summary>
+/// Get the range of possible baseband sample rates.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of sample rates in samples per second</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setBandwidth "
+/// <summary>
+/// Set the baseband filter width of the chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"bw\">The baseband filter width in Hz</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getBandwidth "
+/// <summary>
+/// Get the baseband filter width of the chain.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>The baseband filter width in Hz</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getBandwidthRange "
+/// <summary>
+/// Get the range of possible baseband filter widths.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of bandwidth ranges in Hz</returns>
+public";
+
 %csmethodmodifiers SoapySDR::Device::MasterClockRate "
 /// <summary>
 /// The device's master clock rate in Hz.
@@ -514,6 +654,92 @@ public";
 /// <summary>
 /// A list of the device's available time sources.
 /// </summary>
+public";
+
+%csmethodmodifiers SoapySDR::Device::hasHardwareTime "
+/// <summary>
+/// Does this device have a hardware clock?
+/// </summary>
+/// <param name=\"what\">An optional clock name</param>
+/// <returns>True if the hardware clock exists</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setHardwareTime "
+/// <summary>
+/// Write the time to the hardware clock on the device.
+/// </summary>
+/// <param name=\"timeNs\">The time in nanoseconds</param>
+/// <param name=\"what\">An optional name of a specific time counter</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getHardwareTime "
+/// <summary>
+/// Read the time from the hardware clock on the device.
+/// </summary>
+/// <param name=\"what\">An optional name of a specific time counter</param>
+/// <returns>The time in nanoseconds</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::listSensors() const "
+/// <summary>
+/// List the available global readback sensors.
+///
+/// A sensor can represent a reference lock, RSSI, temperature.
+/// </summary>
+/// <returns>A list of available sensor string names</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSensorInfo(const std::string &) const "
+/// <summary>
+/// Get meta-information about a global sensor.
+///
+/// Example: displayable name, type, range.
+/// </summary>
+/// <returns>Meta-information about a sensor</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readSensor(const std::string &) const "
+/// <summary>
+/// Readback a global sensor given the name.
+///
+/// The value returned is a string which can represent
+/// a boolean (\"true\"/\"false\"), an integer, or float.
+/// <param name=\"key\">The ID name of an available sensor</param>
+/// <returns>The current value of the sensor</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::listSensors(const int, const size_t) const "
+/// <summary>
+/// List the available channel readback sensors.
+///
+/// A sensor can represent a reference lock, RSSI, temperature.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of available sensor string names</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSensorInfo(const int, const size_t, const std::string &) const "
+/// <summary>
+/// Get meta-information about a channel sensor.
+///
+/// Example: displayable name, type, range.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>Meta-information about a sensor</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readSensor(const int, const size_t, const std::string &) const "
+/// <summary>
+/// Readback a channel sensor given the name.
+///
+/// The value returned is a string which can represent
+/// a boolean (\"true\"/\"false\"), an integer, or float.
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"key\">The ID name of an available sensor</param>
+/// <returns>The current value of the sensor</param>
 public";
 
 %csmethodmodifiers SoapySDR::Device::RegisterInterfaces "

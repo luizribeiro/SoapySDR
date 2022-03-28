@@ -130,7 +130,7 @@ public class RxSamplesToFileExample
                 if ((totalSamps + expectedSamps) == numSamps) streamFlags |= SoapySDR.StreamFlags.EndBurst;
 
                 var streamResult = new SoapySDR.StreamResult();
-                var status = rxStream.Read(bufferSlice, streamFlags, 0, 100000, out streamResult);
+                var status = rxStream.Read(bufferSlice, 100000, out streamResult);
                 if(status != SoapySDR.ErrorCode.None)
                 {
                     throw new ApplicationException(string.Format("Read returned: {0}", status));

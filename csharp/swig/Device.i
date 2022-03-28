@@ -64,6 +64,7 @@ using System.Linq;"
 // Don't wrap deprecated functions
 %ignore SoapySDR::Device::listSampleRates;
 %ignore SoapySDR::Device::listBandwidths;
+%ignore SoapySDR::Device::setCommandTime;
 %ignore SoapySDR::Device::writeRegister(const unsigned, const unsigned);
 %ignore SoapySDR::Device::readRegister(const unsigned) const;
 
@@ -329,8 +330,6 @@ using System.Linq;"
         const SoapySDR::CSharp::StreamHandle& streamHandle,
         const SWIGSizeVector& buffs,
         const size_t numElems,
-        const SoapySDR::CSharp::StreamFlags flags,
-        const long long timeNs,
         const long timeoutUs)
     {
         SoapySDR::CSharp::StreamResultPairInternal resultPair;
@@ -338,7 +337,7 @@ using System.Linq;"
         auto& result = resultPair.second;
 
         const auto buffPtrs = reinterpretCastVector<void>(buffs);
-        auto intFlags = int(flags);
+        int intFlags = 0;
         auto cppRet = self->readStream(
             streamHandle.stream,
             buffPtrs.data(),

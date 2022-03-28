@@ -24,6 +24,7 @@ namespace SoapySDR { namespace CSharp {
         WaitTrigger   = (1 << 6)
     };
 
+    // TODO: ComplexFloat64, etc
     struct StreamFormat
     {
         static const std::string CF64;

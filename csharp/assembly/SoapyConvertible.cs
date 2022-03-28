@@ -5,6 +5,11 @@ using System;
 
 namespace SoapySDR
 {
+    /// <summary>
+    /// SoapySDR has some non-standard conversion logic, so for the sake of consistency, we'll pass
+    /// our calls down into the native library for conversion. This adds a minor performance hit, but
+    /// it's enough of an edge case to be acceptable.
+    /// </summary>
     internal class SoapyConvertible : System.IConvertible
     {
         private string _value;
@@ -66,54 +71,54 @@ namespace SoapySDR
 
         public TypeCode GetTypeCode() => TypeCode.Object;
 
-        public bool ToBoolean(IFormatProvider provider) => TypeConversionInternal.StringToBool(_value);
+        public bool ToBoolean(IFormatProvider _) => TypeConversionInternal.StringToBool(_value);
 
-        public byte ToByte(IFormatProvider provider) => TypeConversionInternal.StringToByte(_value);
+        public byte ToByte(IFormatProvider _) => TypeConversionInternal.StringToByte(_value);
 
-        public char ToChar(IFormatProvider provider) => throw new NotImplementedException();
+        public char ToChar(IFormatProvider _) => throw new NotImplementedException();
 
-        public DateTime ToDateTime(IFormatProvider provider) => throw new NotImplementedException();
+        public DateTime ToDateTime(IFormatProvider _) => throw new NotImplementedException();
 
-        public decimal ToDecimal(IFormatProvider provider) => (decimal)TypeConversionInternal.StringToDouble(_value);
+        public decimal ToDecimal(IFormatProvider _) => (decimal)TypeConversionInternal.StringToDouble(_value);
 
-        public double ToDouble(IFormatProvider provider) => TypeConversionInternal.StringToDouble(_value);
+        public double ToDouble(IFormatProvider _) => TypeConversionInternal.StringToDouble(_value);
 
-        public short ToInt16(IFormatProvider provider) => TypeConversionInternal.StringToShort(_value);
+        public short ToInt16(IFormatProvider _) => TypeConversionInternal.StringToShort(_value);
 
-        public int ToInt32(IFormatProvider provider) => TypeConversionInternal.StringToInt(_value);
+        public int ToInt32(IFormatProvider _) => TypeConversionInternal.StringToInt(_value);
 
-        public long ToInt64(IFormatProvider provider) => TypeConversionInternal.StringToLong(_value);
+        public long ToInt64(IFormatProvider _) => TypeConversionInternal.StringToLong(_value);
 
-        public sbyte ToSByte(IFormatProvider provider) => TypeConversionInternal.StringToSByte(_value);
+        public sbyte ToSByte(IFormatProvider _) => TypeConversionInternal.StringToSByte(_value);
 
-        public float ToSingle(IFormatProvider provider) => TypeConversionInternal.StringToFloat(_value);
+        public float ToSingle(IFormatProvider _) => TypeConversionInternal.StringToFloat(_value);
 
-        public string ToString(IFormatProvider provider) => _value;
+        public string ToString(IFormatProvider _) => _value;
 
-        public object ToType(Type conversionType, IFormatProvider provider)
+        public object ToType(Type conversionType, IFormatProvider _)
         {
-            if (conversionType.Equals(typeof(string))) return ToString(provider);
-            if (conversionType.Equals(typeof(bool))) return ToBoolean(provider);
-            if (conversionType.Equals(typeof(sbyte))) return ToSByte(provider);
-            if (conversionType.Equals(typeof(short))) return ToInt16(provider);
-            if (conversionType.Equals(typeof(int))) return ToInt32(provider);
-            if (conversionType.Equals(typeof(long))) return ToInt64(provider);
-            if (conversionType.Equals(typeof(byte))) return ToByte(provider);
-            if (conversionType.Equals(typeof(ushort))) return ToUInt16(provider);
-            if (conversionType.Equals(typeof(uint))) return ToUInt32(provider);
-            if (conversionType.Equals(typeof(ulong))) return ToUInt64(provider);
-            if (conversionType.Equals(typeof(float))) return ToSingle(provider);
-            if (conversionType.Equals(typeof(double))) return ToDouble(provider);
-            if (conversionType.Equals(typeof(decimal))) return ToDecimal(provider);
+            if (conversionType.Equals(typeof(string))) return ToString(_);
+            if (conversionType.Equals(typeof(bool))) return ToBoolean(_);
+            if (conversionType.Equals(typeof(sbyte))) return ToSByte(_);
+            if (conversionType.Equals(typeof(short))) return ToInt16(_);
+            if (conversionType.Equals(typeof(int))) return ToInt32(_);
+            if (conversionType.Equals(typeof(long))) return ToInt64(_);
+            if (conversionType.Equals(typeof(byte))) return ToByte(_);
+            if (conversionType.Equals(typeof(ushort))) return ToUInt16(_);
+            if (conversionType.Equals(typeof(uint))) return ToUInt32(_);
+            if (conversionType.Equals(typeof(ulong))) return ToUInt64(_);
+            if (conversionType.Equals(typeof(float))) return ToSingle(_);
+            if (conversionType.Equals(typeof(double))) return ToDouble(_);
+            if (conversionType.Equals(typeof(decimal))) return ToDecimal(_);
 
             throw new NotImplementedException(conversionType.FullName);
         }
 
-        public ushort ToUInt16(IFormatProvider provider) => TypeConversionInternal.StringToUShort(_value);
+        public ushort ToUInt16(IFormatProvider _) => TypeConversionInternal.StringToUShort(_value);
 
-        public uint ToUInt32(IFormatProvider provider) => TypeConversionInternal.StringToUInt(_value);
+        public uint ToUInt32(IFormatProvider _) => TypeConversionInternal.StringToUInt(_value);
 
-        public ulong ToUInt64(IFormatProvider provider) => TypeConversionInternal.StringToULong(_value);
+        public ulong ToUInt64(IFormatProvider _) => TypeConversionInternal.StringToULong(_value);
 
         //
         // Object overrides

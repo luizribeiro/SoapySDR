@@ -30,22 +30,16 @@ namespace SoapySDR
         /// </summary>
         /// <typeparam name="T">The type of the given receive buffer. This type must match the stream's format type.</typeparam>
         /// <param name="memory">The buffer to receive into. For complex types, this buffer is interleaved.</param>
-        /// <param name="flags">Optional input flags.</param>
-        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
         /// <param name="timeoutUs">The operation timeout in microseconds.</param>
         /// <param name="result">An output to store stream metadata.</param>
         /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Read<T>(
             Memory<T> memory,
-            StreamFlags flags,
-            long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
             return Read(
                 new Memory<T>[] { memory },
-                flags,
-                timeNs,
                 timeoutUs,
                 out result);
         }
@@ -55,15 +49,11 @@ namespace SoapySDR
         /// </summary>
         /// <typeparam name="T">The type of the given receive buffers. This type must match the stream's format type.</typeparam>
         /// <param name="memory">The buffers to receive into. For complex types, this buffer is interleaved. The array length must match the number of channels, and all Memory<> instances must be of the same length.</param>
-        /// <param name="flags">Optional input flags.</param>
-        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
         /// <param name="timeoutUs">The operation timeout in microseconds.</param>
         /// <param name="result">An output to store stream metadata.</param>
         /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Read<T>(
             Memory<T>[] memory,
-            StreamFlags flags,
-            long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
@@ -83,8 +73,6 @@ namespace SoapySDR
                     _streamHandle,
                     memsAsSizes,
                     (uint)memory[0].Length,
-                    flags,
-                    timeNs,
                     timeoutUs);
 
                 result = deviceOutput.Second;
@@ -107,8 +95,6 @@ namespace SoapySDR
         /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Read<T>(
             Span<T> span,
-            StreamFlags flags,
-            long timeNs,
             int timeoutUs,
             out StreamResult result) where T : unmanaged
         {
@@ -116,7 +102,7 @@ namespace SoapySDR
 
             fixed(T* data = &MemoryMarshal.GetReference(span))
             {
-                return Read((IntPtr)data, (uint)span.Length, flags, timeNs, timeoutUs, out result);
+                return Read((IntPtr)data, (uint)span.Length, timeoutUs, out result);
             }
         }
 
@@ -125,19 +111,15 @@ namespace SoapySDR
         /// </summary>
         /// <typeparam name="T">The type of the underlying destination array. This type must match the stream's format type.</typeparam>
         /// <param name="buff">The managed array to receive into. For complex types, this buffer is interleaved.</param>
-        /// <param name="flags">Optional input flags.</param>
-        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
         /// <param name="timeoutUs">The operation timeout in microseconds.</param>
         /// <param name="result">An output to store stream metadata.</param>
         /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Read<T>(
             ref T[] buff,
-            StreamFlags flags,
-            long timeNs,
             int timeoutUs,
             out StreamResult result) where T: unmanaged
         {
-            return Read(new Memory<T>(buff), flags, timeNs, timeoutUs, out result);
+            return Read(new Memory<T>(buff), timeoutUs, out result);
         }
 
         /// <summary>
@@ -145,19 +127,15 @@ namespace SoapySDR
         /// </summary>
         /// <typeparam name="T">The type of the underlying destination array. This type must match the stream's format type.</typeparam>
         /// <param name="buffs">The managed arrays to receive into. For complex types, this buffer is interleaved.</param>
-        /// <param name="flags">Optional input flags.</param>
-        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
         /// <param name="timeoutUs">The operation timeout in microseconds.</param>
         /// <param name="result">An output to store stream metadata.</param>
         /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Read<T>(
             ref T[][] buffs,
-            StreamFlags flags,
-            long timeNs,
             int timeoutUs,
             out StreamResult result) where T: unmanaged
         {
-            return Read(buffs.Select(buff => new Memory<T>(buff)).ToArray(), flags, timeNs, timeoutUs, out result);
+            return Read(buffs.Select(buff => new Memory<T>(buff)).ToArray(), timeoutUs, out result);
         }
 
         /// <summary>
@@ -165,24 +143,18 @@ namespace SoapySDR
         /// </summary>
         /// <param name="ptr">A pointer to the buffer to receive into.</param>
         /// <param name="numElems">The number of elements (of the stream format's size) in the destination buffer.</param>
-        /// <param name="flags">Optional input flags.</param>
-        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
         /// <param name="timeoutUs">The operation timeout in microseconds.</param>
         /// <param name="result">An output to store stream metadata.</param>
         /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Read(
             IntPtr ptr,
             uint numElems,
-            StreamFlags flags,
-            long timeNs,
             int timeoutUs,
             out StreamResult result)
         {
             return Read(
                 new IntPtr[] { ptr },
                 numElems,
-                flags,
-                timeNs,
                 timeoutUs,
                 out result);
         }
@@ -192,16 +164,12 @@ namespace SoapySDR
         /// </summary>
         /// <param name="ptrs">Pointers to the receive buffers.</param>
         /// <param name="numElems">The number of elements (of the stream format's size) in each destination buffer.</param>
-        /// <param name="flags">Optional input flags.</param>
-        /// <param name="timeNs">The buffer's timestamp in nanoseconds.</param>
         /// <param name="timeoutUs">The operation timeout in microseconds.</param>
         /// <param name="result">An output to store stream metadata.</param>
         /// <returns>An error code for the stream operation.</returns>
         public unsafe ErrorCode Read(
             IntPtr[] ptrs,
             uint numElems,
-            StreamFlags flags,
-            long timeNs,
             int timeoutUs,
             out StreamResult result)
         {
@@ -215,8 +183,6 @@ namespace SoapySDR
                     _streamHandle,
                     Utility.ToSizeListInternal(ptrs),
                     numElems,
-                    flags,
-                    timeNs,
                     timeoutUs);
 
                 result = deviceOutput.Second;
