@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
-%module SoapySDR
+%module SoapySDROctave
 
 %include "soapy_common.i"
 
@@ -16,6 +16,9 @@
 %include <std_map.i>
 %include <std_string.i>
 %include <std_vector.i>
+
+%template(string_vector) std::vector<std::string>;
+%template(string_map) std::map<std::string, std::string>;
 
 %include <SoapySDR/Config.h>
 %include <SoapySDR/Version.hpp>
