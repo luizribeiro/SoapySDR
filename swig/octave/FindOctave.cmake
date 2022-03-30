@@ -119,6 +119,9 @@ find_path ( OCTAVE_INCLUDE_DIR
             HINTS ${OCTAVE_INCLUDE_PATHS}
           )
 
+# SWIG includes the innermost directly in octave-config's OCTINCLUDEDIR output
+get_filename_component(OCTAVE_INCLUDE_DIR ${OCTAVE_INCLUDE_DIR} DIRECTORY)
+
 set ( OCTAVE_INCLUDE_DIRS ${OCTAVE_INCLUDE_DIR} )
 
 macro ( octave_add_oct FUNCTIONNAME )

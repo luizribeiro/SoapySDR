@@ -1,4 +1,13 @@
 ########################################################################
+# Project setup
+########################################################################
+cmake_minimum_required(VERSION 3.3)
+project(SoapySDROctave CXX)
+enable_testing()
+
+find_package(SoapySDR CONFIG REQUIRED)
+
+########################################################################
 # Find SWIG
 ########################################################################
 find_package(SWIG)
@@ -25,3 +34,18 @@ endif()
 # Build Module
 ########################################################################
 include(UseSWIG)
+set(CMAKE_SWIG_FLAGS -I${SoapySDR_INCLUDE_DIRS} -I${CMAKE_CURRENT_SOURCE_DIR}/..)
+
+set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
+
+# TODO: output name SoapySDR
+if(${CMAKE_VERSION} VERSION_LESS "3.8")
+SWIG_ADD_MODULE(SoapySDROctave octave SoapySDR.i)
+else()
+SWIG_ADD_LIBRARY(SoapySDROctave LANGUAGE octave SOURCES SoapySDR.i)
+endif()
+
+target_include_directories(${SWIG_MODULE_SoapySDROctave_REAL_NAME} PRIVATE
+    ${SoapySDR_INCLUDE_DIRS}
+    ${OCTAVE_INCLUDE_DIRS})
+SWIG_LINK_LIBRARIES(SoapySDROctave SoapySDR ${OCTAVE_LIBRARIES})
