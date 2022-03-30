@@ -1,4 +1,14 @@
 ########################################################################
+# Octave support (optional)
+########################################################################
+message(STATUS "")
+message(STATUS "#############################################")
+message(STATUS "## Begin configuration for Octave support...")
+message(STATUS "#############################################")
+message(STATUS "Enabling optional Octave bindings if possible...")
+add_subdirectory(octave)
+
+########################################################################
 # Python support (optional)
 ########################################################################
 message(STATUS "")
