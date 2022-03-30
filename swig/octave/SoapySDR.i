@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
-%module SoapySDROctave
+%module SoapySDR
 
 %include "soapy_common.i"
 

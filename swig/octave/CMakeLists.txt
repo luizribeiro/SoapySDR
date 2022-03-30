@@ -49,3 +49,5 @@ target_include_directories(${SWIG_MODULE_SoapySDROctave_REAL_NAME} PRIVATE
     ${SoapySDR_INCLUDE_DIRS}
     ${OCTAVE_INCLUDE_DIRS})
 SWIG_LINK_LIBRARIES(SoapySDROctave SoapySDR ${OCTAVE_LIBRARIES})
+
+set_target_properties(SoapySDROctave PROPERTIES OUTPUT_NAME SoapySDR)
