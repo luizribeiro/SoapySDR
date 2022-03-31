@@ -6,6 +6,8 @@
 %include "soapy_common.i"
 
 %{
+#include "Enums.hpp"
+
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Time.hpp>
@@ -18,11 +20,13 @@
 %include <std_string.i>
 %include <std_vector.i>
 
-%template(string_vector) std::vector<std::string>;
-%template(string_map) std::map<std::string, std::string>;
+%template(StringVector) std::vector<std::string>;
+%template(Kwargs) std::map<std::string, std::string>;
 
 %include <SoapySDR/Config.h>
 %include <SoapySDR/Version.hpp>
 %include <SoapySDR/Types.hpp>
 %include <SoapySDR/Device.hpp>
 %include <SoapySDR/Time.hpp>
+
+%include <Enums.hpp>
