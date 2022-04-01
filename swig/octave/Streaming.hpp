@@ -26,7 +26,7 @@ void readStream(
     const size_t numSamples,
     const size_t numChannels,
     MatrixType &samplesOut,
-    StreamFlag &flagsOut,
+    int &flagsOut,
     long long &timeNsOut,
     const long timeoutUs)
 {
@@ -46,16 +46,13 @@ void readStream(
         buffs.emplace_back(&samplesBuff[chan * numSamples]);
     }
 
-    int flagsCpp = 0;
     const auto readRet = device->readStream(
         stream,
         buffs.data(),
         numSamples,
-        flagsCpp,
+        flagsOut,
         timeNsOut,
         timeoutUs);
-
-    flagsOut = static_cast<StreamFlag>(flagsCpp);
 }
 
 }
@@ -66,7 +63,7 @@ inline void readStreamCF32(
     const size_t numSamples,
     const size_t numChannels,
     FloatComplexMatrix &samplesOut,
-    StreamFlag &flagsOut,
+    int &flagsOut,
     long long &timeNsOut,
     const long timeoutUs)
 {
@@ -87,7 +84,7 @@ inline void readStreamCF64(
     const size_t numSamples,
     const size_t numChannels,
     ComplexMatrix &samplesOut,
-    StreamFlag &flagsOut,
+    int &flagsOut,
     long long &timeNsOut,
     const long timeoutUs)
 {

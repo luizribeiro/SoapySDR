@@ -30,4 +30,10 @@
 %include <SoapySDR/Device.hpp>
 %include <SoapySDR/Time.hpp>
 
+// TODO: figure out how to typemap ArgInfo::Type to int and use this instead
+%nodefaultctor SoapySDR::Octave::ArgType;
+%nodefaultctor SoapySDR::Octave::Direction;
+%nodefaultctor SoapySDR::Octave::ErrorCode;
+%nodefaultctor SoapySDR::Octave::StreamFlag;
+%nodefaultctor SoapySDR::Octave::StreamFormat;
 %include <Constants.hpp>
