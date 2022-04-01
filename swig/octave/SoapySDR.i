@@ -7,6 +7,7 @@
 
 %{
 #include "Enums.hpp"
+#include "Streaming.hpp"
 
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Device.hpp>
