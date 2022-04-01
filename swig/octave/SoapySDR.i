@@ -6,7 +6,7 @@
 %include "soapy_common.i"
 
 %{
-#include "Enums.hpp"
+#include "Constants.hpp"
 #include "Streaming.hpp"
 
 #include <SoapySDR/Config.hpp>
@@ -30,4 +30,4 @@
 %include <SoapySDR/Device.hpp>
 %include <SoapySDR/Time.hpp>
 
-%include <Enums.hpp>
+%include <Constants.hpp>

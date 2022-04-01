@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "Enums.hpp"
+#include "Constants.hpp"
 
 #include <SoapySDR/Device.hpp>
 
