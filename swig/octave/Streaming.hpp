@@ -47,6 +47,14 @@ struct TxStreamResult
     int flags{0};
 };
 
+struct StreamStatus
+{
+    int errorCode{0};
+    size_t chanMask{0};
+    int flags{0};
+    long timeNs{0};
+};
+
 template <typename OutputType>
 RxStreamResult readStream(
     SoapySDR::Device *device,

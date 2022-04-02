@@ -332,6 +332,27 @@
             true);
     }
 
+    SoapySDR::Octave::StreamStatus readStreamStatus(
+        const SoapySDR::Octave::Stream &stream,
+        const long timeoutUs)
+    {
+        assert(stream.internal);
+
+        // Octave+SWIG doesn't support (unsigned) long long
+        long long intermediateTimeNs{0};
+
+        SoapySDR::Octave::StreamStatus status;
+        status.errorCode = self->readStreamStatus(
+            stream.internal,
+            status.chanMask,
+            status.flags,
+            intermediateTimeNs);
+
+        status.timeNs = static_cast<long>(intermediateTimeNs);
+
+        return status;
+    }
+
     octave_value readSensor(const std::string &key)
     {
         const auto sensorInfo = self->getSensorInfo(key);
