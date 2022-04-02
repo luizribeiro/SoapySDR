@@ -7,100 +7,86 @@
 
 #include <SoapySDR/Device.hpp>
 
+#include <octave/int8NDArray.h>
+#include <octave/int16NDArray.h>
+#include <octave/int32NDArray.h>
+#include <octave/uint8NDArray.h>
+#include <octave/uint16NDArray.h>
+#include <octave/uint32NDArray.h>
 #include <octave/CMatrix.h>
 #include <octave/fMatrix.h>
 
 #include <cassert>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace SoapySDR { namespace Octave {
 
-namespace detail
+struct Stream
 {
+    int direction{0};
+    std::string format;
+    std::vector<size_t> channels;
+    SoapySDR::Kwargs args;
 
-template <typename MatrixType>
-int readStream(
+    SoapySDR::Stream *internal{nullptr};
+};
+
+struct RxStreamResult
+{
+    octave_value samples;
+    int errorCode{0};
+    int flags{0};
+    long timeNs{0};
+};
+
+template <typename OutputType>
+RxStreamResult readStream(
     SoapySDR::Device *device,
-    SoapySDR::Stream *stream,
+    const Stream &stream,
     const size_t numSamples,
-    const size_t numChannels,
-    octave_value &samplesOut,
-    int &flagsOut,
-    long long &timeNsOut,
-    const long timeoutUs)
+    const long timeoutUs,
+    const bool interleaved)
 {
     assert(device);
-    assert(stream);
+    assert(stream.internal);
+    assert(stream.direction == SOAPY_SDR_RX);
     assert(numSamples > 0);
-    assert(numChannels > 0);
 
-    MatrixType intermediate(
+    // Column-major
+    const auto numChannels = stream.channels.size();
+    const auto internalNumSamples = interleaved ? (numSamples*2) : numSamples;
+
+    OutputType intermediateSamples(dim_vector(
         static_cast<octave_idx_type>(numChannels),
-        static_cast<octave_idx_type>(numSamples));
+        static_cast<octave_idx_type>(internalNumSamples)));
 
-    auto *samplesBuff = intermediate.fortran_vec();
+    auto *samplesBuff = intermediateSamples.fortran_vec();
     std::vector<void *> buffs;
     for(size_t chan = 0; chan < numChannels; ++chan)
     {
-        buffs.emplace_back(&samplesBuff[chan * numSamples]);
+        buffs.emplace_back(&samplesBuff[chan * internalNumSamples]);
     }
 
-    const auto readRet = device->readStream(
-        stream,
+    // Octave+SWIG doesn't support (unsigned) long long
+    long long intermediateTimeNs{0};
+
+    // TODO: see if we can resize if we can't read this many elements in one run.
+    // I'm not sure if it will remove what's there shrinking a dimension.
+    RxStreamResult result;
+    result.errorCode = device->readStream(
+        stream.internal,
         buffs.data(),
         numSamples,
-        flagsOut,
-        timeNsOut,
+        result.flags,
+        intermediateTimeNs,
         timeoutUs);
 
-    samplesOut = intermediate;
+    result.samples = intermediateSamples;
+    result.timeNs = static_cast<long>(intermediateTimeNs);
 
-    return readRet;
-}
-
-}
-
-inline int readStreamCF32(
-    SoapySDR::Device *device,
-    SoapySDR::Stream *stream,
-    const size_t numSamples,
-    const size_t numChannels,
-    octave_value &samplesOut,
-    int &flagsOut,
-    long long &timeNsOut,
-    const long timeoutUs)
-{
-    return detail::readStream<FloatComplexMatrix>(
-        device,
-        stream,
-        numSamples,
-        numChannels,
-        samplesOut,
-        flagsOut,
-        timeNsOut,
-        timeoutUs);
-}
-
-inline int readStreamCF64(
-    SoapySDR::Device *device,
-    SoapySDR::Stream *stream,
-    const size_t numSamples,
-    const size_t numChannels,
-    octave_value &samplesOut,
-    int &flagsOut,
-    long long &timeNsOut,
-    const long timeoutUs)
-{
-    return detail::readStream<ComplexMatrix>(
-        device,
-        stream,
-        numSamples,
-        numChannels,
-        samplesOut,
-        flagsOut,
-        timeNsOut,
-        timeoutUs);
+    return result;
 }
 
 }}

@@ -24,14 +24,18 @@
 %ignore SoapySDR::Device::readRegister(const unsigned) const;
 
 // Ignore stream-related functions, we're rewriting
-%ignore SoapySDR::Device::setupStream;
-%ignore SoapySDR::Device::closeStream;
-%ignore SoapySDR::Device::getStreamMTU;
-%ignore SoapySDR::Device::activateStream;
-%ignore SoapySDR::Device::deactivateStream;
-%ignore SoapySDR::Device::readStream;
-%ignore SoapySDR::Device::writeStream;
-%ignore SoapySDR::Device::readStreamStatus;
+// TODO: how?
+//%ignore SoapySDR::Device::setupStream;
+//%ignore SoapySDR::Device::closeStream;
+//%ignore SoapySDR::Device::getStreamMTU;
+//%ignore SoapySDR::Device::activateStream;
+//%ignore SoapySDR::Device::deactivateStream;
+//%ignore SoapySDR::Device::readStream;
+//%ignore SoapySDR::Device::writeStream;
+//%ignore SoapySDR::Device::readStreamStatus;
+
+%ignore SoapySDR::Octave::readStream;
+%ignore SoapySDR::Octave::Stream::internal;
 
 // Ignore DMA-related functions
 %ignore SoapySDR::Device::getNumDirectAccessBuffers;
@@ -51,6 +55,7 @@
 %attributestring(SoapySDR::Device, std::string, hardwareKey, getHardwareKey);
 
 %include <SoapySDR/Device.hpp>
+%include <Streaming.hpp>
 
 %extend SoapySDR::Device
 {
@@ -72,6 +77,98 @@
     std::string __str__()
     {
         return self->getDriverKey() + ":" + self->getHardwareKey();
+    }
+
+    // TODO: check that format supported by this wrapper
+    SoapySDR::Octave::Stream setupStream(
+        int direction,
+        const std::string &format,
+        const std::vector<size_t> &channels,
+        const SoapySDR::Kwargs &args)
+    {
+        SoapySDR::Octave::Stream stream;
+        if((stream.internal = self->setupStream(direction, format, channels, args)))
+        {
+            stream.direction = direction;
+            stream.format = format;
+            stream.channels = channels;
+            stream.args = args;
+        }
+        else throw std::runtime_error("Failed to initialize stream");
+
+        return stream;
+    }
+
+    SoapySDR::Octave::RxStreamResult readStream(
+        const SoapySDR::Octave::Stream &stream,
+        const size_t numSamples,
+        const long timeoutUs)
+    {
+        if(stream.direction != SOAPY_SDR_RX)
+            throw std::invalid_argument("Stream must be RX");
+
+        SoapySDR::Octave::RxStreamResult result;
+
+        if(stream.format == SOAPY_SDR_CF32)
+            result = SoapySDR::Octave::readStream<FloatComplexMatrix>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                false);
+        else if(stream.format == SOAPY_SDR_CF64)
+            result = SoapySDR::Octave::readStream<ComplexMatrix>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                false);
+        else if(stream.format == SOAPY_SDR_CS8)
+            result = SoapySDR::Octave::readStream<int8NDArray>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                true);
+        else if(stream.format == SOAPY_SDR_CS16)
+            result = SoapySDR::Octave::readStream<int16NDArray>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                true);
+        else if(stream.format == SOAPY_SDR_CS32)
+            result = SoapySDR::Octave::readStream<int32NDArray>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                true);
+        else if(stream.format == SOAPY_SDR_CU8)
+            result = SoapySDR::Octave::readStream<uint8NDArray>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                true);
+        else if(stream.format == SOAPY_SDR_CU16)
+            result = SoapySDR::Octave::readStream<uint16NDArray>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                true);
+        else if(stream.format == SOAPY_SDR_CU32)
+            result = SoapySDR::Octave::readStream<uint32NDArray>(
+                self,
+                stream,
+                numSamples,
+                timeoutUs,
+                true);
+        else
+            throw std::invalid_argument("Input stream has invalid/unsupported format: "+stream.format);
+
+        return result;
     }
 
     octave_value readSensor(const std::string &key)
@@ -190,32 +287,5 @@
             self->writeSetting(direction, channel, key, value.double_value());
         else
             self->writeSetting(direction, channel, key, value.string_value(true));
-    }
-
-    // TODO: struct that stores stream stuff like C# wrapper
-    int readStream2(
-        SoapySDR::Stream *stream,
-        octave_value &output,
-        const size_t numSamples,
-        const size_t numChannels,
-        int &flagsOut,
-        long &timeNsOut,
-        const long timeoutUs)
-    {
-        // SWIG+Octave does not support long long
-        long long intermediateTimeNs = 0;
-
-        auto ret = SoapySDR::Octave::readStreamCF32(
-            self,
-            stream,
-            numSamples,
-            numChannels,
-            output,
-            flagsOut,
-            intermediateTimeNs,
-            timeoutUs);
-
-        timeNsOut = static_cast<long long>(intermediateTimeNs);
-        return ret;
     }
 }

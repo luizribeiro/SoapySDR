@@ -32,6 +32,7 @@
 %include <std_vector.i>
 
 %template(UnsignedVector) std::vector<unsigned>;
+%template(SizeVector) std::vector<size_t>;
 %template(StringVector) std::vector<std::string>;
 %template(Kwargs) std::map<std::string, std::string>;
 %template(KwargsList) std::vector<std::map<std::string, std::string>>;
