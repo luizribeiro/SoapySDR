@@ -21,6 +21,8 @@
 #include <string>
 #include <vector>
 
+// TODO: no need for hiding long long
+
 namespace SoapySDR { namespace Octave {
 
 struct Stream

@@ -42,7 +42,6 @@
 %include <SoapySDR/Config.h>
 %include <SoapySDR/Version.hpp>
 %include <SoapySDR/Types.hpp>
-%include <SoapySDR/Time.hpp>
 
 // TODO: figure out how to typemap ArgInfo::Type to int and use this instead
 %nodefaultctor SoapySDR::Octave::ArgType;
@@ -51,5 +50,7 @@
 %nodefaultctor SoapySDR::Octave::StreamFlag;
 %nodefaultctor SoapySDR::Octave::StreamFormat;
 %include <Constants.hpp>
+
+%include <SoapySDR/Time.hpp>
 
 %include "Device.i"
