@@ -35,6 +35,8 @@
 %template(StringVector) std::vector<std::string>;
 %template(Kwargs) std::map<std::string, std::string>;
 %template(KwargsList) std::vector<std::map<std::string, std::string>>;
+%template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
+%template(RangeList) std::vector<SoapySDR::Range>;
 
 %include <SoapySDR/Config.h>
 %include <SoapySDR/Version.hpp>

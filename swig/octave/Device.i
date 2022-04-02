@@ -7,6 +7,8 @@
 
 %{
 #include <SoapySDR/Device.hpp>
+
+#include <algorithm>
 %}
 
 // Ignore normal factory stuff
@@ -39,6 +41,9 @@
 %ignore SoapySDR::Device::acquireWriteBuffer;
 %ignore SoapySDR::Device::releaseWriteBuffer;
 
+// Ignore setting+sensor functions, we're rewriting
+// TODO: how?
+
 // Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNativeDeviceHandle;
 
@@ -67,6 +72,124 @@
     std::string __str__()
     {
         return self->getDriverKey() + ":" + self->getHardwareKey();
+    }
+
+    octave_value readSensor(const std::string &key)
+    {
+        const auto sensorInfo = self->getSensorInfo(key);
+        switch(sensorInfo.type)
+        {
+        case SoapySDR::ArgInfo::BOOL:
+            return self->readSensor<bool>(key);
+
+        case SoapySDR::ArgInfo::INT:
+            return self->readSensor<int>(key);
+
+        case SoapySDR::ArgInfo::FLOAT:
+            return self->readSensor<double>(key);
+
+        default:
+            return self->readSensor(key);
+        }
+    }
+
+    octave_value readSensor(const int direction, const size_t channel, const std::string &key)
+    {
+        const auto sensorInfo = self->getSensorInfo(direction, channel, key);
+        switch(sensorInfo.type)
+        {
+        case SoapySDR::ArgInfo::BOOL:
+            return self->readSensor<bool>(direction, channel, key);
+
+        case SoapySDR::ArgInfo::INT:
+            return self->readSensor<int>(direction, channel, key);
+
+        case SoapySDR::ArgInfo::FLOAT:
+            return self->readSensor<double>(direction, channel, key);
+
+        default:
+            return self->readSensor(direction, channel, key);
+        }
+    }
+
+    octave_value readSetting(const std::string &key)
+    {
+        const auto allSettingInfo = self->getSettingInfo();
+        auto settingIter = std::find_if(
+            std::begin(allSettingInfo),
+            std::end(allSettingInfo),
+            [&key](const SoapySDR::ArgInfo &argInfo)
+            {
+                return (argInfo.key == key);
+            });
+        if(settingIter != allSettingInfo.end())
+        {
+            switch(settingIter->type)
+            {
+            case SoapySDR::ArgInfo::BOOL:
+                return self->readSetting<bool>(key);
+
+            case SoapySDR::ArgInfo::INT:
+                return self->readSetting<int>(key);
+
+            case SoapySDR::ArgInfo::FLOAT:
+                return self->readSetting<double>(key);
+
+            default:
+                return self->readSetting(key);
+            }
+        }
+        else throw std::invalid_argument("Invalid setting: "+key);
+    }
+
+    octave_value readSetting(const int direction, const size_t channel, const std::string &key)
+    {
+        const auto allSettingInfo = self->getSettingInfo(direction, channel);
+        auto settingIter = std::find_if(
+            std::begin(allSettingInfo),
+            std::end(allSettingInfo),
+            [&key](const SoapySDR::ArgInfo &argInfo)
+            {
+                return (argInfo.key == key);
+            });
+        if(settingIter != allSettingInfo.end())
+        {
+            switch(settingIter->type)
+            {
+            case SoapySDR::ArgInfo::BOOL:
+                return self->readSetting<bool>(direction, channel, key);
+
+            case SoapySDR::ArgInfo::INT:
+                return self->readSetting<int>(direction, channel, key);
+
+            case SoapySDR::ArgInfo::FLOAT:
+                return self->readSetting<double>(direction, channel, key);
+
+            default:
+                return self->readSetting(direction, channel, key);
+            }
+        }
+        else throw std::invalid_argument("Invalid setting: "+key);
+    }
+
+    void writeSetting(const std::string &key, const octave_value &value)
+    {
+        if(value.is_integer_type())
+            self->writeSetting(key, value.int_value());
+        else if(value.is_float_type())
+            self->writeSetting(key, value.double_value());
+        else
+            self->writeSetting(key, value.string_value(true));
+    }
+
+    void writeSetting(const int direction, const size_t channel, const std::string &key, const octave_value &value)
+    {
+        if(value.is_integer_type())
+            self->writeSetting(direction, channel, key, value.int_value());
+        else if(value.is_float_type())
+            self->writeSetting(direction, channel, key, value.double_value());
+        else
+            self->writeSetting(direction, channel, key, value.string_value(true));
     }
 
     // TODO: struct that stores stream stuff like C# wrapper
