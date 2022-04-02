@@ -80,13 +80,27 @@
         return self->getDriverKey() + ":" + self->getHardwareKey();
     }
 
-    // TODO: check that format supported by this wrapper
     SoapySDR::Octave::Stream setupStream(
         int direction,
         const std::string &format,
         const std::vector<size_t> &channels,
         const SoapySDR::Kwargs &args)
     {
+        static const std::vector<std::string> SupportedFormats
+        {
+            SOAPY_SDR_CF32,
+            SOAPY_SDR_CF64,
+            SOAPY_SDR_CS8,
+            SOAPY_SDR_CS16,
+            SOAPY_SDR_CS32,
+            SOAPY_SDR_CU8,
+            SOAPY_SDR_CU16,
+            SOAPY_SDR_CU32,
+        };
+        auto formatIter = std::find(std::begin(SupportedFormats), std::end(SupportedFormats), format);
+        if(formatIter == SupportedFormats.end())
+            throw std::invalid_argument("Format invalid or unsupported by Octave wrapper: "+format);
+
         SoapySDR::Octave::Stream stream;
         if((stream.internal = self->setupStream(direction, format, channels, args)))
         {
