@@ -41,6 +41,12 @@ struct RxStreamResult
     long timeNs{0};
 };
 
+struct TxStreamResult
+{
+    int errorCode{0};
+    int flags{0};
+};
+
 template <typename OutputType>
 RxStreamResult readStream(
     SoapySDR::Device *device,
@@ -85,6 +91,52 @@ RxStreamResult readStream(
 
     result.samples = intermediateSamples;
     result.timeNs = static_cast<long>(intermediateTimeNs);
+
+    return result;
+}
+
+template <typename InputType>
+TxStreamResult writeStream(
+    SoapySDR::Device *device,
+    const Stream &stream,
+    const InputType &inputSamples,
+    const long timeNs,
+    const long timeoutUs,
+    const bool interleaved)
+{
+    assert(device);
+    assert(stream.internal);
+    assert(stream.direction == SOAPY_SDR_TX);
+
+    const auto numChannels = stream.channels.size();
+    const auto dims = inputSamples.dims();
+    assert(dims.length() == 2);
+
+    const auto internalNumSamples = dims.elem(1);
+    const auto numSamples = interleaved ? (internalNumSamples/2) : internalNumSamples;
+
+    if(dims.elem(0) != numChannels)
+        throw std::invalid_argument("Outer dimension must match number of channels ("+std::to_string(numChannels)+")");
+    if(internalNumSamples == 0)
+        throw std::invalid_argument("Inner dimension must not be empty");
+    if(interleaved and (internalNumSamples % 2) == 1)
+        throw std::invalid_argument("Inner dimension must be a multiple of 2");
+
+    const auto *samplesBuff = inputSamples.fortran_vec();
+    std::vector<const void *> buffs;
+    for(size_t chan = 0; chan < numChannels; ++chan)
+    {
+        buffs.emplace_back(&samplesBuff[chan * internalNumSamples]);
+    }
+
+    TxStreamResult result;
+    result.errorCode = device->writeStream(
+        stream.internal,
+        buffs.data(),
+        numSamples,
+        result.flags,
+        static_cast<long long>(timeNs), // Octave+SWIG doesn't support (unsigned) long long
+        timeoutUs);
 
     return result;
 }
