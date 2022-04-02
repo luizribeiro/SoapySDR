@@ -41,7 +41,28 @@
 
 %include <SoapySDR/Config.h>
 %include <SoapySDR/Version.hpp>
+
+%attribute(SoapySDR::Range, double, minimum, minimum);
+%attribute(SoapySDR::Range, double, maximum, maximum);
+%attribute(SoapySDR::Range, double, step, step);
+
 %include <SoapySDR/Types.hpp>
+
+%extend SoapySDR::ArgInfo
+{
+    std::string __str__()
+    {
+        return std::string("ArgInfo: ")+self->key;
+    }
+}
+
+%extend SoapySDR::Range
+{
+    std::string __str__()
+    {
+        return std::string("Range: (")+std::to_string(self->minimum())+","+std::to_string(self->maximum())+","+std::to_string(self->step())+")";
+    }
+}
 
 // TODO: figure out how to typemap ArgInfo::Type to int and use this instead
 %nodefaultctor SoapySDR::Octave::ArgType;
