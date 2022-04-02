@@ -68,4 +68,31 @@
     {
         return self->getDriverKey() + ":" + self->getHardwareKey();
     }
+
+    // TODO: struct that stores stream stuff like C# wrapper
+    int readStream2(
+        SoapySDR::Stream *stream,
+        octave_value &output,
+        const size_t numSamples,
+        const size_t numChannels,
+        int &flagsOut,
+        long &timeNsOut,
+        const long timeoutUs)
+    {
+        // SWIG+Octave does not support long long
+        long long intermediateTimeNs = 0;
+
+        auto ret = SoapySDR::Octave::readStreamCF32(
+            self,
+            stream,
+            numSamples,
+            numChannels,
+            output,
+            flagsOut,
+            intermediateTimeNs,
+            timeoutUs);
+
+        timeNsOut = static_cast<long long>(intermediateTimeNs);
+        return ret;
+    }
 }

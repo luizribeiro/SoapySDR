@@ -20,12 +20,12 @@ namespace detail
 {
 
 template <typename MatrixType>
-void readStream(
+int readStream(
     SoapySDR::Device *device,
     SoapySDR::Stream *stream,
     const size_t numSamples,
     const size_t numChannels,
-    MatrixType &samplesOut,
+    octave_value &samplesOut,
     int &flagsOut,
     long long &timeNsOut,
     const long timeoutUs)
@@ -35,11 +35,11 @@ void readStream(
     assert(numSamples > 0);
     assert(numChannels > 0);
 
-    samplesOut.resize2(
+    MatrixType intermediate(
         static_cast<octave_idx_type>(numChannels),
         static_cast<octave_idx_type>(numSamples));
 
-    auto *samplesBuff = samplesOut.fortran_vec();
+    auto *samplesBuff = intermediate.fortran_vec();
     std::vector<void *> buffs;
     for(size_t chan = 0; chan < numChannels; ++chan)
     {
@@ -53,21 +53,25 @@ void readStream(
         flagsOut,
         timeNsOut,
         timeoutUs);
+
+    samplesOut = intermediate;
+
+    return readRet;
 }
 
 }
 
-inline void readStreamCF32(
+inline int readStreamCF32(
     SoapySDR::Device *device,
     SoapySDR::Stream *stream,
     const size_t numSamples,
     const size_t numChannels,
-    FloatComplexMatrix &samplesOut,
+    octave_value &samplesOut,
     int &flagsOut,
     long long &timeNsOut,
     const long timeoutUs)
 {
-    detail::readStream(
+    return detail::readStream<FloatComplexMatrix>(
         device,
         stream,
         numSamples,
@@ -78,17 +82,17 @@ inline void readStreamCF32(
         timeoutUs);
 }
 
-inline void readStreamCF64(
+inline int readStreamCF64(
     SoapySDR::Device *device,
     SoapySDR::Stream *stream,
     const size_t numSamples,
     const size_t numChannels,
-    ComplexMatrix &samplesOut,
+    octave_value &samplesOut,
     int &flagsOut,
     long long &timeNsOut,
     const long timeoutUs)
 {
-    detail::readStream(
+    return detail::readStream<ComplexMatrix>(
         device,
         stream,
         numSamples,
