@@ -58,6 +58,28 @@
 %include <SoapySDR/Device.hpp>
 %include <Streaming.hpp>
 
+%define DEVICE_WRITE_STREAM(expectedFormat,type,interleaved)
+    SoapySDR::Octave::TxStreamResult writeStream(
+        const SoapySDR::Octave::Stream &stream,
+        const type &samples,
+        const long timeNs,
+        const long timeoutUs)
+    {
+        if(stream.direction != SOAPY_SDR_TX)
+            throw std::invalid_argument("Stream must be TX");
+        if(stream.format != expectedFormat)
+            throw std::invalid_argument(std::string("Input samples are invalid for format ")+expectedFormat);
+
+        return SoapySDR::Octave::writeStream(
+            self,
+            stream,
+            samples,
+            timeNs,
+            timeoutUs,
+            interleaved);
+    }
+%enddef
+
 %extend SoapySDR::Device
 {
     Device()
@@ -186,165 +208,14 @@
         return result;
     }
 
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const FloatComplexMatrix &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CF32)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CF32);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            false);
-    }
-
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const ComplexMatrix &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CF64)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CF64);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            false);
-    }
-
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const int8NDArray &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CS8)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CS8);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            true);
-    }
-
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const int16NDArray &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CS16)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CS16);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            true);
-    }
-
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const int32NDArray &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CS32)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CS32);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            true);
-    }
-
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const uint8NDArray &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CS8)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CU8);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            true);
-    }
-
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const uint16NDArray &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CS16)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CU16);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            true);
-    }
-
-    SoapySDR::Octave::TxStreamResult writeStream(
-        const SoapySDR::Octave::Stream &stream,
-        const uint32NDArray &samples,
-        const long timeNs,
-        const long timeoutUs)
-    {
-        if(stream.direction != SOAPY_SDR_TX)
-            throw std::invalid_argument("Stream must be TX");
-        if(stream.format != SOAPY_SDR_CS32)
-            throw std::invalid_argument(std::string("Input samples are invalid for format ")+SOAPY_SDR_CU32);
-
-        return SoapySDR::Octave::writeStream(
-            self,
-            stream,
-            samples,
-            timeNs,
-            timeoutUs,
-            true);
-    }
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CF32, Array<FloatComplex>, false)
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CF64, Array<Complex>, false)
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CS8, Array<octave_int8>, true)
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CS16, Array<octave_int16>, true)
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CS32, Array<octave_int32>, true)
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CU8, Array<octave_uint8>, true)
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CU16, Array<octave_uint16>, true)
+    DEVICE_WRITE_STREAM(SOAPY_SDR_CU32, Array<octave_uint32>, true)
 
     SoapySDR::Octave::StreamStatus readStreamStatus(
         const SoapySDR::Octave::Stream &stream,

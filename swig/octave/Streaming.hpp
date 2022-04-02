@@ -118,17 +118,29 @@ TxStreamResult writeStream(
 
     const auto numChannels = stream.channels.size();
     const auto dims = inputSamples.dims();
-    assert(dims.length() == 2);
+    size_t internalNumSamples = 0;
 
-    const auto internalNumSamples = dims.elem(1);
+    if(dims.length() == 1)
+    {
+        if(numChannels != 1)
+            throw std::invalid_argument("One-dimensional inputs are only valid for single-channel streams.");
+
+        internalNumSamples = dims.elem(0);
+    }
+    else if(dims.length() == 2)
+    {
+        if(dims.elem(0) != numChannels)
+            throw std::invalid_argument("Outer dimension must match number of channels ("+std::to_string(numChannels)+")");
+        if(internalNumSamples == 0)
+            throw std::invalid_argument("Inner dimension must not be empty");
+        if(interleaved and (internalNumSamples % 2) == 1)
+            throw std::invalid_argument("Inner dimension must be a multiple of 2");
+
+        internalNumSamples = dims.elem(1);
+    }
+    else throw std::invalid_argument("Input must be 1D or 2D.");
+
     const auto numSamples = interleaved ? (internalNumSamples/2) : internalNumSamples;
-
-    if(dims.elem(0) != numChannels)
-        throw std::invalid_argument("Outer dimension must match number of channels ("+std::to_string(numChannels)+")");
-    if(internalNumSamples == 0)
-        throw std::invalid_argument("Inner dimension must not be empty");
-    if(interleaved and (internalNumSamples % 2) == 1)
-        throw std::invalid_argument("Inner dimension must be a multiple of 2");
 
     const auto *samplesBuff = inputSamples.fortran_vec();
     std::vector<const void *> buffs;
