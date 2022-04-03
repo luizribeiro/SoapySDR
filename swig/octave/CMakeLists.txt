@@ -32,6 +32,7 @@ endif()
 
 ########################################################################
 # Build Module
+# TODO: https://stackoverflow.com/questions/39355672/cmake-and-mkoctfile, put tests in here
 ########################################################################
 include(UseSWIG)
 set(CMAKE_SWIG_FLAGS
