@@ -84,16 +84,19 @@
 {
     Device()
     {
+        validateABI();
         return SoapySDR::Device::make("");
     }
 
     Device(const SoapySDR::Kwargs &kwargs)
     {
+        validateABI();
         return SoapySDR::Device::make(kwargs);
     }
 
     Device(const std::string &args)
     {
+        validateABI();
         return SoapySDR::Device::make(args);
     }
 
