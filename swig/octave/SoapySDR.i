@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 %module SoapySDR
+%feature("autodoc", "1");
 
 %include "soapy_common.i"
 
