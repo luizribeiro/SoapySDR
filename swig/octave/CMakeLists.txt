@@ -34,7 +34,11 @@ endif()
 # Build Module
 ########################################################################
 include(UseSWIG)
-set(CMAKE_SWIG_FLAGS -I${SoapySDR_INCLUDE_DIRS} -I${CMAKE_CURRENT_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/..)
+set(CMAKE_SWIG_FLAGS
+    -I${SoapySDR_INCLUDE_DIRS}
+    -I${CMAKE_CURRENT_SOURCE_DIR}
+    -I${CMAKE_CURRENT_SOURCE_DIR}/..
+    -I${CMAKE_CURRENT_BINARY_DIR})
 
 set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
@@ -47,6 +51,7 @@ endif()
 
 target_include_directories(${SWIG_MODULE_SoapySDROctave_REAL_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${SoapySDR_INCLUDE_DIRS}
     ${OCTAVE_INCLUDE_DIRS})
 SWIG_LINK_LIBRARIES(SoapySDROctave SoapySDR ${OCTAVE_LIBRARIES})
