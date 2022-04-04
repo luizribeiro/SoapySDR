@@ -84,20 +84,25 @@
 {
     Device()
     {
-        validateABI();
+        SoapySDR::Octave::validateABI();
         return SoapySDR::Device::make("");
     }
 
     Device(const SoapySDR::Kwargs &kwargs)
     {
-        validateABI();
+        SoapySDR::Octave::validateABI();
         return SoapySDR::Device::make(kwargs);
     }
 
     Device(const std::string &args)
     {
-        validateABI();
+        SoapySDR::Octave::validateABI();
         return SoapySDR::Device::make(args);
+    }
+
+    static Array<octave_value> enumerate2()
+    {
+        return SoapySDR::Octave::kwargsListCppToOctave(SoapySDR::Device::enumerate(""));
     }
 
     std::string __str__()

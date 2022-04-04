@@ -9,30 +9,13 @@
 %{
 #include "Constants.hpp"
 #include "Streaming.hpp"
+#include "Utility.hpp"
 
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Time.hpp>
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Version.hpp>
 
-#include <sstream>
-#include <string>
-
-static void validateABI(void)
-{
-    static const std::string COMPILETIME_ABI = SOAPY_SDR_ABI_VERSION;
-    const auto RUNTIME_ABI = SoapySDR::getABIVersion();
-
-    if(COMPILETIME_ABI != RUNTIME_ABI)
-    {
-        std::ostringstream errMsgStream;
-        errMsgStream << "Failed ABI check." << std::endl
-                     << " * SoapySDR library: " << RUNTIME_ABI << std::endl
-                     << " * Octave module: " << COMPILETIME_ABI;
-
-        throw std::runtime_error(errMsgStream.str());
-    }
-}
 %}
 
 %include <exception.i>
