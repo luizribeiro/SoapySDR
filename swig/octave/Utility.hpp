@@ -19,7 +19,7 @@
 
 namespace SoapySDR { namespace Octave {
 
-static void validateABI(void)
+void validateABI(void)
 {
     static const std::string COMPILETIME_ABI = SOAPY_SDR_ABI_VERSION;
     const auto RUNTIME_ABI = SoapySDR::getABIVersion();
@@ -42,7 +42,7 @@ static void validateABI(void)
 // anyway, so this is fine.
 //
 
-static string_vector stringVectorCppToOctave(const std::vector<std::string> &cppVector)
+string_vector stringVectorCppToOctave(const std::vector<std::string> &cppVector)
 {
     string_vector octaveVector;
     for(const auto &str: cppVector) octaveVector.append(str);
@@ -50,17 +50,17 @@ static string_vector stringVectorCppToOctave(const std::vector<std::string> &cpp
     return octaveVector;
 }
 
-static std::vector<std::string> stringVectorOctaveToCpp(const string_vector &octaveVector)
+std::vector<std::string> stringVectorOctaveToCpp(const string_vector &octaveVector)
 {
     std::vector<std::string> cppVector;
-    for(size_t i = 0; i < octaveVector.numel(); ++i)
-        cppVector.emplace_back(octaveVector(i+1));
+    for(long i = 0; i < octaveVector.numel(); ++i)
+        cppVector.emplace_back(octaveVector(i));
 
     return cppVector;
 }
 
 template <typename T>
-static Array<T> vectorCppToOctave(const std::vector<T> &cppVector)
+Array<T> vectorCppToOctave(const std::vector<T> &cppVector)
 {
     static_assert(std::is_pod<T>::value, "Not POD");
 
@@ -72,7 +72,7 @@ static Array<T> vectorCppToOctave(const std::vector<T> &cppVector)
 }
 
 template <typename T>
-static std::vector<T> vectorOctaveToCpp(const Array<T> &octaveArray)
+std::vector<T> vectorOctaveToCpp(const Array<T> &octaveArray)
 {
     static_assert(std::is_pod<T>::value, "Not POD");
 
@@ -83,7 +83,7 @@ static std::vector<T> vectorOctaveToCpp(const Array<T> &octaveArray)
     return cppVector;
 }
 
-static octave_map kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
+octave_map kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
 {
     std::vector<std::string> keys;
     std::transform(
@@ -106,7 +106,7 @@ static octave_map kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
     return octave_map(octaveMap);
 }
 
-static SoapySDR::Kwargs kwargsOctaveToCpp(const octave_map &octaveMap)
+SoapySDR::Kwargs kwargsOctaveToCpp(const octave_map &octaveMap)
 {
     SoapySDR::Kwargs cppMap;
     for(const auto &mapPair: octaveMap)
@@ -132,7 +132,7 @@ static SoapySDR::Kwargs kwargsOctaveToCpp(const octave_map &octaveMap)
     return cppMap;
 }
 
-static Array<octave_value> kwargsListCppToOctave(const SoapySDR::KwargsList &cppVector)
+Array<octave_value> kwargsListCppToOctave(const SoapySDR::KwargsList &cppVector)
 {
     Array<octave_value> octaveArray(dim_vector(cppVector.size(), 1));
     for(size_t i = 0; i < cppVector.size(); ++i)

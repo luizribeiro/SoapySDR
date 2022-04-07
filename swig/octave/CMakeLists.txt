@@ -43,7 +43,6 @@ set(CMAKE_SWIG_FLAGS
 
 set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
-# TODO: output name SoapySDR
 if(${CMAKE_VERSION} VERSION_LESS "3.8")
 SWIG_ADD_MODULE(SoapySDROctave octave SoapySDR.i)
 else()
@@ -58,3 +57,5 @@ target_include_directories(${SWIG_MODULE_SoapySDROctave_REAL_NAME} PRIVATE
 SWIG_LINK_LIBRARIES(SoapySDROctave SoapySDR ${OCTAVE_LIBRARIES})
 
 set_target_properties(SoapySDROctave PROPERTIES OUTPUT_NAME SoapySDR)
+
+add_subdirectory(tests)
