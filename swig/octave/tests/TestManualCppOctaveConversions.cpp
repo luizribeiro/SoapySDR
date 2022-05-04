@@ -76,8 +76,7 @@ int main(int,char**)
 
     success &= testStringVectorCppToOctave();
     success &= testStringVectorOctaveToCpp();
-    success &= testPODVectorCppToOctave<unsigned>();
-    success &= testPODVectorCppToOctave<size_t>();
+    success &= testPODVectorCppToOctave<octave_idx_type>();
 
     return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }
