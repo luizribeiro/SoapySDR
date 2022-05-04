@@ -77,7 +77,7 @@ std::vector<T> vectorOctaveToCpp(const Array<T> &octaveArray)
     static_assert(std::is_pod<T>::value, "Not POD");
 
     std::vector<T> cppVector(octaveArray.numel());
-    for(size_t i = 0; i < octaveArray.numel(); ++i)
+    for(ssize_t i = 0; i < octaveArray.numel(); ++i)
         cppVector[i] = octaveArray(i+1);
 
     return cppVector;

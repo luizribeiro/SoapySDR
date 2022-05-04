@@ -31,7 +31,7 @@ static bool testStringVectorCppToOctave(void)
     for(size_t i = 0; i < cppVector.size(); ++i)
         TEST_ASSERT(cppVector[i] == octaveVector.elem(i));
 
-    printf(" * SUCCESS\n");
+    puts(" * SUCCESS");
     return true;
 }
 
@@ -49,7 +49,7 @@ static bool testStringVectorOctaveToCpp(void)
     for(size_t i = 0; i < cppVector.size(); ++i)
         TEST_ASSERT(cppVector[i] == octaveVector.elem(i));
 
-    printf(" * SUCCESS\n");
+    puts(" * SUCCESS");
     return true;
 }
 
@@ -66,7 +66,29 @@ static bool testPODVectorCppToOctave(void)
     };
     const auto octaveArray = SoapySDR::Octave::vectorCppToOctave(cppVector);
 
-    printf(" * SUCCESS\n");
+    TEST_ASSERT(octaveArray(1) == 418);
+    TEST_ASSERT(octaveArray(2) == 1351);
+    TEST_ASSERT(octaveArray(3) == 4063);
+
+    puts(" * SUCCESS");
+    return true;
+}
+
+template <typename T>
+static bool testPODVectorOctaveToCpp(void)
+{
+    printf("%s\n", __PRETTY_FUNCTION__);
+
+    Array<T> octaveArray(dim_vector(3, 1));
+    octaveArray(1) = 418;
+    octaveArray(2) = 1351;
+    octaveArray(3) = 4063;
+    const auto cppVector = SoapySDR::Octave::vectorOctaveToCpp(octaveArray);
+
+    TEST_ASSERT(cppVector[0] == 418);
+    TEST_ASSERT(cppVector[1] == 1351);
+    TEST_ASSERT(cppVector[2] == 4063);
+
     return true;
 }
 
@@ -77,6 +99,7 @@ int main(int,char**)
     success &= testStringVectorCppToOctave();
     success &= testStringVectorOctaveToCpp();
     success &= testPODVectorCppToOctave<octave_idx_type>();
+    success &= testPODVectorOctaveToCpp<octave_idx_type>();
 
     return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }
