@@ -10,7 +10,7 @@
 { \
     if(not (cond)) \
     { \
-        printf(" * FAILED: \"%s\" is FALSE\n", #cond); \
+        printf(" * FAILURE: \"%s\" is FALSE\n", #cond); \
         return false; \
     } \
 }
@@ -89,6 +89,23 @@ static bool testPODVectorOctaveToCpp(void)
     TEST_ASSERT(cppVector[1] == 1351);
     TEST_ASSERT(cppVector[2] == 4063);
 
+    puts(" * SUCCESS");
+    return true;
+}
+
+static bool testKwargsCppToOctave(void)
+{
+    printf("%s\n", __PRETTY_FUNCTION__);
+
+    SoapySDR::Kwargs kwargsCpp
+    {
+        {"key0", "val0"},
+        {"key1", "val1"},
+        {"key2", "val2"},
+    };
+    const auto octaveMap = SoapySDR::Octave::kwargsCppToOctave(kwargsCpp);
+
+    puts(" * SUCCESS");
     return true;
 }
 
@@ -100,6 +117,10 @@ int main(int,char**)
     success &= testStringVectorOctaveToCpp();
     success &= testPODVectorCppToOctave<octave_idx_type>();
     success &= testPODVectorOctaveToCpp<octave_idx_type>();
+    success &= testKwargsCppToOctave();
+
+    puts("");
+    puts(success ? "SUCCESS" : "FAILURE");
 
     return success ? EXIT_SUCCESS : EXIT_FAILURE;
 }

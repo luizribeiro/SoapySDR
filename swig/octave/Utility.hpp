@@ -11,6 +11,7 @@
 #include <octave/str-vec.h>
 
 #include <algorithm>
+#include <iterator>
 #include <map>
 #include <sstream>
 #include <string>
@@ -95,7 +96,7 @@ octave_map kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
             return mapPair.first;
         });
 
-    octave_scalar_map octaveMap;
+    octave_scalar_map octaveMap(keys);
     for(const auto &mapPair: cppMap)
     {
         octaveMap.assign(
