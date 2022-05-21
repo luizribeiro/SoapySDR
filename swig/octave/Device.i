@@ -94,12 +94,10 @@
         return SoapySDR::Device::make(args);
     }
 
-/*
-    static Array<octave_value> enumerate2()
+    static string_vector enumerate2()
     {
         return SoapySDR::Octave::kwargsListCppToOctave(SoapySDR::Device::enumerate(""));
     }
-*/
 
     std::string __str__()
     {

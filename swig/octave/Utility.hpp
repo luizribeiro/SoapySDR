@@ -84,52 +84,32 @@ std::vector<T> vectorOctaveToCpp(const Array<T> &octaveArray)
     return cppVector;
 }
 
-/*
-octave_map kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
+inline octave_value kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
 {
-    octave_map octaveMap;
-    for(const auto &cppMapPair: cppMap)
-        octaveMap.assign(
-            cppMapPair.first,
-            octave_value(cppMapPair.second));
-
-    return octaveMap;
+    return octave_value(SoapySDR::KwargsToString(cppMap));
 }
 
-SoapySDR::Kwargs kwargsOctaveToCpp(const octave_map &octaveMap)
+inline SoapySDR::Kwargs kwargsOctaveToCpp(const octave_value &octaveValue)
 {
-    SoapySDR::Kwargs cppMap;
-    for(const auto &mapPair: octaveMap)
-    {
-        const auto &key = mapPair.first;
-        const auto &valueCell = octaveMap.contents(mapPair.second);
-        if((valueCell.numel() == 1) and valueCell.iscellstr())
-        {
-            cppMap.emplace(
-                key,
-                valueCell.cellstr_value().elem(0));
-        }
-        else
-        {
-            std::ostringstream errMsgStream;
-            errMsgStream << "Invalid map value. Expected string, found "
-                         << valueCell.data()->type_name() << ".";
-
-            throw std::invalid_argument(errMsgStream.str());
-        }
-    }
-
-    return cppMap;
+    return SoapySDR::KwargsFromString(octaveValue.string_value());
 }
 
-Array<octave_value> kwargsListCppToOctave(const SoapySDR::KwargsList &cppVector)
+string_vector kwargsListCppToOctave(const SoapySDR::KwargsList &cppMapList)
 {
-    Array<octave_value> octaveArray(dim_vector(cppVector.size(), 1));
-    for(size_t i = 0; i < cppVector.size(); ++i)
-        octaveArray(i+1) = kwargsCppToOctave(cppVector[i]);
+    string_vector octaveVector;
+    for(const auto &cppMap: cppMapList)
+        octaveVector.append(SoapySDR::KwargsToString(cppMap));
 
-    return octaveArray;
+    return octaveVector;
 }
-*/
+
+SoapySDR::KwargsList kwargsListOctaveToCpp(const string_vector &octaveVector)
+{
+    SoapySDR::KwargsList cppMapList;
+    for(long i = 0; i < octaveVector.numel(); ++i)
+        cppMapList.emplace_back(SoapySDR::KwargsFromString(octaveVector(i)));
+
+    return cppMapList;
+}
 
 }}
