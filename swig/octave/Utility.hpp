@@ -67,7 +67,7 @@ Array<T> vectorCppToOctave(const std::vector<T> &cppVector)
 
     Array<T> octaveArray(dim_vector(cppVector.size(), 1));
     for(size_t i = 0; i < cppVector.size(); ++i)
-        octaveArray(i+1) = cppVector[i];
+        octaveArray(i) = cppVector[i];
 
     return octaveArray;
 }
@@ -79,14 +79,14 @@ std::vector<T> vectorOctaveToCpp(const Array<T> &octaveArray)
 
     std::vector<T> cppVector(octaveArray.numel());
     for(ssize_t i = 0; i < octaveArray.numel(); ++i)
-        cppVector[i] = octaveArray(i+1);
+        cppVector[i] = octaveArray(i);
 
     return cppVector;
 }
 
 inline octave_value kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
 {
-    return octave_value(SoapySDR::KwargsToString(cppMap));
+    return SoapySDR::KwargsToString(cppMap);
 }
 
 inline SoapySDR::Kwargs kwargsOctaveToCpp(const octave_value &octaveValue)
