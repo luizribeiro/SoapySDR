@@ -94,9 +94,9 @@
         return SoapySDR::Device::make(args);
     }
 
-    static string_vector enumerate2()
+    static SoapySDR::KwargsList enumerate()
     {
-        return SoapySDR::Octave::kwargsListCppToOctave(SoapySDR::Device::enumerate(""));
+        return SoapySDR::Device::enumerate("");
     }
 
     std::string __str__()
