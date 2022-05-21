@@ -56,6 +56,10 @@
     delete $1;
 }
 
+%typemap(out) std::vector<unsigned> {
+    $result = SoapySDR::Octave::vectorCppToOctave<unsigned>($1);
+}
+
 %typemap(in) const std::vector<size_t> & {
     $1 = SoapySDR::Octave::vectorOctaveToCpp<size_t>($input.array_value());
 }
