@@ -13,7 +13,3 @@
 %!
 %! #TODO: check output for null device
 %! deviceStringArgs = SoapySDR.Device.enumerate("type=null")
-%!
-%! #TODO: check output for null device
-%! argsMap = containers.Map({"type"}, {"null"})
-%! deviceMapArgs = SoapySDR.Device.enumerate(argsMap)
