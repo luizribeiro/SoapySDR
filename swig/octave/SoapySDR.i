@@ -47,6 +47,13 @@
     $1 = SoapySDR::Octave::kwargsOctaveToCpp($input);
 }
 
+// This would happen anyway, but typemap(in) generates a freearg
+// that references a nonexistent variable, so we'll just do this
+// here.
+%typemap(freearg) const SoapySDR::Kwargs & {
+    delete $1;
+}
+
 %typemap(out) SoapySDR::Kwargs {
     $result = SoapySDR::Octave::kwargsCppToOctave($1);
 }
