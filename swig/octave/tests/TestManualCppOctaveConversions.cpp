@@ -99,11 +99,11 @@ static bool testPODVectorOctaveToCpp(void)
 {
     printf("%s\n", __PRETTY_FUNCTION__);
 
-    Array<T> octaveArray(dim_vector(3, 1));
+    Array<octave_idx_type> octaveArray(dim_vector(3, 1));
     octaveArray(0) = 418;
     octaveArray(1) = 1351;
     octaveArray(2) = 4063;
-    std::unique_ptr<std::vector<T>> cppVector(SoapySDR::Octave::vectorOctaveToCpp(octaveArray));
+    std::unique_ptr<std::vector<T>> cppVector(SoapySDR::Octave::vectorOctaveToCpp<T>(octaveArray));
 
     TEST_ASSERT(cppVector->at(0) == 418);
     TEST_ASSERT(cppVector->at(1) == 1351);
@@ -111,6 +111,17 @@ static bool testPODVectorOctaveToCpp(void)
 
     puts(" * SUCCESS");
     return true;
+}
+
+template <typename T>
+static bool testPODVectorConversion(void)
+{
+    bool success = true;
+
+    success &= testPODVectorCppToOctave<T>();
+    success &= testPODVectorOctaveToCpp<T>();
+
+    return success;
 }
 
 static bool testKwargsCppToOctave(void)
@@ -214,8 +225,8 @@ int main(int,char**)
 
     success &= testStringVectorCppToOctave();
     success &= testStringVectorOctaveToCpp();
-    success &= testPODVectorCppToOctave<octave_idx_type>();
-    success &= testPODVectorOctaveToCpp<octave_idx_type>();
+    success &= testPODVectorConversion<unsigned>();
+    success &= testPODVectorConversion<size_t>();
     success &= testKwargsCppToOctave();
     success &= testKwargsOctaveToCpp();
     success &= testKwargsListCppToOctave();

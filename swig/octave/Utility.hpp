@@ -63,25 +63,25 @@ std::vector<std::string> *stringVectorOctaveToCpp(const string_vector &octaveVec
 }
 
 template <typename T>
-Array<T> vectorCppToOctave(const std::vector<T> &cppVector)
+Array<octave_idx_type> vectorCppToOctave(const std::vector<T> &cppVector)
 {
     static_assert(std::is_pod<T>::value, "Not POD");
 
-    Array<T> octaveArray(dim_vector(cppVector.size(), 1));
+    Array<octave_idx_type> octaveArray(dim_vector(cppVector.size(), 1));
     for(size_t i = 0; i < cppVector.size(); ++i)
-        octaveArray(i) = cppVector[i];
+        octaveArray(i) = static_cast<octave_idx_type>(cppVector[i]);
 
     return octaveArray;
 }
 
 template <typename T>
-std::vector<T> *vectorOctaveToCpp(const Array<T> &octaveArray)
+std::vector<T> *vectorOctaveToCpp(const Array<octave_idx_type> &octaveArray)
 {
     static_assert(std::is_pod<T>::value, "Not POD");
 
     auto *cppVector = new std::vector<T>();
     for(ssize_t i = 0; i < octaveArray.numel(); ++i)
-        cppVector->emplace_back(octaveArray(i));
+        cppVector->emplace_back(static_cast<T>(octaveArray(i)));
 
     return cppVector;
 }
