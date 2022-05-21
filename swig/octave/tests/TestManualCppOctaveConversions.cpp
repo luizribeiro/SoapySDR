@@ -5,6 +5,7 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <memory>
 
 //
 // Utility
@@ -62,11 +63,11 @@ static bool testStringVectorOctaveToCpp(void)
     octaveVector.elem(0) = "elem0";
     octaveVector.elem(1) = "elem1";
     octaveVector.elem(2) = "elem2";
-    const auto cppVector = SoapySDR::Octave::stringVectorOctaveToCpp(octaveVector);
+    std::unique_ptr<std::vector<std::string>> cppVector(SoapySDR::Octave::stringVectorOctaveToCpp(octaveVector));
 
-    TEST_ASSERT(cppVector.size() == size_t(octaveVector.numel()));
-    for(size_t i = 0; i < cppVector.size(); ++i)
-        TEST_ASSERT(cppVector[i] == octaveVector.elem(i));
+    TEST_ASSERT(cppVector->size() == size_t(octaveVector.numel()));
+    for(size_t i = 0; i < cppVector->size(); ++i)
+        TEST_ASSERT(cppVector->at(i) == octaveVector.elem(i));
 
     puts(" * SUCCESS");
     return true;
@@ -102,11 +103,11 @@ static bool testPODVectorOctaveToCpp(void)
     octaveArray(0) = 418;
     octaveArray(1) = 1351;
     octaveArray(2) = 4063;
-    const auto cppVector = SoapySDR::Octave::vectorOctaveToCpp(octaveArray);
+    std::unique_ptr<std::vector<T>> cppVector(SoapySDR::Octave::vectorOctaveToCpp(octaveArray));
 
-    TEST_ASSERT(cppVector[0] == 418);
-    TEST_ASSERT(cppVector[1] == 1351);
-    TEST_ASSERT(cppVector[2] == 4063);
+    TEST_ASSERT(cppVector->at(0) == 418);
+    TEST_ASSERT(cppVector->at(1) == 1351);
+    TEST_ASSERT(cppVector->at(2) == 4063);
 
     puts(" * SUCCESS");
     return true;
@@ -135,11 +136,11 @@ static bool testKwargsOctaveToCpp(void)
     printf("%s\n", __PRETTY_FUNCTION__);
 
     const octave_value octaveString("key0=val0,key1=val1,key2=val2");
-    const auto cppMap = SoapySDR::Octave::kwargsOctaveToCpp(octaveString);
+    std::unique_ptr<SoapySDR::Kwargs> cppMap(SoapySDR::Octave::kwargsOctaveToCpp(octaveString));
 
-    TEST_ASSERT(testMap(cppMap, "key0", "val0"));
-    TEST_ASSERT(testMap(cppMap, "key1", "val1"));
-    TEST_ASSERT(testMap(cppMap, "key2", "val2"));
+    TEST_ASSERT(testMap(*cppMap, "key0", "val0"));
+    TEST_ASSERT(testMap(*cppMap, "key1", "val1"));
+    TEST_ASSERT(testMap(*cppMap, "key2", "val2"));
 
     puts(" * SUCCESS");
     return true;
@@ -186,18 +187,18 @@ static bool testKwargsListOctaveToCpp(void)
     octaveVector.elem(0) = "key0=val0,key1=val1,key2=val2";
     octaveVector.elem(1) = "key3=val3,key4=val4,key5=val5";
     octaveVector.elem(2) = "key6=val6,key7=val7,key8=val8";
-    const auto cppMapList = SoapySDR::Octave::kwargsListOctaveToCpp(octaveVector);
+    std::unique_ptr<SoapySDR::KwargsList> cppMapList(SoapySDR::Octave::kwargsListOctaveToCpp(octaveVector));
 
-    TEST_ASSERT(cppMapList.size() == size_t(octaveVector.numel()));
-    TEST_ASSERT(testMap(cppMapList[0], "key0", "val0"));
-    TEST_ASSERT(testMap(cppMapList[0], "key1", "val1"));
-    TEST_ASSERT(testMap(cppMapList[0], "key2", "val2"));
-    TEST_ASSERT(testMap(cppMapList[1], "key3", "val3"));
-    TEST_ASSERT(testMap(cppMapList[1], "key4", "val4"));
-    TEST_ASSERT(testMap(cppMapList[1], "key5", "val5"));
-    TEST_ASSERT(testMap(cppMapList[2], "key6", "val6"));
-    TEST_ASSERT(testMap(cppMapList[2], "key7", "val7"));
-    TEST_ASSERT(testMap(cppMapList[2], "key8", "val8"));
+    TEST_ASSERT(cppMapList->size() == size_t(octaveVector.numel()));
+    TEST_ASSERT(testMap(cppMapList->at(0), "key0", "val0"));
+    TEST_ASSERT(testMap(cppMapList->at(0), "key1", "val1"));
+    TEST_ASSERT(testMap(cppMapList->at(0), "key2", "val2"));
+    TEST_ASSERT(testMap(cppMapList->at(1), "key3", "val3"));
+    TEST_ASSERT(testMap(cppMapList->at(1), "key4", "val4"));
+    TEST_ASSERT(testMap(cppMapList->at(1), "key5", "val5"));
+    TEST_ASSERT(testMap(cppMapList->at(2), "key6", "val6"));
+    TEST_ASSERT(testMap(cppMapList->at(2), "key7", "val7"));
+    TEST_ASSERT(testMap(cppMapList->at(2), "key8", "val8"));
 
     puts(" * SUCCESS");
     return true;

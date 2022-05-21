@@ -18,6 +18,10 @@
 
 %}
 
+//
+// Exceptions
+//
+
 %include <exception.i>
 
 %exception
@@ -29,6 +33,32 @@
     {SWIG_exception(SWIG_RuntimeError, "unknown");}
 }
 
+//
+// Typemaps
+//
+
+%include <typemaps.i>
+
+%typemap(out) std::vector<std::string> {
+    $result = SoapySDR::Octave::stringVectorCppToOctave($1);
+}
+
+%typemap(in) const SoapySDR::Kwargs & {
+    $1 = SoapySDR::Octave::kwargsOctaveToCpp($input);
+}
+
+%typemap(out) SoapySDR::Kwargs {
+    $result = SoapySDR::Octave::kwargsCppToOctave($1);
+}
+
+%typemap(out) SoapySDR::KwargsList {
+    $result = SoapySDR::Octave::kwargsListCppToOctave($1);
+}
+
+//
+// Types
+//
+
 %include <std_complex.i>
 %include <std_map.i>
 %include <std_string.i>
@@ -36,7 +66,7 @@
 
 %template(UnsignedVector) std::vector<unsigned>;
 %template(SizeVector) std::vector<size_t>;
-%template(StringVector) std::vector<std::string>;
+//%template(StringVector) std::vector<std::string>;
 %template(Kwargs) std::map<std::string, std::string>;
 %template(KwargsList) std::vector<std::map<std::string, std::string>>;
 %template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
