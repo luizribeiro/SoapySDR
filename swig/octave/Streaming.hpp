@@ -21,8 +21,6 @@
 #include <string>
 #include <vector>
 
-// TODO: no need for hiding long long
-
 namespace SoapySDR { namespace Octave {
 
 struct Stream
@@ -40,7 +38,7 @@ struct RxStreamResult
     octave_value samples;
     int errorCode{0};
     int flags{0};
-    long timeNs{0};
+    long long timeNs{0};
 };
 
 struct TxStreamResult
@@ -54,7 +52,7 @@ struct StreamStatus
     int errorCode{0};
     size_t chanMask{0};
     int flags{0};
-    long timeNs{0};
+    long long timeNs{0};
 };
 
 template <typename OutputType>
@@ -85,9 +83,6 @@ RxStreamResult readStream(
         buffs.emplace_back(&samplesBuff[chan * internalNumSamples]);
     }
 
-    // Octave+SWIG doesn't support (unsigned) long long
-    long long intermediateTimeNs{0};
-
     // TODO: see if we can resize if we can't read this many elements in one run.
     // I'm not sure if it will remove what's there shrinking a dimension.
     RxStreamResult result;
@@ -96,11 +91,10 @@ RxStreamResult readStream(
         buffs.data(),
         numSamples,
         result.flags,
-        intermediateTimeNs,
+        result.timeNs,
         timeoutUs);
 
     result.samples = intermediateSamples;
-    result.timeNs = static_cast<long>(intermediateTimeNs);
 
     return result;
 }
@@ -110,7 +104,7 @@ TxStreamResult writeStream(
     SoapySDR::Device *device,
     const Stream &stream,
     const InputType &inputSamples,
-    const long timeNs,
+    const long long timeNs,
     const long timeoutUs,
     const bool interleaved)
 {
@@ -157,7 +151,7 @@ TxStreamResult writeStream(
         buffs.data(),
         numSamples,
         result.flags,
-        static_cast<long long>(timeNs), // Octave+SWIG doesn't support (unsigned) long long
+        timeNs,
         timeoutUs);
 
     return result;

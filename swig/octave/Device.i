@@ -66,7 +66,7 @@
     SoapySDR::Octave::TxStreamResult writeStream(
         const SoapySDR::Octave::Stream &stream,
         const type &samples,
-        const long timeNs,
+        const long long timeNs,
         const long timeoutUs)
     {
         if(stream.direction != SOAPY_SDR_TX)
@@ -229,17 +229,12 @@
     {
         assert(stream.internal);
 
-        // Octave+SWIG doesn't support (unsigned) long long
-        long long intermediateTimeNs{0};
-
         SoapySDR::Octave::StreamStatus status;
         status.errorCode = self->readStreamStatus(
             stream.internal,
             status.chanMask,
             status.flags,
-            intermediateTimeNs);
-
-        status.timeNs = static_cast<long>(intermediateTimeNs);
+            status.timeNs);
 
         return status;
     }
