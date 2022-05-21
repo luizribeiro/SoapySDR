@@ -36,6 +36,10 @@
 
 %ignore SoapySDR::Octave::readStream;
 %ignore SoapySDR::Octave::writeStream;
+%ignore SoapySDR::Octave::Stream::direction;
+%ignore SoapySDR::Octave::Stream::format;
+%ignore SoapySDR::Octave::Stream::channels;
+%ignore SoapySDR::Octave::Stream::args;
 %ignore SoapySDR::Octave::Stream::internal;
 
 // Ignore DMA-related functions

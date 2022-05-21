@@ -36,6 +36,11 @@
 //
 // Typemaps
 //
+// Note: the "freearg" typemaps here shouldn't be necessary, since
+// this recreates the existing behavior, but adding the custom "in"
+// typemap by itself results in the generated "freearg" code referencing
+// an invalid variable.
+//
 
 %include <typemaps.i>
 
@@ -43,13 +48,26 @@
     $result = SoapySDR::Octave::stringVectorCppToOctave($1);
 }
 
+%typemap(in) const std::vector<unsigned> & {
+    $1 = SoapySDR::Octave::vectorOctaveToCpp<unsigned>($input.array_value());
+}
+
+%typemap(freearg) const std::vector<unsigned> & {
+    delete $1;
+}
+
+%typemap(in) const std::vector<size_t> & {
+    $1 = SoapySDR::Octave::vectorOctaveToCpp<size_t>($input.array_value());
+}
+
+%typemap(freearg) const std::vector<size_t> & {
+    delete $1;
+}
+
 %typemap(in) const SoapySDR::Kwargs & {
     $1 = SoapySDR::Octave::kwargsOctaveToCpp($input);
 }
 
-// This would happen anyway, but typemap(in) generates a freearg
-// that references a nonexistent variable, so we'll just do this
-// here.
 %typemap(freearg) const SoapySDR::Kwargs & {
     delete $1;
 }
@@ -71,11 +89,6 @@
 %include <std_string.i>
 %include <std_vector.i>
 
-%template(UnsignedVector) std::vector<unsigned>;
-%template(SizeVector) std::vector<size_t>;
-//%template(StringVector) std::vector<std::string>;
-%template(Kwargs) std::map<std::string, std::string>;
-%template(KwargsList) std::vector<std::map<std::string, std::string>>;
 %template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
 %template(RangeList) std::vector<SoapySDR::Range>;
 
