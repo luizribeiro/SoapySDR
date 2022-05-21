@@ -93,22 +93,6 @@ static bool testPODVectorOctaveToCpp(void)
     return true;
 }
 
-static bool testKwargsCppToOctave(void)
-{
-    printf("%s\n", __PRETTY_FUNCTION__);
-
-    SoapySDR::Kwargs kwargsCpp
-    {
-        {"key0", "val0"},
-        {"key1", "val1"},
-        {"key2", "val2"},
-    };
-    const auto octaveMap = SoapySDR::Octave::kwargsCppToOctave(kwargsCpp);
-
-    puts(" * SUCCESS");
-    return true;
-}
-
 int main(int,char**)
 {
     bool success = true;
@@ -117,7 +101,6 @@ int main(int,char**)
     success &= testStringVectorOctaveToCpp();
     success &= testPODVectorCppToOctave<octave_idx_type>();
     success &= testPODVectorOctaveToCpp<octave_idx_type>();
-    success &= testKwargsCppToOctave();
 
     puts("");
     puts(success ? "SUCCESS" : "FAILURE");

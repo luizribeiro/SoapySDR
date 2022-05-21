@@ -84,27 +84,16 @@ std::vector<T> vectorOctaveToCpp(const Array<T> &octaveArray)
     return cppVector;
 }
 
+/*
 octave_map kwargsCppToOctave(const SoapySDR::Kwargs &cppMap)
 {
-    std::vector<std::string> keys;
-    std::transform(
-        std::begin(cppMap),
-        std::end(cppMap),
-        std::back_inserter(keys),
-        [](const SoapySDR::Kwargs::value_type &mapPair)
-        {
-            return mapPair.first;
-        });
-
-    octave_scalar_map octaveMap(keys);
-    for(const auto &mapPair: cppMap)
-    {
+    octave_map octaveMap;
+    for(const auto &cppMapPair: cppMap)
         octaveMap.assign(
-            mapPair.first,
-            octave_value(mapPair.second));
-    }
+            cppMapPair.first,
+            octave_value(cppMapPair.second));
 
-    return octave_map(octaveMap);
+    return octaveMap;
 }
 
 SoapySDR::Kwargs kwargsOctaveToCpp(const octave_map &octaveMap)
@@ -141,5 +130,6 @@ Array<octave_value> kwargsListCppToOctave(const SoapySDR::KwargsList &cppVector)
 
     return octaveArray;
 }
+*/
 
 }}

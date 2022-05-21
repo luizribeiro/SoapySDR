@@ -30,7 +30,7 @@ struct Stream
     int direction{0};
     std::string format;
     std::vector<size_t> channels;
-    SoapySDR::Kwargs args;
+    std::string args;
 
     SoapySDR::Stream *internal{nullptr};
 };

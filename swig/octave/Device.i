@@ -88,22 +88,18 @@
         return SoapySDR::Device::make("");
     }
 
-    Device(const SoapySDR::Kwargs &kwargs)
-    {
-        SoapySDR::Octave::validateABI();
-        return SoapySDR::Device::make(kwargs);
-    }
-
     Device(const std::string &args)
     {
         SoapySDR::Octave::validateABI();
         return SoapySDR::Device::make(args);
     }
 
+/*
     static Array<octave_value> enumerate2()
     {
         return SoapySDR::Octave::kwargsListCppToOctave(SoapySDR::Device::enumerate(""));
     }
+*/
 
     std::string __str__()
     {
@@ -114,7 +110,7 @@
         int direction,
         const std::string &format,
         const std::vector<size_t> &channels,
-        const SoapySDR::Kwargs &args)
+        const std::string &args)
     {
         static const std::vector<std::string> SupportedFormats
         {
@@ -132,7 +128,7 @@
             throw std::invalid_argument("Format invalid or unsupported by Octave wrapper: "+format);
 
         SoapySDR::Octave::Stream stream;
-        if((stream.internal = self->setupStream(direction, format, channels, args)))
+        if((stream.internal = self->setupStream(direction, format, channels, SoapySDR::KwargsFromString(args))))
         {
             stream.direction = direction;
             stream.format = format;
