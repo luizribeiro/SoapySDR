@@ -6,6 +6,7 @@
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Errors.hpp>
 #include <SoapySDR/Formats.h>
+#include <SoapySDR/Logger.hpp>
 #include <SoapySDR/Types.hpp>
 
 #include <string>
@@ -69,6 +70,29 @@ const int ErrorCode::OVERFLOW = SOAPY_SDR_OVERFLOW;
 const int ErrorCode::NOT_SUPPORTED = SOAPY_SDR_NOT_SUPPORTED;
 const int ErrorCode::TIME_ERROR = SOAPY_SDR_TIME_ERROR;
 const int ErrorCode::UNDERFLOW = SOAPY_SDR_UNDERFLOW;
+
+struct LogLevel
+{
+    static const int FATAL;
+    static const int CRITICAL;
+    static const int ERROR;
+    static const int WARNING;
+    static const int NOTICE;
+    static const int INFO;
+    static const int DEBUG;
+    static const int TRACE;
+    static const int SSI;
+};
+
+const int LogLevel::FATAL = SOAPY_SDR_FATAL;
+const int LogLevel::CRITICAL = SOAPY_SDR_CRITICAL;
+const int LogLevel::ERROR = SOAPY_SDR_ERROR;
+const int LogLevel::WARNING = SOAPY_SDR_WARNING;
+const int LogLevel::NOTICE = SOAPY_SDR_NOTICE;
+const int LogLevel::INFO = SOAPY_SDR_INFO;
+const int LogLevel::DEBUG = SOAPY_SDR_DEBUG;
+const int LogLevel::TRACE = SOAPY_SDR_TRACE;
+const int LogLevel::SSI = SOAPY_SDR_SSI;
 
 struct StreamFlag
 {

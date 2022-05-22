@@ -8,6 +8,7 @@
 
 %{
 #include "Constants.hpp"
+#include "Logger.hpp"
 #include "Streaming.hpp"
 #include "Utility.hpp"
 
@@ -132,3 +133,4 @@
 %include <SoapySDR/Time.hpp>
 
 %include "Device.i"
+%include "Logger.hpp"
