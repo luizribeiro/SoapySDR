@@ -32,7 +32,8 @@ endif()
 
 ########################################################################
 # Build Module
-# TODO: https://stackoverflow.com/questions/39355672/cmake-and-mkoctfile, put tests in here
+# TODO: Octave has a huge number of warnings, figure out suppressing
+#       it all.
 ########################################################################
 include(UseSWIG)
 set(CMAKE_SWIG_FLAGS
