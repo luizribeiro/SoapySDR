@@ -133,4 +133,6 @@
 %include <SoapySDR/Time.hpp>
 
 %include "Device.i"
+
+%ignore SoapySDR::Octave::detail;
 %include "Logger.hpp"

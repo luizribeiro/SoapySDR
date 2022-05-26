@@ -10,14 +10,16 @@
 %!test
 %! SoapySDR
 %!
-%! SoapySDR.Logger.setLogLevel(SoapySDR.LogLevel.SSI)
+%! SoapySDR.setLogLevel(SoapySDR.LogLevel.SSI)
 %!
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.FATAL, "FATAL")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.CRITICAL, "CRITICAL")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.ERROR, "ERROR")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.WARNING, "WARNING")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.NOTICE, "NOTICE")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.INFO, "INFO")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.DEBUG, "DEBUG")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.TRACE, "TRACE")
-%! SoapySDR.Logger.log(SoapySDR.LogLevel.SSI, "SSI")
+%! SoapySDR.log(SoapySDR.LogLevel.FATAL, "FATAL")
+%! SoapySDR.log(SoapySDR.LogLevel.CRITICAL, "CRITICAL")
+%! SoapySDR.log(SoapySDR.LogLevel.ERROR, "ERROR")
+%! SoapySDR.log(SoapySDR.LogLevel.WARNING, "WARNING")
+%! SoapySDR.log(SoapySDR.LogLevel.NOTICE, "NOTICE")
+%! SoapySDR.log(SoapySDR.LogLevel.INFO, "INFO")
+%! SoapySDR.log(SoapySDR.LogLevel.DEBUG, "DEBUG")
+%! SoapySDR.log(SoapySDR.LogLevel.TRACE, "TRACE")
+%! SoapySDR.log(SoapySDR.LogLevel.SSI, "SSI")
+%!
+%! SoapySDR.logf(SoapySDR.LogLevel.NOTICE, "Notice: %s %d %f", "str", 1351, 4.18)
