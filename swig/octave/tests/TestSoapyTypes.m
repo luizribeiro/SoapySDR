@@ -4,7 +4,6 @@
 # Not a function file
 1;
 
-# TODO: options, optionNames
 %!test
 %! SoapySDR
 %! key = "key"
@@ -23,8 +22,8 @@
 %! argInfo.units = units
 %! argInfo.type = type
 %! argInfo.range = range
-%! argInfo.options = SoapySDR.StringVector(options)
-%! argInfo.optionNames = SoapySDR.StringVector(optionNames)
+%! argInfo.options = options
+%! argInfo.optionNames = optionNames
 %!
 %! assert(argInfo.key == key)
 %! assert(argInfo.name == name)
