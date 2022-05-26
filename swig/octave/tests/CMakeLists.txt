@@ -37,4 +37,7 @@ foreach(test ${tests})
         NAME Octave_${test}
         COMMAND ${OCTAVE_EXECUTABLE} --path ${CMAKE_CURRENT_BINARY_DIR}/.. --eval "test ${test}"
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
+    set_tests_properties(Octave_${test} PROPERTIES
+        FAIL_REGULAR_EXPRESSION "test failed")
 endforeach()
