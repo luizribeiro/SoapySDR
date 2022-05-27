@@ -26,6 +26,7 @@ add_test(Octave_TestManualCppOctaveConversions TestManualCppOctaveConversions)
 ########################################################################
 set(tests
     TestBuildInfo
+    TestDeviceAPI
     TestEnumerateDevices
     TestErrorCodes
     TestFormats
