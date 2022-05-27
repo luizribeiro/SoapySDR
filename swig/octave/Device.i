@@ -4,7 +4,6 @@
 %include <attribute.i>
 
 // TODO: naming convention?
-// TODO: unmake on destruction, not just delete
 
 %{
 #include <SoapySDR/Device.hpp>
@@ -97,6 +96,11 @@
     {
         SoapySDR::Octave::validateABI();
         return SoapySDR::Device::make(args);
+    }
+
+    ~Device()
+    {
+        SoapySDR::Device::unmake(self);
     }
 
     static SoapySDR::KwargsList enumerate()
