@@ -14,9 +14,12 @@
 // Ignore normal factory stuff
 %nodefaultctor SoapySDR::Device;
 %ignore SoapySDR::Device::make;
-%ignore SoapySDR::Device::unmake(const std::vector<Device *> &);
+%ignore SoapySDR::Device::unmake;
 
-// Don't wrap deprecated functions
+// Ignore map enumerate, we use strings on this layer
+%ignore SoapySDR::Device::enumerate(const Kwargs &);
+
+// Ignore deprecated functions
 %ignore SoapySDR::Device::listSampleRates;
 %ignore SoapySDR::Device::listBandwidths;
 %ignore SoapySDR::Device::setCommandTime;
@@ -42,19 +45,17 @@
 %ignore SoapySDR::Octave::Stream::args;
 %ignore SoapySDR::Octave::Stream::internal;
 
-// Ignore DMA-related functions
+// Ignore development-layer functions
 %ignore SoapySDR::Device::getNumDirectAccessBuffers;
 %ignore SoapySDR::Device::getDirectAccessBufferAddrs;
 %ignore SoapySDR::Device::acquireReadBuffer;
 %ignore SoapySDR::Device::releaseReadBuffer;
 %ignore SoapySDR::Device::acquireWriteBuffer;
 %ignore SoapySDR::Device::releaseWriteBuffer;
+%ignore SoapySDR::Device::getNativeDeviceHandle;
 
 // Ignore setting+sensor functions, we're rewriting
 // TODO: how?
-
-// Don't wrap development-layer functions
-%ignore SoapySDR::Device::getNativeDeviceHandle;
 
 %attributestring(SoapySDR::Device, std::string, driverKey, getDriverKey);
 %attributestring(SoapySDR::Device, std::string, hardwareKey, getHardwareKey);
