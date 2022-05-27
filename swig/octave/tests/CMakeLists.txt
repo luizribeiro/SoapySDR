@@ -28,6 +28,7 @@ set(tests
     TestBuildInfo
     TestEnumerateDevices
     TestErrorCodes
+    TestFormats
     TestLogger
     TestSoapyTypes
     TestTimeConversion)
