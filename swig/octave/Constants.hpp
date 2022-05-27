@@ -45,7 +45,7 @@ struct Direction
 const int Direction::TX = SOAPY_SDR_TX;
 const int Direction::RX = SOAPY_SDR_RX;
 
-struct ErrorCode
+struct Error
 {
     static const int NONE;
     static const int TIMEOUT;
@@ -56,20 +56,20 @@ struct ErrorCode
     static const int TIME_ERROR;
     static const int UNDERFLOW;
 
-    static inline std::string ToString(int errorCode)
+    static inline std::string toString(int errorCode)
     {
         return SoapySDR::errToStr(errorCode);
     }
 };
 
-const int ErrorCode::NONE = 0;
-const int ErrorCode::TIMEOUT = SOAPY_SDR_TIMEOUT;
-const int ErrorCode::STREAM_ERROR = SOAPY_SDR_STREAM_ERROR;
-const int ErrorCode::CORRUPTION = SOAPY_SDR_CORRUPTION;
-const int ErrorCode::OVERFLOW = SOAPY_SDR_OVERFLOW;
-const int ErrorCode::NOT_SUPPORTED = SOAPY_SDR_NOT_SUPPORTED;
-const int ErrorCode::TIME_ERROR = SOAPY_SDR_TIME_ERROR;
-const int ErrorCode::UNDERFLOW = SOAPY_SDR_UNDERFLOW;
+const int Error::NONE = 0;
+const int Error::TIMEOUT = SOAPY_SDR_TIMEOUT;
+const int Error::STREAM_ERROR = SOAPY_SDR_STREAM_ERROR;
+const int Error::CORRUPTION = SOAPY_SDR_CORRUPTION;
+const int Error::OVERFLOW = SOAPY_SDR_OVERFLOW;
+const int Error::NOT_SUPPORTED = SOAPY_SDR_NOT_SUPPORTED;
+const int Error::TIME_ERROR = SOAPY_SDR_TIME_ERROR;
+const int Error::UNDERFLOW = SOAPY_SDR_UNDERFLOW;
 
 struct LogLevel
 {
