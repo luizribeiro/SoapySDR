@@ -9,6 +9,7 @@
 #include <octave/parse.h>
 
 #include <mutex>
+#include <stdexcept>
 
 namespace SoapySDR { namespace Octave {
 
@@ -35,30 +36,6 @@ namespace SoapySDR { namespace Octave {
 
         struct InternalLoggerInit
         {
-            InternalLoggerInit(void)
-            {
-                // In theory, since we're only creating a single instance, this
-                // should only run once anyway, but just to be sure...
-                static std::once_flag once_flag;
-                std::call_once(
-                    once_flag,
-                    []()
-                    {
-                        constexpr auto name = "evalin"; // Run in this context
-                        octave_value_list args;
-                        args.append("caller");
-                        args.append("function logf(logLevel, format, varargin); "
-                                    "  message = sprintf(format, varargin); "
-                                    "  SoapySDR.log(logLevel, message); "
-                                    "endfunction;");
-
-#if SWIG_OCTAVE_PREREQ(4,4,0)
-                        octave::feval(name, args, 0);
-#else
-                        feval(name, args, 0);
-#endif
-                    });
-            }
             ~InternalLoggerInit(void)
             {
                 // Restore the default C log handler.
@@ -73,6 +50,30 @@ namespace SoapySDR { namespace Octave {
     static void log(const int logLevel, const std::string& message)
     {
         SoapySDR::log(static_cast<SoapySDR::LogLevel>(logLevel), message.c_str());
+    }
+
+    // Even though we don't do anything with the ..., we need it for SWIG to
+    // allow variable numbers of arguments.
+    static void logf(const octave_value_list& varargs, ...)
+    {
+        if(varargs.length() < 2)
+            throw std::invalid_argument("logf requires at least 2 arguments");
+
+        const auto &logLevel = varargs(0);
+        const auto &format = varargs(1);
+
+        octave_value_list sprintfArgs;
+        sprintfArgs.append(format);
+
+        for(octave_idx_type i = 2; i < varargs.length(); ++i)
+            sprintfArgs.append(varargs(i));
+
+#if SWIG_OCTAVE_PREREQ(4,4,0)
+        const auto sprintfResult = octave::feval("sprintf", sprintfArgs, 0);
+#else
+        const auto sprintfResult = feval("sprintf", sprintfArgs, 0);
+#endif
+        log(logLevel.int_value(), sprintfResult(0).string_value());
     }
 
     static void setLogLevel(const int logLevel)
