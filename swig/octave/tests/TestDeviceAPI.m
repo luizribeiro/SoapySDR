@@ -7,6 +7,79 @@
 %!test
 %! SoapySDR
 %!
+%! function testDirection(device, direction)
+%!   #
+%!   # Channels API
+%!   #
+%!
+%!   device.setFrontendMapping(direction, "0:0")
+%!   assert(strcmp(device.getFrontendMapping(direction), "") == 1)
+%!   device.getChannelInfo(direction, 0) # TODO: check
+%!   assert(device.getFullDuplex(direction, 0))
+%!
+%!   #
+%!   # Stream API
+%!   #
+%!
+%!   device.getStreamFormats(direction, 0) # TODO: check
+%!   [format, fullScale] = device.getNativeStreamFormat(direction, 0)
+%!   #assert(strcmp(format, SoapySDR.StreamFormat.CS16) == 1) # TODO: odd error
+%!   assert(fullScale == bitshift(1, 15))
+%!
+%!   format = SoapySDR.StreamFormat.CF32
+%!   channels = [0, 1]
+%!   args = "bufflen=8192,buffers=15"
+%!   stream = device.setupStream(direction, format, channels, args)
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%! endfunction
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
+%!
 %! device = SoapySDR.Device("driver=null,type=null")
 %!
 %! #
@@ -33,16 +106,16 @@
 %!
 %! #TODO: make these attributes, figure out string comparison issue
 %! device.setClockSource("")
-%! #assert(device.getClockSource() == "")
+%! assert(strcmp(device.getClockSource(), "") == 1)
 %! device.listClockSources() # TODO: check is array
 %!
 %! #
 %! # Time API
 %! #
 %!
-%! #TODO: make these attributes, figure out string comparison issue
+%! #TODO: make these attributes
 %! device.setTimeSource("")
-%! #assert(device.getTimeSource() == "")
+%! assert(strcmp(device.getTimeSource(), "") == 1)
 %! device.listTimeSources() # TODO: check is array
 %!
 %! assert(isa(device.hasHardwareTime(), "logical"))
@@ -98,13 +171,13 @@
 %! #
 %!
 %! device.writeI2C(0, "")
-%! #assert(device.readI2C(0, 0) == "") # TODO: how?
+%! assert(strcmp(device.readI2C(0, 0), "") == 1)
 %!
 %! #
 %! # SPI API
 %! #
 %!
-%! assert(device.transactSPI(0, 0, 0), 0)
+%! assert(device.transactSPI(0, 0, 0) == 0)
 %!
 %! #
 %! # UART API
@@ -112,6 +185,11 @@
 %!
 %! device.listUARTs() # TODO: attribute, check value
 %! device.writeUART("", "")
-%! #assert(device.readUART("") == "") # TODO: how?
+%! assert(strcmp(device.readUART(""), "") == 1)
 %!
-%! # TODO: per-direction API
+%! #
+%! # Test functions with direction parameters
+%! #
+%! 
+%! testDirection(device, SoapySDR.Direction.TX)
+%! testDirection(device, SoapySDR.Direction.RX)
