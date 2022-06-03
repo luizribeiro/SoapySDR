@@ -18,7 +18,6 @@
 %ignore SoapySDR::Device::unmake;
 
 // Ignore map enumerate, we use strings on this layer
-%ignore SoapySDR::Device::enumerate();
 %ignore SoapySDR::Device::enumerate(const Kwargs &);
 
 // Ignore deprecated functions
@@ -125,11 +124,6 @@
     ~Device()
     {
         SoapySDR::Device::unmake(self);
-    }
-
-    static SoapySDR::KwargsList enumerate()
-    {
-        return SoapySDR::Device::enumerate("");
     }
 
     std::string __str__()
