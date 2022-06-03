@@ -125,7 +125,7 @@ TxStreamResult writeStream(
     }
     else if(dims.length() == 2)
     {
-        if(dims.elem(0) != numChannels)
+        if(size_t(dims.elem(0)) != numChannels)
             throw std::invalid_argument("Outer dimension must match number of channels ("+std::to_string(numChannels)+")");
         if(internalNumSamples == 0)
             throw std::invalid_argument("Inner dimension must not be empty");

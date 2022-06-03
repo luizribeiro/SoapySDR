@@ -13,10 +13,12 @@
 
 // Ignore normal factory stuff
 %nodefaultctor SoapySDR::Device;
+%ignore SoapySDR::Device::~Device;
 %ignore SoapySDR::Device::make;
 %ignore SoapySDR::Device::unmake;
 
 // Ignore map enumerate, we use strings on this layer
+%ignore SoapySDR::Device::enumerate();
 %ignore SoapySDR::Device::enumerate(const Kwargs &);
 
 // Ignore deprecated functions
@@ -25,6 +27,14 @@
 %ignore SoapySDR::Device::setCommandTime;
 %ignore SoapySDR::Device::writeRegister(const unsigned, const unsigned);
 %ignore SoapySDR::Device::readRegister(const unsigned) const;
+
+// Ignore sensor and setting functions, we're rewriting
+%ignore SoapySDR::Device::readSensor(const std::string &) const;
+%ignore SoapySDR::Device::readSensor(const int, const size_t, const std::string &) const;
+%ignore SoapySDR::Device::readSetting(const std::string &) const;
+%ignore SoapySDR::Device::readSetting(const int, const size_t, const std::string &) const;
+%ignore SoapySDR::Device::writeSetting(const std::string &, const std::string &);
+%ignore SoapySDR::Device::writeSetting(const int, const size_t, const std::string &, const std::string &);
 
 // Ignore stream-related functions, we're rewriting
 %ignore SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &) const;
@@ -403,9 +413,9 @@
 
     void writeSetting(const std::string &key, const octave_value &value)
     {
-        if(value.is_integer_type())
+        if(value.isinteger())
             self->writeSetting(key, value.int_value());
-        else if(value.is_float_type())
+        else if(value.isfloat())
             self->writeSetting(key, value.double_value());
         else
             self->writeSetting(key, value.string_value(true));
@@ -413,9 +423,9 @@
 
     void writeSetting(const int direction, const size_t channel, const std::string &key, const octave_value &value)
     {
-        if(value.is_integer_type())
+        if(value.isinteger())
             self->writeSetting(direction, channel, key, value.int_value());
-        else if(value.is_float_type())
+        else if(value.isfloat())
             self->writeSetting(direction, channel, key, value.double_value());
         else
             self->writeSetting(direction, channel, key, value.string_value(true));
