@@ -35,6 +35,13 @@ endif()
 # TODO: Octave has a huge number of warnings, figure out suppressing
 #       it all.
 ########################################################################
+
+# Both Octave and the SWIG-generated source have a huge amount of warnings.
+# TODO: the virtual dtor one still sneaks past
+if(CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    list(APPEND CMAKE_CXX_FLAGS "-Wno-non-virtual-dtor -Wno-deprecated-copy -Wno-unused-parameter")
+endif()
+
 include(UseSWIG)
 set(CMAKE_SWIG_FLAGS
     -I${SoapySDR_INCLUDE_DIRS}
