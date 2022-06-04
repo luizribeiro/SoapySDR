@@ -45,6 +45,17 @@
 
 %include <typemaps.i>
 
+%naturalvar SoapySDR::ArgInfo::options;
+%naturalvar SoapySDR::ArgInfo::optionNames;
+
+%typemap(in) const std::vector<std::string> & {
+    $1 = SoapySDR::Octave::stringVectorOctaveToCpp($input.string_vector_value());
+}
+
+%typemap(freearg) const std::vector<std::string> & {
+    delete $1;
+}
+
 %typemap(out) std::vector<std::string> {
     $result = SoapySDR::Octave::stringVectorCppToOctave($1);
 }
