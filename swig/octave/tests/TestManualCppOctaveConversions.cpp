@@ -1,6 +1,7 @@
 // Copyright (c) 2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
+#include "../Types.hpp"
 #include "../Utility.hpp"
 
 #include <cstdlib>
@@ -215,6 +216,44 @@ static bool testKwargsListOctaveToCpp(void)
     return true;
 }
 
+static bool testArgInfoCppToOctave(void)
+{
+    printf("%s\n", __PRETTY_FUNCTION__);
+
+    SoapySDR::ArgInfo cppArgInfo;
+    cppArgInfo.key = "key";
+    cppArgInfo.value = "val";
+    cppArgInfo.name = "Key";
+    cppArgInfo.description = "description";
+    cppArgInfo.units = "units";
+    cppArgInfo.type = SoapySDR::ArgInfo::STRING;
+    cppArgInfo.range = SoapySDR::Range(0.0, 1.0, 0.1);
+    cppArgInfo.options = {"opt0", "opt1", "opt2"};
+    cppArgInfo.optionNames = {"Option0", "Option1", "Option2"};
+
+    SoapySDR::Octave::ArgInfo octaveArgInfo(cppArgInfo);
+    TEST_ASSERT(cppArgInfo.key == octaveArgInfo.key);
+    TEST_ASSERT(cppArgInfo.value == octaveArgInfo.value);
+    TEST_ASSERT(cppArgInfo.name == octaveArgInfo.name);
+    TEST_ASSERT(cppArgInfo.description == octaveArgInfo.description);
+    TEST_ASSERT(cppArgInfo.units == octaveArgInfo.units);
+    TEST_ASSERT(cppArgInfo.type == SoapySDR::ArgInfo::Type(octaveArgInfo.type));
+    TEST_ASSERT(cppArgInfo.range.minimum() == octaveArgInfo.range.minimum());
+    TEST_ASSERT(cppArgInfo.range.maximum() == octaveArgInfo.range.maximum());
+    TEST_ASSERT(cppArgInfo.range.step() == octaveArgInfo.range.step());
+
+    TEST_ASSERT(cppArgInfo.options.size() == size_t(octaveArgInfo.options.numel()));
+    for(size_t i = 0; i < cppArgInfo.options.size(); ++i)
+        TEST_ASSERT(cppArgInfo.options[i] == octaveArgInfo.options.elem(i));
+
+    TEST_ASSERT(cppArgInfo.optionNames.size() == size_t(octaveArgInfo.optionNames.numel()));
+    for(size_t i = 0; i < cppArgInfo.optionNames.size(); ++i)
+        TEST_ASSERT(cppArgInfo.optionNames[i] == octaveArgInfo.optionNames.elem(i));
+
+    puts(" * SUCCESS");
+    return true;
+}
+
 //
 // Main
 //
@@ -231,6 +270,7 @@ int main(int,char**)
     success &= testKwargsOctaveToCpp();
     success &= testKwargsListCppToOctave();
     success &= testKwargsListOctaveToCpp();
+    success &= testArgInfoCppToOctave();
 
     puts("");
     puts(success ? "SUCCESS" : "FAILURE");
