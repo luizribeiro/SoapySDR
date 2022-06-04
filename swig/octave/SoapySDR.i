@@ -10,12 +10,16 @@
 #include "Constants.hpp"
 #include "Logger.hpp"
 #include "Streaming.hpp"
+#include "Types.hpp"
 #include "Utility.hpp"
 
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Time.hpp>
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Version.hpp>
+
+#include <algorithm>
+#include <iterator>
 
 %}
 
@@ -44,9 +48,6 @@
 //
 
 %include <typemaps.i>
-
-%naturalvar SoapySDR::ArgInfo::options;
-%naturalvar SoapySDR::ArgInfo::optionNames;
 
 %typemap(in) const std::vector<std::string> & {
     $1 = SoapySDR::Octave::stringVectorOctaveToCpp($input.string_vector_value());
@@ -80,6 +81,24 @@
     delete $1;
 }
 
+%typemap(out) SoapySDR::ArgInfo {
+    $result = new SoapySDR::Octave::ArgInfo($1);
+}
+
+%typemap(out) SoapySDR::ArgInfoList {
+    auto *outputVec = new std::vector<SoapySDR::Octave::ArgInfo>();
+    std::transform(
+        $1.begin(),
+        $1.end(),
+        std::back_inserter(*outputVec),
+        [](const SoapySDR::ArgInfo &cppArgInfo)
+        {
+            return SoapySDR::Octave::ArgInfo(cppArgInfo);
+        });
+
+    $result = outputVec;
+}
+
 %typemap(in) const SoapySDR::Kwargs & {
     $1 = SoapySDR::Octave::kwargsOctaveToCpp($input);
 }
@@ -105,7 +124,6 @@
 %include <std_string.i>
 %include <std_vector.i>
 
-%template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
 %template(RangeList) std::vector<SoapySDR::Range>;
 
 %include <SoapySDR/Config.h>
@@ -115,9 +133,13 @@
 %attribute(SoapySDR::Range, double, maximum, maximum);
 %attribute(SoapySDR::Range, double, step, step);
 
+%ignore SoapySDR::ArgInfo;
+%template(ArgInfoList) std::vector<SoapySDR::Octave::ArgInfo>;
+
+%include "Types.hpp"
 %include <SoapySDR/Types.hpp>
 
-%extend SoapySDR::ArgInfo
+%extend SoapySDR::Octave::ArgInfo
 {
     std::string __str__()
     {
@@ -133,7 +155,6 @@
     }
 }
 
-// TODO: figure out how to typemap ArgInfo::Type to int and use this instead
 %nodefaultctor SoapySDR::Octave::ArgType;
 %nodefaultctor SoapySDR::Octave::Direction;
 %nodefaultctor SoapySDR::Octave::ErrorCode;

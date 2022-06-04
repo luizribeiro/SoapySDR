@@ -19,13 +19,14 @@ namespace SoapySDR { namespace Octave {
  */
 struct ArgInfo
 {
+    ArgInfo(void) = default;
     ArgInfo(const SoapySDR::ArgInfo &cppArgInfo):
         key(cppArgInfo.key),
         value(cppArgInfo.value),
         name(cppArgInfo.name),
         description(cppArgInfo.description),
         units(cppArgInfo.units),
-        type(Type(cppArgInfo.type)),
+        type(int(cppArgInfo.type)),
         range(cppArgInfo.range),
         options(stringVectorCppToOctave(cppArgInfo.options)),
         optionNames(stringVectorCppToOctave(cppArgInfo.optionNames))
@@ -51,14 +52,14 @@ struct ArgInfo
     std::string units;
 
     //! The data type of the argument (required)
-    enum Type {BOOL, INT, FLOAT, STRING} type;
+    int type;
 
     /*!
      * The range of possible numeric values (optional)
      * When specified, the argument should be restricted to this range.
      * The range is only applicable to numeric argument types.
      */
-    Range range;
+    SoapySDR::Range range;
 
     /*!
      * A discrete list of possible values (optional)
