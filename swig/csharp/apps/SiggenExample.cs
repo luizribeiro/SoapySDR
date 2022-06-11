@@ -111,7 +111,7 @@ public class SiggenExample
                 System.Console.WriteLine("Actual Tx frequency: {0} MHz\n", sdr.GetFrequency(SoapySDR.Direction.Tx, txChan));
             }
 
-            var format = SoapySDR.StreamFormat.CF32;
+            var format = SoapySDR.StreamFormat.ComplexFloat32;
             System.Console.WriteLine(string.Format("Create Tx stream (format: {0}, chan: {1})", format, txChan));
             var txStream = sdr.SetupTxStream(format, new uint[] { txChan }, "");
             System.Console.WriteLine("Activate Tx stream");

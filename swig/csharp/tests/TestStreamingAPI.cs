@@ -159,24 +159,16 @@ public class TestStreamingAPI
     [Test]
     public void Test_TxStreamNonGeneric()
     {
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.S8);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.S16);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.S32);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.U8);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.U16);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.U32);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.F32);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.F64);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CS8);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CS12);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CS16);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CS32);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CU8);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CU12);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CU16);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CU32);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CF32);
-        TestTxStreamNonGeneric(SoapySDR.StreamFormat.CF64);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt8);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt12);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt16);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt32);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt8);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt12);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt16);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt32);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexFloat32);
+        TestTxStreamNonGeneric(SoapySDR.StreamFormat.ComplexFloat64);
     }
 
     //
@@ -266,31 +258,23 @@ public class TestStreamingAPI
     [Test]
     public void Test_RxStreamNonGeneric()
     {
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.S8);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.S16);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.S32);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.U8);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.U16);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.U32);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.F32);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.F64);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CS8);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CS12);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CS16);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CS32);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CU8);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CU12);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CU16);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CU32);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CF32);
-        TestRxStreamNonGeneric(SoapySDR.StreamFormat.CF64);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt8);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt12);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt16);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexInt32);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt8);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt12);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt16);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexUInt32);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexFloat32);
+        TestRxStreamNonGeneric(SoapySDR.StreamFormat.ComplexFloat64);
     }
 
     //
     // Generic test interface
     //
 
-    public interface IGenericStreamingTestCase
+    public interface IGeneriComplexInttreamingTestCase
     {
         void TestTxStreaming();
 
@@ -305,7 +289,7 @@ public class TestStreamingAPI
     // Generic test implementation
     //
 
-    public class GenericStreamingTestCase<T>: IGenericStreamingTestCase where T: unmanaged
+    public class GeneriComplexInttreamingTestCase<T>: IGeneriComplexInttreamingTestCase where T: unmanaged
     {
         public void TestTxStreaming()
         {
@@ -660,42 +644,42 @@ public class TestStreamingAPI
     // Generic test factories
     //
 
-    public static IEnumerable<IGenericStreamingTestCase> TestCases()
+    public static IEnumerable<IGeneriComplexInttreamingTestCase> TestCases()
     {
-        yield return new GenericStreamingTestCase<sbyte>();
-        yield return new GenericStreamingTestCase<short>();
-        yield return new GenericStreamingTestCase<int>();
-        yield return new GenericStreamingTestCase<byte>();
-        yield return new GenericStreamingTestCase<ushort>();
-        yield return new GenericStreamingTestCase<uint>();
-        yield return new GenericStreamingTestCase<float>();
-        yield return new GenericStreamingTestCase<double>();
+        yield return new GeneriComplexInttreamingTestCase<sbyte>();
+        yield return new GeneriComplexInttreamingTestCase<short>();
+        yield return new GeneriComplexInttreamingTestCase<int>();
+        yield return new GeneriComplexInttreamingTestCase<byte>();
+        yield return new GeneriComplexInttreamingTestCase<ushort>();
+        yield return new GeneriComplexInttreamingTestCase<uint>();
+        yield return new GeneriComplexInttreamingTestCase<float>();
+        yield return new GeneriComplexInttreamingTestCase<double>();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestTxStreaming(IGenericStreamingTestCase testCase)
+    public void TestTxStreaming(IGeneriComplexInttreamingTestCase testCase)
     {
         testCase.TestTxStreaming();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestComplexTxStreaming(IGenericStreamingTestCase testCase)
+    public void TestComplexTxStreaming(IGeneriComplexInttreamingTestCase testCase)
     {
         testCase.TestComplexTxStreaming();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestRxStreaming(IGenericStreamingTestCase testCase)
+    public void TestRxStreaming(IGeneriComplexInttreamingTestCase testCase)
     {
         testCase.TestRxStreaming();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestComplexRxStreaming(IGenericStreamingTestCase testCase)
+    public void TestComplexRxStreaming(IGeneriComplexInttreamingTestCase testCase)
     {
         testCase.TestComplexRxStreaming();
     }

@@ -29,29 +29,28 @@ namespace SoapySDR { namespace CSharp {
         UserFlag4     = (1 << 20)
     };
 
-    // TODO: ComplexFloat64, etc
     struct StreamFormat
     {
-        static const std::string CF64;
-        static const std::string CF32;
-        static const std::string CS32;
-        static const std::string CU32;
-        static const std::string CS16;
-        static const std::string CU16;
-        static const std::string CS12;
-        static const std::string CU12;
-        static const std::string CS8;
-        static const std::string CU8;
-        static const std::string CS4;
-        static const std::string CU4;
-        static const std::string F64;
-        static const std::string F32;
-        static const std::string S32;
-        static const std::string U32;
-        static const std::string S16;
-        static const std::string U16;
-        static const std::string S8;
-        static const std::string U8;
+        static const std::string ComplexFloat64;
+        static const std::string ComplexFloat32;
+        static const std::string ComplexInt32;
+        static const std::string ComplexUInt32;
+        static const std::string ComplexInt16;
+        static const std::string ComplexUInt16;
+        static const std::string ComplexInt12;
+        static const std::string ComplexUInt12;
+        static const std::string ComplexInt8;
+        static const std::string ComplexUInt8;
+        static const std::string ComplexInt4;
+        static const std::string ComplexUInt4;
+        static const std::string Float64;
+        static const std::string Float32;
+        static const std::string Int32;
+        static const std::string UInt32;
+        static const std::string Int16;
+        static const std::string UInt16;
+        static const std::string Int8;
+        static const std::string UInt8;
 
         static inline size_t FormatToSize(const std::string& format)
         {
@@ -59,26 +58,26 @@ namespace SoapySDR { namespace CSharp {
         }
     };
 
-    const std::string StreamFormat::CF64 = SOAPY_SDR_CF64;
-    const std::string StreamFormat::CF32 = SOAPY_SDR_CF32;
-    const std::string StreamFormat::CS32 = SOAPY_SDR_CS32;
-    const std::string StreamFormat::CU32 = SOAPY_SDR_CU32;
-    const std::string StreamFormat::CS16 = SOAPY_SDR_CS16;
-    const std::string StreamFormat::CU16 = SOAPY_SDR_CU16;
-    const std::string StreamFormat::CS12 = SOAPY_SDR_CS12;
-    const std::string StreamFormat::CU12 = SOAPY_SDR_CU12;
-    const std::string StreamFormat::CS8  = SOAPY_SDR_CS8;
-    const std::string StreamFormat::CU8  = SOAPY_SDR_CU8;
-    const std::string StreamFormat::CS4  = SOAPY_SDR_CS4;
-    const std::string StreamFormat::CU4  = SOAPY_SDR_CU4;
-    const std::string StreamFormat::F64  = SOAPY_SDR_F64;
-    const std::string StreamFormat::F32  = SOAPY_SDR_F32;
-    const std::string StreamFormat::S32  = SOAPY_SDR_S32;
-    const std::string StreamFormat::U32  = SOAPY_SDR_U32;
-    const std::string StreamFormat::S16  = SOAPY_SDR_S16;
-    const std::string StreamFormat::U16  = SOAPY_SDR_U16;
-    const std::string StreamFormat::S8   = SOAPY_SDR_S8;
-    const std::string StreamFormat::U8   = SOAPY_SDR_U8;
+    const std::string StreamFormat::ComplexFloat64 = SOAPY_SDR_CF64;
+    const std::string StreamFormat::ComplexFloat32 = SOAPY_SDR_CF32;
+    const std::string StreamFormat::ComplexInt32   = SOAPY_SDR_CS32;
+    const std::string StreamFormat::ComplexUInt32  = SOAPY_SDR_CU32;
+    const std::string StreamFormat::ComplexInt16   = SOAPY_SDR_CS16;
+    const std::string StreamFormat::ComplexUInt16  = SOAPY_SDR_CU16;
+    const std::string StreamFormat::ComplexInt12   = SOAPY_SDR_CS12;
+    const std::string StreamFormat::ComplexUInt12  = SOAPY_SDR_CU12;
+    const std::string StreamFormat::ComplexInt8    = SOAPY_SDR_CS8;
+    const std::string StreamFormat::ComplexUInt8   = SOAPY_SDR_CU8;
+    const std::string StreamFormat::ComplexInt4    = SOAPY_SDR_CS4;
+    const std::string StreamFormat::ComplexUInt4   = SOAPY_SDR_CU4;
+    const std::string StreamFormat::Float64        = SOAPY_SDR_F64;
+    const std::string StreamFormat::Float32        = SOAPY_SDR_F32;
+    const std::string StreamFormat::Int32          = SOAPY_SDR_S32;
+    const std::string StreamFormat::UInt32         = SOAPY_SDR_U32;
+    const std::string StreamFormat::Int16          = SOAPY_SDR_S16;
+    const std::string StreamFormat::UInt16         = SOAPY_SDR_U16;
+    const std::string StreamFormat::Int8           = SOAPY_SDR_S8;
+    const std::string StreamFormat::UInt8          = SOAPY_SDR_U8;
 
     struct StreamHandle
     {
@@ -114,3 +113,8 @@ ENUM_CHECK(SoapySDR::CSharp::StreamFlags::EndAbrupt, SOAPY_SDR_END_ABRUPT);
 ENUM_CHECK(SoapySDR::CSharp::StreamFlags::OnePacket, SOAPY_SDR_ONE_PACKET);
 ENUM_CHECK(SoapySDR::CSharp::StreamFlags::MoreFragments, SOAPY_SDR_MORE_FRAGMENTS);
 ENUM_CHECK(SoapySDR::CSharp::StreamFlags::WaitTrigger, SOAPY_SDR_WAIT_TRIGGER);
+ENUM_CHECK(SoapySDR::CSharp::StreamFlags::UserFlag0, SOAPY_SDR_USER_FLAG0);
+ENUM_CHECK(SoapySDR::CSharp::StreamFlags::UserFlag1, SOAPY_SDR_USER_FLAG1);
+ENUM_CHECK(SoapySDR::CSharp::StreamFlags::UserFlag2, SOAPY_SDR_USER_FLAG2);
+ENUM_CHECK(SoapySDR::CSharp::StreamFlags::UserFlag3, SOAPY_SDR_USER_FLAG3);
+ENUM_CHECK(SoapySDR::CSharp::StreamFlags::UserFlag4, SOAPY_SDR_USER_FLAG4);

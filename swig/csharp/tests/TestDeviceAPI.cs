@@ -191,7 +191,7 @@ public class TestDeviceAPI
         _ = device.GetStreamFormats(direction, 0);
 
         double fullScale;
-        Assert.AreEqual(SoapySDR.StreamFormat.CS16, device.GetNativeStreamFormat(direction, 0, out fullScale));
+        Assert.AreEqual(SoapySDR.StreamFormat.ComplexInt16, device.GetNativeStreamFormat(direction, 0, out fullScale));
         Assert.AreEqual(1 << 15, fullScale);
 
         _ = device.GetStreamArgsInfo(direction, 0);

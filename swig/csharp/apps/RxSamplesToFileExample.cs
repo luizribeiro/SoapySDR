@@ -102,7 +102,7 @@ public class RxSamplesToFileExample
                 System.Console.WriteLine("Actual Rx frequency: {0} MHz\n", sdr.GetFrequency(SoapySDR.Direction.Rx, chan));
             }
 
-            var format = SoapySDR.StreamFormat.CF32;
+            var format = SoapySDR.StreamFormat.ComplexFloat32;
             var formatSize = SoapySDR.StreamFormat.FormatToSize(format);
 
             System.Console.WriteLine(string.Format("Create Rx stream (format: {0}, chan: {1})", format, chan));

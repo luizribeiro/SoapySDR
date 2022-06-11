@@ -30,14 +30,14 @@ namespace SoapySDR
         {
             var type = typeof(T);
 
-            if (typeof(T).Equals(typeof(sbyte))) return StreamFormat.S8;
-            else if (typeof(T).Equals(typeof(short))) return StreamFormat.S16;
-            else if (typeof(T).Equals(typeof(int))) return StreamFormat.S32;
-            else if (typeof(T).Equals(typeof(byte))) return StreamFormat.U8;
-            else if (typeof(T).Equals(typeof(ushort))) return StreamFormat.U16;
-            else if (typeof(T).Equals(typeof(uint))) return StreamFormat.U32;
-            else if (typeof(T).Equals(typeof(float))) return StreamFormat.F32;
-            else if (typeof(T).Equals(typeof(double))) return StreamFormat.F64;
+            if (typeof(T).Equals(typeof(sbyte))) return StreamFormat.Int8;
+            else if (typeof(T).Equals(typeof(short))) return StreamFormat.Int16;
+            else if (typeof(T).Equals(typeof(int))) return StreamFormat.Int32;
+            else if (typeof(T).Equals(typeof(byte))) return StreamFormat.UInt8;
+            else if (typeof(T).Equals(typeof(ushort))) return StreamFormat.UInt16;
+            else if (typeof(T).Equals(typeof(uint))) return StreamFormat.UInt32;
+            else if (typeof(T).Equals(typeof(float))) return StreamFormat.Float32;
+            else if (typeof(T).Equals(typeof(double))) return StreamFormat.Float64;
             else throw new Exception(string.Format("Type {0} not covered by GetFormatString", type));
         }
 
@@ -53,14 +53,14 @@ namespace SoapySDR
         {
             var type = typeof(T);
 
-            if (typeof(T).Equals(typeof(sbyte))) return StreamFormat.CS8;
-            else if (typeof(T).Equals(typeof(short))) return StreamFormat.CS16;
-            else if (typeof(T).Equals(typeof(int))) return StreamFormat.CS32;
-            else if (typeof(T).Equals(typeof(byte))) return StreamFormat.CU8;
-            else if (typeof(T).Equals(typeof(ushort))) return StreamFormat.CU16;
-            else if (typeof(T).Equals(typeof(uint))) return StreamFormat.CU32;
-            else if (typeof(T).Equals(typeof(float))) return StreamFormat.CF32;
-            else if (typeof(T).Equals(typeof(double))) return StreamFormat.CF64;
+            if (typeof(T).Equals(typeof(sbyte))) return StreamFormat.ComplexInt8;
+            else if (typeof(T).Equals(typeof(short))) return StreamFormat.ComplexInt16;
+            else if (typeof(T).Equals(typeof(int))) return StreamFormat.ComplexInt32;
+            else if (typeof(T).Equals(typeof(byte))) return StreamFormat.ComplexUInt8;
+            else if (typeof(T).Equals(typeof(ushort))) return StreamFormat.ComplexUInt16;
+            else if (typeof(T).Equals(typeof(uint))) return StreamFormat.ComplexUInt32;
+            else if (typeof(T).Equals(typeof(float))) return StreamFormat.ComplexFloat32;
+            else if (typeof(T).Equals(typeof(double))) return StreamFormat.ComplexFloat64;
             else throw new Exception(string.Format("Type {0} not covered by GetComplexFormatString", type));
         }
 
