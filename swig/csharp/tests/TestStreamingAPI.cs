@@ -102,7 +102,7 @@ public class TestStreamingAPI
         {
             Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, txStream.Write((IntPtr)ptr, numElems, streamFlags, timeNs, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
-            //Assert.AreEqual(streamFlags, streamResult.Flags);
+            Assert.AreEqual(SoapySDR.StreamFlags.None, streamResult.Flags);
         }
 
         Assert.AreEqual(SoapySDR.ErrorCode.NotSupported, txStream.Deactivate(streamFlags, timeNs));
