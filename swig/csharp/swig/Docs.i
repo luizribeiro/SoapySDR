@@ -1,6 +1,10 @@
 // Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
+//
+// SoapySDR::Device
+//
+
 %typemap(csclassmodifiers) Time "
 /// <summary>
 /// Utility functions to convert time and ticks.
@@ -976,4 +980,62 @@ public";
 /// <param name=\"which\">The name of an available UART</param>
 /// <param name=\"timeoutUs\">Timeout in microseconds</param>
 /// <returns>An array of bytes read from the UART</returns>
+public";
+
+//
+// BuildInfo::SWIGModule
+//
+
+%csmethodmodifiers BuildInfo::SWIGModule::ABIVersion "
+/// <summary>
+/// The SoapySDR ABI version the underlying SWIG module was built against.
+///
+/// On instantiation of a device, this version will be validated against
+/// the installed library.
+/// </summary>
+public";
+
+%csmethodmodifiers BuildInfo::SWIGModule::APIVersion "
+/// <summary>
+/// The SoapySDR API version the underlying SWIG module was built against.
+///
+/// The format of the version string is <b>major.minor.increment</b>.
+/// </summary>
+public";
+
+%csmethodmodifiers BuildInfo::SWIGModule::LibVersion "
+/// <summary>
+/// The underlying SoapySDR library version the underlying SWIG module was built against.
+///
+/// The format of the version string is <b>major.minor.patch-buildInfo</b>.
+/// </summary>
+public";
+
+//
+// BuildInfo::Runtime
+//
+
+%csmethodmodifiers BuildInfo::Runtime::ABIVersion "
+/// <summary>
+/// The ABI version of the currently installed SoapySDR library.
+///
+/// On instantiation of a device, this version will be validated against
+/// the assembly.
+/// </summary>
+public";
+
+%csmethodmodifiers BuildInfo::Runtime::APIVersion "
+/// <summary>
+/// The API version of the currently installed SoapySDR library.
+///
+/// The format of the version string is <b>major.minor.increment</b>.
+/// </summary>
+public";
+
+%csmethodmodifiers BuildInfo::Runtime::LibVersion "
+/// <summary>
+/// The library version of the currently installed SoapySDR library.
+///
+/// The format of the version string is <b>major.minor.patch-buildInfo</b>.
+/// </summary>
 public";

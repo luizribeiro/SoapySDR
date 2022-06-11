@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 using NUnit.Framework;
@@ -14,10 +14,10 @@ public class TestBuildInfo
         Assert.IsNotEmpty(SoapySDR.BuildInfo.Assembly.LibVersion);
         System.Console.WriteLine("Assembly: ABI={0}, API={1}, Lib={2}", SoapySDR.BuildInfo.Assembly.ABIVersion, SoapySDR.BuildInfo.Assembly.APIVersion, SoapySDR.BuildInfo.Assembly.LibVersion);
 
-        Assert.IsNotEmpty(SoapySDR.BuildInfo.CompileTime.ABIVersion);
-        Assert.IsNotEmpty(SoapySDR.BuildInfo.CompileTime.APIVersion);
-        Assert.IsNotEmpty(SoapySDR.BuildInfo.CompileTime.LibVersion);
-        System.Console.WriteLine("CompileTime: ABI={0}, API={1}, Lib={2}", SoapySDR.BuildInfo.CompileTime.ABIVersion, SoapySDR.BuildInfo.CompileTime.APIVersion, SoapySDR.BuildInfo.CompileTime.LibVersion);
+        Assert.IsNotEmpty(SoapySDR.BuildInfo.SWIGModule.ABIVersion);
+        Assert.IsNotEmpty(SoapySDR.BuildInfo.SWIGModule.APIVersion);
+        Assert.IsNotEmpty(SoapySDR.BuildInfo.SWIGModule.LibVersion);
+        System.Console.WriteLine("SWIGModule: ABI={0}, API={1}, Lib={2}", SoapySDR.BuildInfo.SWIGModule.ABIVersion, SoapySDR.BuildInfo.SWIGModule.APIVersion, SoapySDR.BuildInfo.SWIGModule.LibVersion);
 
         Assert.IsNotEmpty(SoapySDR.BuildInfo.Runtime.ABIVersion);
         Assert.IsNotEmpty(SoapySDR.BuildInfo.Runtime.APIVersion);

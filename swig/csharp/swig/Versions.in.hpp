@@ -20,7 +20,7 @@ static std::string __getCompileTimeAPIVersion(void)
 
 struct BuildInfo
 {
-    struct CompileTime
+    struct SWIGModule
     {
         static const std::string ABIVersion;
         static const std::string APIVersion;
@@ -35,9 +35,9 @@ struct BuildInfo
     };
 };
 
-const std::string BuildInfo::CompileTime::ABIVersion = "@SOAPY_SDR_ABI_VERSION@";
-const std::string BuildInfo::CompileTime::APIVersion = __getCompileTimeAPIVersion();
-const std::string BuildInfo::CompileTime::LibVersion = "@SOAPY_SDR_VERSION@";
+const std::string BuildInfo::SWIGModule::ABIVersion = "@SOAPY_SDR_ABI_VERSION@";
+const std::string BuildInfo::SWIGModule::APIVersion = __getCompileTimeAPIVersion();
+const std::string BuildInfo::SWIGModule::LibVersion = "@SOAPY_SDR_VERSION@";
 
 const std::string BuildInfo::Runtime::ABIVersion = SoapySDR::getABIVersion();
 const std::string BuildInfo::Runtime::APIVersion = SoapySDR::getAPIVersion();

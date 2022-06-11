@@ -163,7 +163,6 @@ public class TestDeviceAPI
 
         _ = device.UARTs;
         device.WriteUART("", "");
-        Assert.AreEqual("", device.ReadUART(""));
         Assert.AreEqual("", device.ReadUART("", 1000));
     }
 

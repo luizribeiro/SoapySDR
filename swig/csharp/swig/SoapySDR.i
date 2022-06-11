@@ -105,7 +105,7 @@ typedef unsigned long long size_t;
 ////////////////////////////////////////////////////////////////////////
 %ignore __getCompileTimeAPIVersion;
 %nodefaultctor BuildInfo;
-%nodefaultctor BuildInfo::CompileTime;
+%nodefaultctor BuildInfo::SWIGModule;
 %nodefaultctor BuildInfo::Runtime;
 %typemap(csclassmodifiers) BuildInfo "public partial class";
 %include "Versions.hpp"
