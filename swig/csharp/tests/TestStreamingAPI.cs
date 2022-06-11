@@ -274,7 +274,7 @@ public class TestStreamingAPI
     // Generic test interface
     //
 
-    public interface IGeneriComplexInttreamingTestCase
+    public interface IGenericStreamingTestCase
     {
         void TestTxStreaming();
 
@@ -289,7 +289,7 @@ public class TestStreamingAPI
     // Generic test implementation
     //
 
-    public class GeneriComplexInttreamingTestCase<T>: IGeneriComplexInttreamingTestCase where T: unmanaged
+    public class GenericStreamingTestCase<T>: IGenericStreamingTestCase where T: unmanaged
     {
         public void TestTxStreaming()
         {
@@ -644,42 +644,42 @@ public class TestStreamingAPI
     // Generic test factories
     //
 
-    public static IEnumerable<IGeneriComplexInttreamingTestCase> TestCases()
+    public static IEnumerable<IGenericStreamingTestCase> TestCases()
     {
-        yield return new GeneriComplexInttreamingTestCase<sbyte>();
-        yield return new GeneriComplexInttreamingTestCase<short>();
-        yield return new GeneriComplexInttreamingTestCase<int>();
-        yield return new GeneriComplexInttreamingTestCase<byte>();
-        yield return new GeneriComplexInttreamingTestCase<ushort>();
-        yield return new GeneriComplexInttreamingTestCase<uint>();
-        yield return new GeneriComplexInttreamingTestCase<float>();
-        yield return new GeneriComplexInttreamingTestCase<double>();
+        yield return new GenericStreamingTestCase<sbyte>();
+        yield return new GenericStreamingTestCase<short>();
+        yield return new GenericStreamingTestCase<int>();
+        yield return new GenericStreamingTestCase<byte>();
+        yield return new GenericStreamingTestCase<ushort>();
+        yield return new GenericStreamingTestCase<uint>();
+        yield return new GenericStreamingTestCase<float>();
+        yield return new GenericStreamingTestCase<double>();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestTxStreaming(IGeneriComplexInttreamingTestCase testCase)
+    public void TestTxStreaming(IGenericStreamingTestCase testCase)
     {
         testCase.TestTxStreaming();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestComplexTxStreaming(IGeneriComplexInttreamingTestCase testCase)
+    public void TestComplexTxStreaming(IGenericStreamingTestCase testCase)
     {
         testCase.TestComplexTxStreaming();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestRxStreaming(IGeneriComplexInttreamingTestCase testCase)
+    public void TestRxStreaming(IGenericStreamingTestCase testCase)
     {
         testCase.TestRxStreaming();
     }
 
     [Test]
     [TestCaseSource("TestCases")]
-    public void TestComplexRxStreaming(IGeneriComplexInttreamingTestCase testCase)
+    public void TestComplexRxStreaming(IGenericStreamingTestCase testCase)
     {
         testCase.TestComplexRxStreaming();
     }
