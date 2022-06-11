@@ -107,6 +107,7 @@ public class TestDeviceAPI
         //
 
         _ = device.GetSettingInfo();
+        _ = device.GetSettingInfo("");
 
         device.WriteSetting("", 0);
         device.WriteSetting("", 0.0);
@@ -312,6 +313,7 @@ public class TestDeviceAPI
         //
 
         _ = device.GetSettingInfo(direction, 0);
+        _ = device.GetSettingInfo(direction, 0, "");
 
         device.WriteSetting("", 0);
         device.WriteSetting("", 0.0);
