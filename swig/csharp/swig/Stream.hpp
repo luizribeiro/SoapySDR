@@ -21,7 +21,12 @@ namespace SoapySDR { namespace CSharp {
         EndAbrupt     = (1 << 3),
         OnePacket     = (1 << 4),
         MoreFragments = (1 << 5),
-        WaitTrigger   = (1 << 6)
+        WaitTrigger   = (1 << 6),
+        UserFlag0     = (1 << 16),
+        UserFlag1     = (1 << 17),
+        UserFlag2     = (1 << 18),
+        UserFlag3     = (1 << 19),
+        UserFlag4     = (1 << 20)
     };
 
     // TODO: ComplexFloat64, etc
