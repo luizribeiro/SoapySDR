@@ -1,9 +1,5 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
-
-//
-// TODO: automate this with SWIG doc generator when brought in
-//
 
 %typemap(csclassmodifiers) Time "
 /// <summary>
@@ -664,12 +660,19 @@ public";
 /// <returns>True if the hardware clock exists</returns>
 public";
 
-%csmethodmodifiers SoapySDR::Device::setHardwareTime "
+%csmethodmodifiers SoapySDR::Device::setHardwareTime(const long long) "
 /// <summary>
 /// Write the time to the hardware clock on the device.
 /// </summary>
 /// <param name=\"timeNs\">The time in nanoseconds</param>
-/// <param name=\"what\">An optional name of a specific time counter</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::setHardwareTime(const long long, const std::string &) "
+/// <summary>
+/// Write the time to the hardware clock on the device.
+/// </summary>
+/// <param name=\"timeNs\">The time in nanoseconds</param>
+/// <param name=\"what\">Name of a specific time counter</param>
 public";
 
 %csmethodmodifiers SoapySDR::Device::getHardwareTime "
@@ -736,6 +739,7 @@ public";
 ///
 /// The value returned is a string which can represent
 /// a boolean (\"true\"/\"false\"), an integer, or float.
+/// </summary>
 /// <param name=\"direction\">The channel direction (RX or TX)</param>
 /// <param name=\"channel\">An available channel on the device</param>
 /// <param name=\"key\">The ID name of an available sensor</param>
@@ -748,14 +752,228 @@ public";
 /// </summary>
 public";
 
+%csmethodmodifiers SoapySDR::Device::writeRegister "
+/// <summary>
+/// Write a register on the device given the interface name.
+///
+/// This can represent a register on a soft CPU, FPGA, IC;
+/// the interpretation is up the implementation to decide.
+/// </summary>
+/// <param name=\"name\">The name of a available register interface</param>
+/// <param name=\"addr\"The register address</param>
+/// <param name=\"value\">The register value</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readRegister "
+/// <summary>
+/// Read a register on the device given the interface name.
+/// </summary>
+/// <param name=\"name\">The name of a available register interface</param>
+/// <param name=\"addr\">The register address</param>
+/// <returns>The register value</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeRegisters "
+/// <summary>
+/// Write a memory block on the device given the interface name.
+///
+/// This can represent a memory block on a soft CPU, FPGA, IC;
+/// the interpretation is up the implementation to decide.
+/// </summary>
+/// <param name=\"name\">The name of a available memory block interface</param>
+/// <param name=\"addr\">The memory block start address</param>
+/// <param name=\"value\">The memory block content</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readRegisters "
+/// <summary>
+/// Read a memory block on the device given the interface name.
+/// </summary>
+/// <param name=\"name\">The name of a available memory block interface</param>
+/// <param name=\"addr\">The memory block start address</param>
+/// <param name=\"length\">Number of words to be read from memory block</param>
+/// <returns>The memory block content</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSettingInfo() const "
+/// <summary>Describe the allowed keys and values used for settings.</summary>
+/// <returns>A list of argument info structures</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSettingInfo(const std::string &) const "
+/// <summary>Get information on a specific setting.</summary>
+/// <param name=\"key\">The setting identifier</param>
+/// <returns>All information for a specific setting</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeSetting(const std::string &, const std::string &) "
+/// <summary>
+/// Write an arbitrary setting on the device.
+///
+/// The interpretation is up the implementation.
+/// </summary>
+/// <param name=\"key\">The setting identifier</param>
+/// <param name=\"value\">The setting value</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readSetting(const std::string &) const "
+/// <summary>Read an arbitrary setting on the device.</summary>
+/// <param name=\"key\">The setting identifier</param>
+/// <returns>The setting value</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSettingInfo(const int, const size_t) const "
+/// <summary>Describe the allowed keys and values used for channel settings.</summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</summary>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <returns>A list of argument info structures</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::getSettingInfo(const int, const size_t, const std::string &) const "
+/// <summary>Get information on a specific channel setting.</summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"key\">The setting identifier</param>
+/// <returns>All information for a specific channel setting</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeSetting(const int, const size_t, const std::string &, const std::string &) "
+/// <summary>
+/// Write an arbitrary channel setting on the device.
+///
+/// The interpretation is up the implementation.
+/// </summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"key\">The setting identifier</param>
+/// <param name=\"value\">The setting value</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readSetting(const int, const size_t, const std::string &) const "
+/// <summary>Read an arbitrary channel setting on the device.</summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</param>
+/// <param name=\"channel\">An available channel on the device</param>
+/// <param name=\"key\">The setting identifier</param>
+/// <returns>The setting value</returns>
+public";
+
 %csmethodmodifiers SoapySDR::Device::GPIOBanks "
 /// <summary>
 /// A list of the device's available GPIO banks by name.
 /// </summary>
 public";
 
+%csmethodmodifiers SoapySDR::Device::writeGPIO(const std::string &, const unsigned) "
+/// <summary>Write the value of a GPIO bank.</summary>
+/// <param name=\"bank\">The name of an available bank</param>
+/// <param name=\"value\">An integer representing GPIO bits</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeGPIO(const std::string &, const unsigned, const unsigned) "
+/// <summary>Write the value of a GPIO bank with a modification mask.</summary>
+/// <param name=\"bank\">The name of an available bank</param>
+/// <param name=\"value\">An integer representing GPIO bits</param>
+/// <param name=\"mask\">A modification mask where 1 = modify</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readGPIO "
+/// <summary>Readback the value of a GPIO bank.</summary>
+/// <param name=\"bank\">The name of an available bank</param>
+/// <returns>An integer representing GPIO bits</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeGPIODir(const std::string &, const unsigned) "
+/// <summary>
+/// Write the data direction of a GPIO bank.
+///
+/// 1 bits represent outputs, 0 bits represent inputs.
+/// </summary>
+/// <param name=\"bank\">The name of an available bank</param>
+/// <param name=\"dir\">An integer representing data direction bits</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeGPIODir(const std::string &, const unsigned, const unsigned) "
+/// <summary>
+/// Write the data direction of a GPIO bank with a modification mask.
+///
+/// 1 bits represent outputs, 0 bits represent inputs.
+/// </summary>
+/// <param name=\"bank\">The name of an available bank</param>
+/// <param name=\"dir\">An integer representing data direction bits</param>
+/// <param name=\"mask\">A modification mask where 1 = modify</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readGPIODir "
+/// <summary>
+/// Read the data direction of a GPIO bank.
+///
+/// 1 bits represent outputs, 0 bits represent inputs.
+/// </summary>
+/// <param name=\"bank\">The name of an available bank</param>
+/// <returns>An integer representing data direction bits</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeI2C "
+/// <summary>
+/// Write to an available I2C slave.
+///
+/// If the device contains multiple I2C masters, the address bits can encode which master.
+/// </summary>
+/// <param name=\"addr\">The address of the slave</param>
+/// <param name=\"data\">An array of bytes to write out</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readI2C "
+/// <summary>
+/// Read from an available I2C slave.
+///
+/// If the device contains multiple I2C masters, the address bits can encode which master.
+/// </summary>
+/// <param name=\"addr\">The address of the slave</param>
+/// <param name=\"numBytes\">The number of bytes to read</param>
+/// <returns>An array of bytes read from the slave</returns>
+public";
+
+%csmethodmodifiers SoapySDR::Device::transactSPI "
+/// <summary>
+/// Perform a SPI transaction and return the result.
+///
+/// It's up to the implementation to set the clock rate,
+/// and read edge, and the write edge of the SPI core.
+/// SPI slaves without a readback pin will return 0.
+///
+/// If the device contains multiple SPI masters,
+/// the address bits can encode which master.
+/// </summary>
+/// <param name=\"addr\">An address of an available SPI slave</param>
+/// <param name=\"data\">The SPI data, numBits-1 is first out</param>
+/// <param name=\"numBits\">The number of bits to clock out</params>
+/// <returns>The readback data, numBits-1 is first in</returns>
+public";
+
 %csmethodmodifiers SoapySDR::Device::UARTs "
 /// <summary>
 /// A list of the device's available UART devices by name.
 /// </summary>
+public";
+
+%csmethodmodifiers SoapySDR::Device::writeUART "
+/// <summary>
+/// Write data to a UART device.
+///
+/// It's up to the implementation to set the baud rate, carriage return settings, flushing on newline.
+/// </summary>
+/// <param name=\"which\">The name of an available UART</param>
+/// <param name=\"data\">An array of bytes to write out</param>
+public";
+
+%csmethodmodifiers SoapySDR::Device::readUART "
+/// <summary>
+/// Read bytes from a UART until timeout or newline.
+///
+/// It's up to the implementation to set the baud rate, carriage return settings, flushing on newline.
+/// </summary>
+/// <param name=\"which\">The name of an available UART</param>
+/// <param name=\"timeoutUs\">Timeout in microseconds</param>
+/// <returns>An array of bytes read from the UART</returns>
 public";

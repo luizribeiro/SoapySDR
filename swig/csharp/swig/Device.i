@@ -36,6 +36,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;"
 
+// Unfortunately, we can't simply put our own destructor in %extend, since C# needs to formally dispose of native resources.
 %typemap(csdisposing, methodname="Dispose", methodmodifiers="protected", parameters="bool disposing") SoapySDR::Device {
     lock(this) {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
@@ -48,6 +49,7 @@ using System.Linq;"
     }
   }
 
+// Unfortunately, we can't simply put our own destructor in %extend, since C# needs to formally dispose of native resources.
 %typemap(csdisposing_derived, methodname="Dispose", methodmodifiers="protected", parameters="bool disposing") SoapySDR::Device {
     lock(this) {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
@@ -83,6 +85,9 @@ using System.Linq;"
 %ignore SoapySDR::Device::releaseReadBuffer;
 %ignore SoapySDR::Device::acquireWriteBuffer;
 %ignore SoapySDR::Device::releaseWriteBuffer;
+
+// Ignore overloaded functions from default arguments
+%ignore SoapySDR::Device::readUART(const std::string &) const;
 
 // Ignore functions explicitly using std::vector<unsigned> due to size_t workaround
 %ignore SoapySDR::Device::writeRegisters;
