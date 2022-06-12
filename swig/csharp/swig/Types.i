@@ -15,9 +15,56 @@
 // ArgInfo
 //
 
+%typemap(csclassmodifiers) SoapySDR::ArgInfo "
+/// <summary>Representation of a key/value argument.</summary>
+public class";
+
+%typemap(csclassmodifiers) SoapySDR::ArgInfo::Type "
+/// <summary>The data type of the argument.</summary>
+public enum";
+
 // Needed because the "type" variable would be renamed to Type, which
 // conflicts with the enum type name
 %rename(ArgType) SoapySDR::ArgInfo::type;
+
+%rename(Bool) SoapySDR::ArgInfo::BOOL;
+%rename(Int) SoapySDR::ArgInfo::INT;
+%rename(Float) SoapySDR::ArgInfo::FLOAT;
+%rename(String) SoapySDR::ArgInfo::STRING;
+
+%csattributes SoapySDR::ArgInfo::BOOL "/// <summary>Boolean argument</summary>";
+%csattributes SoapySDR::ArgInfo::INT "/// <summary>Integral argument</summary>";
+%csattributes SoapySDR::ArgInfo::FLOAT "/// <summary>Floating-point argument</summary>";
+%csattributes SoapySDR::ArgInfo::STRING "/// <summary>String argument</summary>";
+
+%csattributes SoapySDR::ArgInfo::key "/// <summary>The key used to identify the argument.</summary>";
+%csattributes SoapySDR::ArgInfo::value "/// <summary>The default value of the argument when not specified.</summary>";
+%csattributes SoapySDR::ArgInfo::name "/// <summary>The displayable name of the argument.</summary>";
+%csattributes SoapySDR::ArgInfo::description "/// <summary>A brief description about the argument.</summary>";
+%csattributes SoapySDR::ArgInfo::units "/// <summary>The units of the argument: dB, Hz, etc.</summary>";
+%csattributes SoapySDR::ArgInfo::type "/// <summary>The data type of the argument.</summary>";
+%csattributes SoapySDR::ArgInfo::range "
+/// <summary>
+/// The range of possible numeric values.
+///
+/// When specified, the argument should be restricted to this range.
+/// The range is only applicable to numeric argument types.
+/// </summary>
+";
+%csattributes SoapySDR::ArgInfo::options "
+/// <summary>
+/// A discrete list of possible values.
+///
+/// When specified, the argument should be restricted to this options set.
+/// </summary>
+";
+%csattributes SoapySDR::ArgInfo::optionNames "
+/// <summary>
+/// A discrete list of displayable names for the enumerated options.
+///
+/// When not specified, the option value itself can be used as a display name.
+/// </summary>
+";
 
 %typemap(cscode) SoapySDR::ArgInfo
 %{
@@ -55,7 +102,6 @@
 // Range
 //
 
-// TODO: docs
 %attribute(SoapySDR::Range, double, Minimum, minimum);
 %attribute(SoapySDR::Range, double, Maximum, maximum);
 %attribute(SoapySDR::Range, double, Step, step);

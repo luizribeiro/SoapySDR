@@ -20,6 +20,7 @@ public class TestSoapyTypes
         var name = "TestName";
         var description = "TestDescription";
         var units = "TestUnits";
+        var type = SoapySDR.ArgInfo.Type.Bool;
         var range = new SoapySDR.Range(0.0, 1.0, 0.1);
         string[] options = { "opt1", "opt2", "opt3" };
         string[] optionNames = { "Option1", "Option2", "Option3" };
@@ -30,6 +31,7 @@ public class TestSoapyTypes
             Name = name,
             Description = description,
             Units = units,
+            ArgType = type,
             Range = range,
             Options = new SoapySDR.StringList(options),
             OptionNames = new SoapySDR.StringList(optionNames)
@@ -39,6 +41,7 @@ public class TestSoapyTypes
         Assert.AreEqual(name, argInfo.Name);
         Assert.AreEqual(description, argInfo.Description);
         Assert.AreEqual(units, argInfo.Units);
+        Assert.AreEqual(type, argInfo.ArgType);
         Assert.AreEqual(range.Minimum, argInfo.Range.Minimum);
         Assert.AreEqual(range.Maximum, argInfo.Range.Maximum);
         Assert.AreEqual(range.Step, argInfo.Range.Step);

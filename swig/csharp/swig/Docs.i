@@ -1,6 +1,9 @@
 // Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
+// Unfortunately, SWIG doesn't support automatic docstring generation for
+// C#, so we have to do this.
+
 //
 // SoapySDR::Device
 //
@@ -315,7 +318,7 @@ public";
 
 %csmethodmodifiers SoapySDR::Device::hasFrequencyCorrection "
 /// <summary>
-/// Does the device support frontend frequency correction correction?
+/// Does the device support frontend frequency correction?
 /// </summary>
 /// <param name=\"direction\">The channel direction (RX or TX)</param>
 /// <param name=\"channel\">An available channel on the device</param>
@@ -324,7 +327,7 @@ public";
 
 %csmethodmodifiers SoapySDR::Device::setFrequencyCorrection "
 /// <summary>
-/// Set the frontend frequency correction correction.
+/// Set the frontend frequency correction.
 /// </summary>
 /// <param name=\"direction\">The channel direction (RX or TX)</param>
 /// <param name=\"channel\">An available channel on the device</param>
@@ -333,7 +336,7 @@ public";
 
 %csmethodmodifiers SoapySDR::Device::getFrequencyCorrection "
 /// <summary>
-/// Get the frontend frequency correction correction.
+/// Get the frontend frequency correction.
 /// </summary>
 /// <param name=\"direction\">The channel direction (RX or TX)</param>
 /// <param name=\"channel\">An available channel on the device</param>
@@ -828,7 +831,7 @@ public";
 
 %csmethodmodifiers SoapySDR::Device::getSettingInfo(const int, const size_t) const "
 /// <summary>Describe the allowed keys and values used for channel settings.</summary>
-/// <param name=\"direction\">The channel direction (RX or TX)</summary>
+/// <param name=\"direction\">The channel direction (RX or TX)</summary></param>
 /// <param name=\"channel\">An available channel on the device</param>
 /// <returns>A list of argument info structures</returns>
 public";
@@ -951,7 +954,7 @@ public";
 /// </summary>
 /// <param name=\"addr\">An address of an available SPI slave</param>
 /// <param name=\"data\">The SPI data, numBits-1 is first out</param>
-/// <param name=\"numBits\">The number of bits to clock out</params>
+/// <param name=\"numBits\">The number of bits to clock out</param>
 /// <returns>The readback data, numBits-1 is first in</returns>
 public";
 
@@ -983,59 +986,111 @@ public";
 public";
 
 //
+// SoapySDR::Range
+//
+
+%typemap(csclassmodifiers) SoapySDR::Range "
+/// <summary>A simple min/max numeric range.</summary>
+public class";
+
+//
 // BuildInfo::SWIGModule
 //
 
-%csmethodmodifiers BuildInfo::SWIGModule::ABIVersion "
+%typemap(csclassmodifiers) BuildInfo::SWIGModule "
+/// <summary>
+/// Version strings for the SoapySDR version used to build the underlying SWIG module.
+/// </summary>
+public class";
+
+%csattributes BuildInfo::SWIGModule::ABIVersion "
 /// <summary>
 /// The SoapySDR ABI version the underlying SWIG module was built against.
 ///
 /// On instantiation of a device, this version will be validated against
 /// the installed library.
-/// </summary>
-public";
+/// </summary>";
 
-%csmethodmodifiers BuildInfo::SWIGModule::APIVersion "
+%csattributes BuildInfo::SWIGModule::APIVersion "
 /// <summary>
 /// The SoapySDR API version the underlying SWIG module was built against.
 ///
 /// The format of the version string is <b>major.minor.increment</b>.
-/// </summary>
-public";
+/// </summary>";
 
-%csmethodmodifiers BuildInfo::SWIGModule::LibVersion "
+%csattributes BuildInfo::SWIGModule::LibVersion "
 /// <summary>
 /// The underlying SoapySDR library version the underlying SWIG module was built against.
 ///
 /// The format of the version string is <b>major.minor.patch-buildInfo</b>.
-/// </summary>
-public";
+/// </summary>";
 
 //
 // BuildInfo::Runtime
 //
 
-%csmethodmodifiers BuildInfo::Runtime::ABIVersion "
+%typemap(csclassmodifiers) BuildInfo::Runtime "
+/// <summary>
+/// Version strings for the SoapySDR build currently installed.
+/// </summary>
+public class";
+
+%csattributes BuildInfo::Runtime::ABIVersion "
 /// <summary>
 /// The ABI version of the currently installed SoapySDR library.
 ///
 /// On instantiation of a device, this version will be validated against
 /// the assembly.
-/// </summary>
-public";
+/// </summary>";
 
-%csmethodmodifiers BuildInfo::Runtime::APIVersion "
+%csattributes BuildInfo::Runtime::APIVersion "
 /// <summary>
 /// The API version of the currently installed SoapySDR library.
 ///
 /// The format of the version string is <b>major.minor.increment</b>.
-/// </summary>
-public";
+/// </summary>";
 
-%csmethodmodifiers BuildInfo::Runtime::LibVersion "
+%csattributes BuildInfo::Runtime::LibVersion "
 /// <summary>
 /// The library version of the currently installed SoapySDR library.
 ///
 /// The format of the version string is <b>major.minor.patch-buildInfo</b>.
-/// </summary>
-public";
+/// </summary>";
+
+//
+// SoapySDR::CSharp::Direction
+//
+
+%typemap(csclassmodifiers) SoapySDR::CSharp::Direction "
+/// <summary>The RF direction to use for a given function.</summary>
+public enum";
+
+%csattributes SoapySDR::CSharp::Direction::Tx "/// <summary>Transmit</summary>";
+%csattributes SoapySDR::CSharp::Direction::Rx "/// <summary>Receive</summary>";
+
+//
+// SoapySDR::CSharp::ErrorCode
+//
+
+%typemap(csclassmodifiers) SoapySDR::CSharp::ErrorCode "
+/// <summary>Error codes returned from streaming functions.</summary>
+public enum";
+
+%csattributes SoapySDR::CSharp::ErrorCode::None "/// <summary>No error.</summary>";
+%csattributes SoapySDR::CSharp::ErrorCode::Timeout "/// <summary>Returned when read has a timeout.</summary>";
+%csattributes SoapySDR::CSharp::ErrorCode::StreamError "/// <summary>Returned for non-specific stream errors.</summary>";
+%csattributes SoapySDR::CSharp::ErrorCode::Corruption "/// <summary>Returned when read has data corruption. For example, the driver saw a malformed packet.</summary>";
+%csattributes SoapySDR::CSharp::ErrorCode::Overflow "/// <summary>Returned when read has an overflow condition. For example, and internal buffer has filled.</summary>";
+%csattributes SoapySDR::CSharp::ErrorCode::NotSupported "/// <summary>Returned when a requested operation or flag setting is not supported by the underlying implementation.</summary>";
+%csattributes SoapySDR::CSharp::ErrorCode::TimeError "/// <summary>Returned when a the device encountered a stream time which was expired (late) or too early to process.</summary>";
+%csattributes SoapySDR::CSharp::ErrorCode::Underflow "/// <summary>Returned when write caused an underflow condition. For example, a continuous stream was interrupted.</summary>";
+
+//
+// SoapySDR::CSharp::LogLevel
+//
+
+%typemap(csclassmodifiers) SoapySDR::CSharp::LogLevel "
+/// <summary>The available priority levels for log messages.
+///
+/// The default log level threshold is Info. Log messages with lower priorities are dropped.</summary>
+public enum";

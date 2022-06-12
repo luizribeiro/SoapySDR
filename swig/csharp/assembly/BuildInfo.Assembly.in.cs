@@ -5,8 +5,10 @@ using System;
 
 namespace SoapySDR
 {
+    /// <summary>Version strings for the SoapySDR versions used at runtime and for this build.</summary>
     public partial class BuildInfo
     {
+        /// <summary>Version strings for the SoapySDR version used to build this assembly.</summary>
         public class Assembly
         {
             private static readonly uint APIVersionNum = @SOAPY_SDR_API_VERSION@;

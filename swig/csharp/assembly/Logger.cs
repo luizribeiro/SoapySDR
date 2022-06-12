@@ -6,8 +6,10 @@ using System;
 namespace SoapySDR
 {
     /// <summary>
-    /// SoapySDR's logging interface. Through this, messages can be logged to console or file
-    /// by registering C# delegates. The logging API is designed to match System.String.Format().
+    /// SoapySDR's logging interface.
+    ///
+    /// Through this, messages can be logged to console or file by registering C# delegates.
+    /// The logging API is designed to match System.String.Format().
     /// </summary>
     public class Logger
     {
