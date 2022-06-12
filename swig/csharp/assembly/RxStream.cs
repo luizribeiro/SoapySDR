@@ -139,7 +139,7 @@ namespace SoapySDR
         }
 
         /// <summary>
-        /// Receive data into an arbitrary memory location referenced by an unmanaged pointer. No validation is performed on input parameters.
+        /// Receive data into an arbitrary memory location referenced by an unmanaged pointer. Minimal validation is performed on input parameters.
         /// </summary>
         /// <param name="ptr">A pointer to the buffer to receive into.</param>
         /// <param name="numElems">The number of elements (of the stream format's size) in the destination buffer.</param>
@@ -160,7 +160,7 @@ namespace SoapySDR
         }
 
         /// <summary>
-        /// Receive data into arbitrary memory locations referenced by unmanaged pointers. No validation is performed on input parameters except channel count.
+        /// Receive data into arbitrary memory locations referenced by unmanaged pointers. Minimal validation is performed on input parameters except channel count.
         /// </summary>
         /// <param name="ptrs">Pointers to the receive buffers.</param>
         /// <param name="numElems">The number of elements (of the stream format's size) in each destination buffer.</param>

@@ -162,7 +162,7 @@ namespace SoapySDR
         }
 
         /// <summary>
-        /// Write data from an unmanaged pointer for a single-channel transmission. No validation is performed on input parameters.
+        /// Write data from an unmanaged pointer for a single-channel transmission. Minimal validation is performed on input parameters.
         /// </summary>
         /// <param name="ptr">A pointer to the buffer to send.</param>
         /// <param name="numElems">The number of elements (of the stream format's size) in the underlying buffer.</param>
@@ -189,7 +189,7 @@ namespace SoapySDR
         }
 
         /// <summary>
-        /// Write data from unmanaged pointers for a multi-channel transmission. No validation is performed on input parameters except channel count.
+        /// Write data from unmanaged pointers for a multi-channel transmission. Minimal validation is performed on input parameters except channel count.
         /// </summary>
         /// <param name="ptrs">Pointers to the buffers to send.</param>
         /// <param name="numElems">The number of elements (of the stream format's size) in each underlying buffer.</param>
