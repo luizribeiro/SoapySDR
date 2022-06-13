@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2021 Nicholas Corgan
+// Copyright (c) 2020-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 using System;
@@ -144,7 +144,7 @@ namespace SoapySDR
         {
             var numChannels = _streamHandle.GetChannels().Length;
             var format = _streamHandle.GetFormat();
-            var complexFormatString = Utility.GetComplexFormatString<T>();
+            var complexFormatString = Utility.GetFormatString<T>();
 
             if(numChannels != 1)
                 throw new ArgumentException(string.Format("Stream is configured for {0} channel(s). Cannot accept 1 buffer(s).", numChannels));
@@ -161,7 +161,7 @@ namespace SoapySDR
             var numChannels = _streamHandle.GetChannels().Length;
             var format = _streamHandle.GetFormat();
 
-            var complexFormatString = Utility.GetComplexFormatString<T>();
+            var complexFormatString = Utility.GetFormatString<T>();
 
             if (mems == null)
                 throw new ArgumentNullException("mems");

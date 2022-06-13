@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %typemap(csclassmodifiers) SoapySDR::CSharp::StreamHandle "internal class";
@@ -13,7 +13,10 @@
 #include "Stream.hpp"
 %}
 
-// Allows bitwise operations
+//
+// SoapySDR::CSharp::StreamFlags
+//
+
 %typemap(csimports) SoapySDR::CSharp::StreamFlags "
 using System;"
 %typemap(csclassmodifiers) SoapySDR::CSharp::StreamFlags "
@@ -64,8 +67,74 @@ public enum";
 %csattributes SoapySDR::CSharp::StreamFlags::UserFlag3 "/// <summary>A flag that can be used for SDR specific data.</summary>";
 %csattributes SoapySDR::CSharp::StreamFlags::UserFlag4 "/// <summary>A flag that can be used for SDR specific data.</summary>";
 
+//
+// SoapySDR::CSharp::StreamFormat
+//
+
+%typemap(csclassmodifiers) SoapySDR::CSharp::StreamFormat "
+/// <summary>A set of string constants corresponding to different sample types.</summary>
+public class";
+
+%csmethodmodifiers SoapySDR::CSharp::StreamFormat::FormatToSize "
+/// <summary>
+/// Return the size of the given sample type, coming out to twice the size of the primitive type.
+///
+/// This value is intended to be used when allocating unmanaged memory to be used for streaming.
+///</summary>
+public";
+
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexFloat64 "/// <summary>Complex double-precision floating-point samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexFloat32 "/// <summary>Complex single-precision floating-point samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexInt32 "/// <summary>Complex signed 32-bit integer samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt32 "/// <summary>Complex unsigned 32-bit integer samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexInt16 "/// <summary>Complex signed 16-bit integer samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt16 "/// <summary>Complex unsigned 16-bit integer samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexInt12 "
+/// <summary>Packed complex signed 12-bit integer samples.
+///
+/// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
+///</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt12 "
+/// <summary>Packed complex unsigned 12-bit integer samples.
+///
+/// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
+///</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexInt8 "/// <summary>Complex signed 8-bit integer samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt8 "/// <summary>Complex unsigned 8-bit integer samples.</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexInt4 "
+/// <summary>Packed complex signed 4-bit integer samples.
+///
+/// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
+///</summary>";
+%csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt4 "
+/// <summary>Packed complex unsigned 4-bit integer samples.
+///
+/// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
+///</summary>";
+
+//
+// SoapySDR::CSharp::StreamHandle
+//
+
 %typemap(csimports) SoapySDR::CSharp::StreamHandle "
 using System;
 using System.Linq;"
+
+//
+// SoapySDR::CSharp::StreamResult
+//
+
+%typemap(csclassmodifiers) SoapySDR::CSharp::StreamResult "
+/// <summary>Metadata returned from a streaming operation.</summary>
+public class";
+
+%csattributes SoapySDR::CSharp::StreamResult::NumSamples "/// <summary>How many samples were written or read by the streaming operation.</summary>";
+%csattributes SoapySDR::CSharp::StreamResult::Flags "/// <summary>Bitwise metadata flags returned from the driver.</summary>";
+%csattributes SoapySDR::CSharp::StreamResult::TimeNs "/// <summary>If positive, a timestamp for the associated buffer.</summary>";
+%csattributes SoapySDR::CSharp::StreamResult::ChanMask "/// <summary>A bitwise mask of which channels the operation applies to.</summary>";
+
+//
+// Process the header
+//
 
 %include "Stream.hpp"

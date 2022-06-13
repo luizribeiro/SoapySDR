@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2021 Nicholas Corgan
+// Copyright (c) 2020-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 using System;
@@ -60,7 +60,6 @@ namespace SoapySDR
         /// <param name="timeoutUs">The operation timeout in microseconds.</param>
         /// <param name="result">An output to store stream metadata.</param>
         /// <returns>An error code for the stream operation.</returns>
-        /// <returns></returns>
         public unsafe ErrorCode Write<T>(
             ReadOnlyMemory<T>[] memory,
             StreamFlags flags,
@@ -259,14 +258,11 @@ namespace SoapySDR
 
         public override int GetHashCode() => base.GetHashCode();
 
-        public override string ToString()
-        {
-            return string.Format("{0}:{1} {2} TX stream (format: {3}, channels: {4})",
-                _device.DriverKey,
-                _device.HardwareKey,
-                (_active ? "active" : "inactive"),
-                Format,
-                Channels);
-        }
+        public override string ToString() => string.Format("{0}:{1} {2} TX stream (format: {3}, channels: {4})",
+            _device.DriverKey,
+            _device.HardwareKey,
+            (_active ? "active" : "inactive"),
+            Format,
+            Channels);
     }
 }

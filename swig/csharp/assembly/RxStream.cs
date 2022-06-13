@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 using System;
@@ -65,9 +65,7 @@ namespace SoapySDR
 
                 var memsAsSizes = Utility.ToSizeListInternal(
                     memory,
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-                    out MemoryHandle[] memoryHandles);
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                    out MemoryHandle[] _);
 
                 var deviceOutput = _device.ReadStreamInternal(
                     _streamHandle,
@@ -201,14 +199,11 @@ namespace SoapySDR
 
         public override int GetHashCode() => base.GetHashCode();
 
-        public override string ToString()
-        {
-            return string.Format("{0}:{1} {2} RX stream (format: {3}, channels: {4})",
-                _device.DriverKey,
-                _device.HardwareKey,
-                (_active ? "active" : "inactive"),
-                Format,
-                Channels);
-        }
+        public override string ToString() => string.Format("{0}:{1} {2} RX stream (format: {3}, channels: {4})",
+            _device.DriverKey,
+            _device.HardwareKey,
+            (_active ? "active" : "inactive"),
+            Format,
+            Channels);
     }
 }

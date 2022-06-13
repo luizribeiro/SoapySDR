@@ -292,7 +292,7 @@ public class TestStreamingAPI
             var device = GetTestDevice();
             SoapySDR.StreamResult streamResult;
 
-            var format = SoapySDR.Utility.GetComplexFormatString<T>();
+            var format = SoapySDR.Utility.GetFormatString<T>();
 
             GetStreamTestParams(
                 out uint[] oneChannel,
@@ -308,7 +308,7 @@ public class TestStreamingAPI
             // Test with single channel
             //
 
-            var txStream = device.SetupTxStream(SoapySDR.Utility.GetComplexFormatString<T>(), oneChannel, streamArgsMap);
+            var txStream = device.SetupTxStream(SoapySDR.Utility.GetFormatString<T>(), oneChannel, streamArgsMap);
             Assert.AreEqual(format, txStream.Format);
             Assert.AreEqual(oneChannel, txStream.Channels);
             Assert.AreEqual(streamArgsMap, txStream.StreamArgs);
@@ -338,7 +338,7 @@ public class TestStreamingAPI
             // Test with multiple channels
             //
 
-            txStream = device.SetupTxStream(SoapySDR.Utility.GetComplexFormatString<T>(), twoChannels, streamArgsMap);
+            txStream = device.SetupTxStream(SoapySDR.Utility.GetFormatString<T>(), twoChannels, streamArgsMap);
             Assert.AreEqual(format, txStream.Format);
             Assert.AreEqual(twoChannels, txStream.Channels);
             Assert.AreEqual(streamArgsMap, txStream.StreamArgs);
@@ -376,7 +376,7 @@ public class TestStreamingAPI
             var device = GetTestDevice();
             SoapySDR.StreamResult streamResult;
 
-            var format = SoapySDR.Utility.GetComplexFormatString<T>();
+            var format = SoapySDR.Utility.GetFormatString<T>();
 
             GetStreamTestParams(
                 out uint[] oneChannel,
@@ -392,7 +392,7 @@ public class TestStreamingAPI
             // Test with single channel
             //
 
-            var rxStream = device.SetupRxStream(SoapySDR.Utility.GetComplexFormatString<T>(), oneChannel, streamArgsMap);
+            var rxStream = device.SetupRxStream(SoapySDR.Utility.GetFormatString<T>(), oneChannel, streamArgsMap);
             Assert.AreEqual(format, rxStream.Format);
             Assert.AreEqual(oneChannel, rxStream.Channels);
             Assert.AreEqual(streamArgsMap, rxStream.StreamArgs);
@@ -425,7 +425,7 @@ public class TestStreamingAPI
             // Test with multiple channels
             //
 
-            rxStream = device.SetupRxStream(SoapySDR.Utility.GetComplexFormatString<T>(), twoChannels, streamArgsMap);
+            rxStream = device.SetupRxStream(SoapySDR.Utility.GetFormatString<T>(), twoChannels, streamArgsMap);
             Assert.AreEqual(format, rxStream.Format);
             Assert.AreEqual(twoChannels, rxStream.Channels);
             Assert.AreEqual(streamArgsMap, rxStream.StreamArgs);

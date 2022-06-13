@@ -73,7 +73,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, string format, object arg) =>
+        public static void LogF(LogLevel logLevel, string format, object arg) =>
             Log(logLevel, string.Format(format, arg));
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, string format, object[] args) =>
+        public static void LogF(LogLevel logLevel, string format, object[] args) =>
             Log(logLevel, string.Format(format, args));
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, IFormatProvider formatProvider, string format, object arg) =>
+        public static void LogF(LogLevel logLevel, IFormatProvider formatProvider, string format, object arg) =>
             Log(logLevel, string.Format(formatProvider, format, arg));
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, IFormatProvider formatProvider, string format, object[] args) =>
+        public static void LogF(LogLevel logLevel, IFormatProvider formatProvider, string format, object[] args) =>
             Log(logLevel, string.Format(formatProvider, format, args));
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, string format, object arg0, object arg1) =>
+        public static void LogF(LogLevel logLevel, string format, object arg0, object arg1) =>
             Log(logLevel, string.Format(format, arg0, arg1));
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, IFormatProvider formatProvider, string format, object arg0, object arg1) =>
+        public static void LogF(LogLevel logLevel, IFormatProvider formatProvider, string format, object arg0, object arg1) =>
             Log(logLevel, string.Format(formatProvider, format, arg0, arg1));
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, string format, object arg0, object arg1, object arg2) =>
+        public static void LogF(LogLevel logLevel, string format, object arg0, object arg1, object arg2) =>
             Log(logLevel, string.Format(format, arg0, arg1, arg2));
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace SoapySDR
         /// </summary>
         /// <param name="logLevel">The message's priority</param>
         /// <param name="format">The message format</param>
-        public static void Log(LogLevel logLevel, IFormatProvider formatProvider, string format, object arg0, object arg1, object arg2) =>
+        public static void LogF(LogLevel logLevel, IFormatProvider formatProvider, string format, object arg0, object arg1, object arg2) =>
             Log(logLevel, string.Format(formatProvider, format, arg0, arg1, arg2));
     }
 }

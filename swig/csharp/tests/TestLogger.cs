@@ -32,14 +32,14 @@ public class TestLogger
         var cultureInfo = new CultureInfo("es-ES", false);
 
         SoapySDR.Logger.Log(logLevel, "message");
-        SoapySDR.Logger.Log(logLevel, "message: {0}", intArg);
-        SoapySDR.Logger.Log(logLevel, "message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg });
-        SoapySDR.Logger.Log(logLevel, cultureInfo, "message: {0}", intArg);
-        SoapySDR.Logger.Log(logLevel, cultureInfo, "message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg });
-        SoapySDR.Logger.Log(logLevel, "message: {0} {1}", intArg, floatArg);
-        SoapySDR.Logger.Log(logLevel, cultureInfo, "message: {0} {1}", intArg, floatArg);
-        SoapySDR.Logger.Log(logLevel, "message: {0} {1} {2}", intArg, floatArg, dateTimeArg);
-        SoapySDR.Logger.Log(logLevel, cultureInfo, "message: {0} {1} {2}", intArg, floatArg, dateTimeArg);
+        SoapySDR.Logger.LogF(logLevel, "message: {0}", intArg);
+        SoapySDR.Logger.LogF(logLevel, "message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg });
+        SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0}", intArg);
+        SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg });
+        SoapySDR.Logger.LogF(logLevel, "message: {0} {1}", intArg, floatArg);
+        SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0} {1}", intArg, floatArg);
+        SoapySDR.Logger.LogF(logLevel, "message: {0} {1} {2}", intArg, floatArg, dateTimeArg);
+        SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0} {1} {2}", intArg, floatArg, dateTimeArg);
     }
 
     private static string GetExpectedLoggerOutput()

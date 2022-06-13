@@ -25,6 +25,7 @@
 
 // MACRO for use within the std::vector class body
 %define SOAPY_SWIG_STD_VECTOR_MINIMUM_INTERNAL(CSINTERFACE, CONST_REFERENCE, CTYPE...)
+
 %typemap(csinterfaces) std::vector< CTYPE > "global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.CSINTERFACE<$typemap(cstype, CTYPE)>\n";
 %proxycode %{
   public $csclassname(global::System.Collections.IEnumerable c) : this() {

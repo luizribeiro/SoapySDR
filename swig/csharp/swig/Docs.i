@@ -715,7 +715,7 @@ public";
 /// The value returned is a string which can represent
 /// a boolean (\"true\"/\"false\"), an integer, or float.
 /// <param name=\"key\">The ID name of an available sensor</param>
-/// <returns>The current value of the sensor</param>
+/// <returns>The current value of the sensor</returns>
 public";
 
 %csmethodmodifiers SoapySDR::Device::listSensors(const int, const size_t) const "
@@ -780,7 +780,7 @@ public";
 /// <returns>The register value</returns>
 public";
 
-%csmethodmodifiers SoapySDR::Device::writeRegisters "
+%csmethodmodifiers SoapySDR::Device::WriteRegisters "
 /// <summary>
 /// Write a memory block on the device given the interface name.
 ///
@@ -792,7 +792,7 @@ public";
 /// <param name=\"value\">The memory block content</param>
 public";
 
-%csmethodmodifiers SoapySDR::Device::readRegisters "
+%csmethodmodifiers SoapySDR::Device::ReadRegisters "
 /// <summary>
 /// Read a memory block on the device given the interface name.
 /// </summary>
@@ -1094,3 +1094,7 @@ public enum";
 ///
 /// The default log level threshold is Info. Log messages with lower priorities are dropped.</summary>
 public enum";
+
+//
+// SoapySDR::CSharp::StreamFormat
+//

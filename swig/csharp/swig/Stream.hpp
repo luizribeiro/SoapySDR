@@ -43,14 +43,6 @@ namespace SoapySDR { namespace CSharp {
         static const std::string ComplexUInt8;
         static const std::string ComplexInt4;
         static const std::string ComplexUInt4;
-        static const std::string Float64;
-        static const std::string Float32;
-        static const std::string Int32;
-        static const std::string UInt32;
-        static const std::string Int16;
-        static const std::string UInt16;
-        static const std::string Int8;
-        static const std::string UInt8;
 
         static inline size_t FormatToSize(const std::string& format)
         {
@@ -70,14 +62,6 @@ namespace SoapySDR { namespace CSharp {
     const std::string StreamFormat::ComplexUInt8   = SOAPY_SDR_CU8;
     const std::string StreamFormat::ComplexInt4    = SOAPY_SDR_CS4;
     const std::string StreamFormat::ComplexUInt4   = SOAPY_SDR_CU4;
-    const std::string StreamFormat::Float64        = SOAPY_SDR_F64;
-    const std::string StreamFormat::Float32        = SOAPY_SDR_F32;
-    const std::string StreamFormat::Int32          = SOAPY_SDR_S32;
-    const std::string StreamFormat::UInt32         = SOAPY_SDR_U32;
-    const std::string StreamFormat::Int16          = SOAPY_SDR_S16;
-    const std::string StreamFormat::UInt16         = SOAPY_SDR_U16;
-    const std::string StreamFormat::Int8           = SOAPY_SDR_S8;
-    const std::string StreamFormat::UInt8          = SOAPY_SDR_U8;
 
     struct StreamHandle
     {
@@ -100,7 +84,6 @@ namespace SoapySDR { namespace CSharp {
         size_t NumSamples{0};
         StreamFlags Flags{ StreamFlags::None };
         long long TimeNs{0};
-        long TimeoutUs{0};
         size_t ChanMask{0U};
     };
     

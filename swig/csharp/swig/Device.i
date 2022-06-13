@@ -119,6 +119,31 @@ using System.Linq;"
     /// </summary>
     public static KwargsList Enumerate() => Enumerate("");
 
+    /// <summary>
+    /// Initialize a transmit stream given a list of channels and stream arguments.
+    ///
+    /// The implementation may change switches or power-up components.
+    /// All stream API calls should be usable with the new stream object
+    /// after setupStream() is complete, regardless of the activity state.
+    ///
+    /// The API allows any number of simultaneous TX and RX streams, but many dual-channel
+    /// devices are limited to one stream in each direction, using either one or both channels.
+    /// This call will throw an exception if an unsupported combination is requested,
+    /// or if a requested channel in this direction is already in use by another stream.
+    ///
+    /// When multiple channels are added to a stream, they are typically expected to have
+    /// the same sample rate. See SetSampleRate().
+    /// </summary>
+    ///
+    /// <param name="format">The stream's sample type (see StreamFormat).</param>
+    /// <param name="channels">A list of channels to use for the stream.</param>
+    /// <param name="args">Stream arguments or empty for defaults.</param>
+    /// <returns>
+    /// A transmit stream created with the given settings.
+    ///
+    /// The returned stream is not required to have internal locking, and may not be used
+    /// concurrently from multiple threads.
+    /// </returns>
     public TxStream SetupTxStream(
         string format,
         uint[] channels,
@@ -127,11 +152,61 @@ using System.Linq;"
         return new TxStream(this, format, channels, Utility.ToKwargs(kwargs));
     }
 
+    /// <summary>
+    /// Initialize a transmit stream given a list of channels and stream arguments.
+    ///
+    /// The implementation may change switches or power-up components.
+    /// All stream API calls should be usable with the new stream object
+    /// after setupStream() is complete, regardless of the activity state.
+    ///
+    /// The API allows any number of simultaneous TX and RX streams, but many dual-channel
+    /// devices are limited to one stream in each direction, using either one or both channels.
+    /// This call will throw an exception if an unsupported combination is requested,
+    /// or if a requested channel in this direction is already in use by another stream.
+    ///
+    /// When multiple channels are added to a stream, they are typically expected to have
+    /// the same sample rate. See SetSampleRate().
+    /// </summary>
+    ///
+    /// <param name="format">The stream's sample type (see StreamFormat).</param>
+    /// <param name="channels">A list of channels to use for the stream.</param>
+    /// <param name="args">Stream arguments or empty for defaults (markup format: "keyA=valA, keyB=valB").</param>
+    /// <returns>
+    /// A transmit stream created with the given settings.
+    ///
+    /// The returned stream is not required to have internal locking, and may not be used
+    /// concurrently from multiple threads.
+    /// </returns>
     public TxStream SetupTxStream(
         string format,
         uint[] channels,
         string args) => SetupTxStream(format, channels, Utility.StringToKwargs(args));
 
+    /// <summary>
+    /// Initialize a receive stream given a list of channels and stream arguments.
+    ///
+    /// The implementation may change switches or power-up components.
+    /// All stream API calls should be usable with the new stream object
+    /// after setupStream() is complete, regardless of the activity state.
+    ///
+    /// The API allows any number of simultaneous TX and RX streams, but many dual-channel
+    /// devices are limited to one stream in each direction, using either one or both channels.
+    /// This call will throw an exception if an unsupported combination is requested,
+    /// or if a requested channel in this direction is already in use by another stream.
+    ///
+    /// When multiple channels are added to a stream, they are typically expected to have
+    /// the same sample rate. See SetSampleRate().
+    /// </summary>
+    ///
+    /// <param name="format">The stream's sample type (see StreamFormat).</param>
+    /// <param name="channels">A list of channels to use for the stream.</param>
+    /// <param name="args">Stream arguments or empty for defaults.</param>
+    /// <returns>
+    /// A receive stream created with the given settings.
+    ///
+    /// The returned stream is not required to have internal locking, and may not be used
+    /// concurrently from multiple threads.
+    /// </returns>
     public RxStream SetupRxStream(
         string format,
         uint[] channels,
@@ -140,6 +215,31 @@ using System.Linq;"
         return new RxStream(this, format, channels, Utility.ToKwargs(kwargs));
     }
 
+    /// <summary>
+    /// Initialize a receive stream given a list of channels and stream arguments.
+    ///
+    /// The implementation may change switches or power-up components.
+    /// All stream API calls should be usable with the new stream object
+    /// after setupStream() is complete, regardless of the activity state.
+    ///
+    /// The API allows any number of simultaneous TX and RX streams, but many dual-channel
+    /// devices are limited to one stream in each direction, using either one or both channels.
+    /// This call will throw an exception if an unsupported combination is requested,
+    /// or if a requested channel in this direction is already in use by another stream.
+    ///
+    /// When multiple channels are added to a stream, they are typically expected to have
+    /// the same sample rate. See SetSampleRate().
+    /// </summary>
+    ///
+    /// <param name="format">The stream's sample type (see StreamFormat).</param>
+    /// <param name="channels">A list of channels to use for the stream.</param>
+    /// <param name="args">Stream arguments or empty for defaults (markup format: "keyA=valA, keyB=valB").</param>
+    /// <returns>
+    /// A receive stream created with the given settings.
+    ///
+    /// The returned stream is not required to have internal locking, and may not be used
+    /// concurrently from multiple threads.
+    /// </returns>
     public RxStream SetupRxStream(
         string format,
         uint[] channels,
@@ -204,31 +304,83 @@ using System.Linq;"
     public void SetFrequency(Direction direction, uint channel, string name, double frequency, string args = "") =>
         SetFrequency(direction, channel, name, frequency, Utility.StringToKwargs(args));
 
+    /// <summary>
+    /// Readback a global sensor given the name, typecasted to the given type.
+    /// </summary>
+    /// <typeparam name="T">The type to cast the sensor value</typeparam>
+    /// <param name="key">The ID name of an available sensor</param>
+    /// <returns>The current value of the sensor</returns>
     public T ReadSensor<T>(string key)
     {
         return (T)(new SoapyConvertible(ReadSensor(key)).ToType(typeof(T), null));
     }
 
+    /// <summary>
+    /// Readback a channel sensor given the name, typecasted to the given type.
+    /// </summary>
+    /// <typeparam name="T">The type to cast the sensor value</typeparam>
+    /// <param name="direction">The channel direction (RX or TX)</param>
+    /// <param name="channel">An available channel on the device</param>
+    /// <param name="key">The ID name of an available sensor</param>
+    /// <returns>The current value of the sensor</returns>
     public T ReadSensor<T>(Direction direction, uint channel, string key)
     {
         return (T)(new SoapyConvertible(ReadSensor(direction, channel, key)).ToType(typeof(T), null));
     }
 
+    /// <summary>
+    /// Read an arbitrary setting on the device, typecasted to the given type.
+    ///
+    /// This function will throw if T is not a string, bool, or numeric primitive.
+    /// </summary>
+    /// <typeparam name="T">The type to cast the setting</typeparam>
+    /// <param name="key">The setting identifier</param>
+    /// <returns>The setting value</returns>
     public T ReadSetting<T>(string key)
     {
         return (T)(new SoapyConvertible(ReadSetting(key)).ToType(typeof(T), null));
     }
 
+    /// <summary>
+    /// Read an arbitrary channel setting on the device, typecasted to the given type.
+    ///
+    /// This function will throw if T is not a string, bool, or numeric primitive.
+    /// </summary>
+    /// <typeparam name="T">The type to cast the setting</typeparam>
+    /// <param name="direction">The channel direction (RX or TX)</param>
+    /// <param name="channel">An available channel on the device</param>
+    /// <param name="key">The setting identifier</param>
+    /// <returns>The setting value</returns>
     public T ReadSetting<T>(Direction direction, uint channel, string key)
     {
         return (T)(new SoapyConvertible(ReadSetting(direction, channel, key)).ToType(typeof(T), null));
     }
 
+    /// <summary>
+    /// Write an arbitrary setting on the device, typecasted from the given type.
+    ///
+    /// For bools and primitive numeric types, SoapySDR's internal type conversion is used.
+    /// Otherwise, the value of the input's ToString() will be passed in.
+    /// </summary>
+    /// <typeparam name="T">The type to cast the setting</typeparam>
+    /// <param name="key">The setting identifier</param>
+    /// <param name="value">The setting value</param>
     public void WriteSetting<T>(string key, T value)
     {
         WriteSetting(key, new SoapyConvertible(value).ToString());
     }
 
+    /// <summary>
+    /// Write an arbitrary channel setting on the device, typecasted from the given type.
+    ///
+    /// For bools and primitive numeric types, SoapySDR's internal type conversion is used.
+    /// Otherwise, the value of the input's ToString() will be passed in.
+    /// </summary>
+    /// <typeparam name="T">The type to cast the setting</typeparam>
+    /// <param name="direction">The channel direction (RX or TX)</param>
+    /// <param name="channel">An available channel on the device</param>
+    /// <param name="key">The setting identifier</param>
+    /// <param name="value">The setting value</param>
     public void WriteSetting<T>(Direction direction, uint channel, string key, T value)
     {
         WriteSetting(direction, channel, key, new SoapyConvertible(value).ToString());
@@ -265,7 +417,7 @@ using System.Linq;"
 %csmethodmodifiers SoapySDR::Device::WriteStreamInternal "internal";
 %csmethodmodifiers SoapySDR::Device::ReadStreamStatusInternal "internal";
 
-// Internal bridge functions to make the C# part easier
+// Internal bridge functions
 %extend SoapySDR::Device
 {
     Device()
@@ -349,7 +501,7 @@ using System.Linq;"
             numElems,
             intFlags,
             result.TimeNs,
-            result.TimeoutUs);
+            timeoutUs);
         result.Flags = SoapySDR::CSharp::StreamFlags(intFlags);
 
         if(cppRet >= 0) result.NumSamples = static_cast<size_t>(cppRet);
@@ -401,7 +553,7 @@ using System.Linq;"
             result.ChanMask,
             intFlags,
             result.TimeNs,
-            result.TimeoutUs));
+            timeoutUs));
         result.Flags = SoapySDR::CSharp::StreamFlags(intFlags);
 
         return resultPair;
