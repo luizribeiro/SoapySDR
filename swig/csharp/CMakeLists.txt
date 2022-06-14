@@ -7,9 +7,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 ########################################################################
 # Make sure CMake supports native C#
 ########################################################################
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.8.0")
-    set(CMAKE_SUPPORTS_NATIVE_CSHARP TRUE)
-endif()
+include(CheckLanguage)
+check_language(CSharp)
 
 ########################################################################
 # Find SWIG
@@ -34,7 +33,7 @@ endif (SIZE_T_IS_UNSIGNED_INT)
 ########################################################################
 include(FeatureSummary)
 include(CMakeDependentOption)
-cmake_dependent_option(ENABLE_CSHARP "Enable C# bindings" ON "MSVC;CMAKE_SUPPORTS_NATIVE_CSHARP;ENABLE_LIBRARY;SWIG_FOUND" OFF)
+cmake_dependent_option(ENABLE_CSHARP "Enable C# bindings" ON "CMAKE_CSharp_COMPILER;ENABLE_LIBRARY;SWIG_FOUND" OFF)
 add_feature_info(CSharp ENABLE_CSHARP "C# bindings")
 if (NOT ENABLE_CSHARP)
     return()
@@ -46,7 +45,8 @@ enable_language(CSharp)
 # * Issues with CMake-generated files with some versions
 # * Dependency compatibility
 #
-# This can be parameterized at some point if needed.
+# This can be parameterized at some point if needed and if
+# it becomes feasible.
 set(CMAKE_DOTNET_TARGET_FRAMEWORK_VERSION "v4.7.2")
 
 ########################################################################
