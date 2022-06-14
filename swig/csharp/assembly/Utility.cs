@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace SoapySDR
+namespace Pothosware.SoapySDR
 {
     /// <summary>
-    /// Utility functions to generate SoapySDR.Device parameters
+    /// Utility functions to generate Pothosware.SoapySDR.Device parameters
     /// </summary>
     public class Utility
     {
@@ -25,7 +25,7 @@ namespace SoapySDR
         /// This function will throw if the type is unsupported.
         /// </summary>
         /// <typeparam name="T">The format type</typeparam>
-        /// <returns>The type's complex format string (see SoapySDR.StreamFormat)</returns>
+        /// <returns>The type's complex format string (see Pothosware.SoapySDR.StreamFormat)</returns>
         public static string GetFormatString<T>() where T : unmanaged
         {
             var type = typeof(T);

@@ -60,25 +60,25 @@ set(csharp_srcs
     
     ${csharp_swig_outputs})
 
-add_library(SoapySDR.CSharp SHARED ${csharp_srcs})
-set_property(TARGET SoapySDR.CSharp PROPERTY COMPILE_FLAGS /unsafe)
+add_library(Pothosware.SoapySDR SHARED ${csharp_srcs})
+set_property(TARGET Pothosware.SoapySDR PROPERTY COMPILE_FLAGS /unsafe)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set_property(TARGET SoapySDR.CSharp PROPERTY COMPILE_DEFINITIONS _64BIT)
+    set_property(TARGET Pothosware.SoapySDR PROPERTY COMPILE_DEFINITIONS _64BIT)
 endif()
 
 set_property(
-    TARGET SoapySDR.CSharp
+    TARGET Pothosware.SoapySDR
     PROPERTY VS_DOTNET_REFERENCES
     "System"
     "System.Core"
     "System.Numerics")
 set_property(
-    TARGET SoapySDR.CSharp
+    TARGET Pothosware.SoapySDR
     PROPERTY VS_PACKAGE_REFERENCES
 	"System.Memory_4.5.4")
 
-add_dependencies(SoapySDR.CSharp ${SWIG_TARGET_NAME})
+add_dependencies(Pothosware.SoapySDR ${SWIG_TARGET_NAME})
 
-install(TARGETS SoapySDR.CSharp
+install(TARGETS Pothosware.SoapySDR
     EXPORT SoapySDRCSharpExport
     DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -13,23 +13,23 @@ using NUnit.Framework;
 [TestFixture]
 public class TestDeviceAPI
 {
-    private void TestDeviceKeys(SoapySDR.Device device)
+    private void TestDeviceKeys(Pothosware.SoapySDR.Device device)
     {
         Assert.AreEqual("null", device.DriverKey);
         Assert.AreEqual("null", device.HardwareKey);
         Assert.AreEqual("null:null", device.ToString());
     }
 
-    private SoapySDR.Device GetTestDevice()
+    private Pothosware.SoapySDR.Device GetTestDevice()
     {
         // Make sure either method works.
-        TestDeviceKeys(new SoapySDR.Device("driver=null,type=null"));
+        TestDeviceKeys(new Pothosware.SoapySDR.Device("driver=null,type=null"));
 
         var args = new Dictionary<string, string>();
         args.Add("driver", "null");
         args.Add("type", "null");
 
-        var device = new SoapySDR.Device(args);
+        var device = new Pothosware.SoapySDR.Device(args);
         TestDeviceKeys(device);
 
         return device;
@@ -167,9 +167,9 @@ public class TestDeviceAPI
     }
 
     [Test]
-    [TestCase(SoapySDR.Direction.Rx)]
-    [TestCase(SoapySDR.Direction.Tx)]
-    public void Test_DeviceNonStreamingDirectionFunctions(SoapySDR.Direction direction)
+    [TestCase(Pothosware.SoapySDR.Direction.Rx)]
+    [TestCase(Pothosware.SoapySDR.Direction.Tx)]
+    public void Test_DeviceNonStreamingDirectionFunctions(Pothosware.SoapySDR.Direction direction)
     {
         var device = GetTestDevice();
 
@@ -190,7 +190,7 @@ public class TestDeviceAPI
         _ = device.GetStreamFormats(direction, 0);
 
         double fullScale;
-        Assert.AreEqual(SoapySDR.StreamFormat.ComplexInt16, device.GetNativeStreamFormat(direction, 0, out fullScale));
+        Assert.AreEqual(Pothosware.SoapySDR.StreamFormat.ComplexInt16, device.GetNativeStreamFormat(direction, 0, out fullScale));
         Assert.AreEqual(1 << 15, fullScale);
 
         _ = device.GetStreamArgsInfo(direction, 0);

@@ -19,8 +19,8 @@ public class TestTimeConversion
         var timeNs = RandomLong();
         foreach(var rate in Rates)
         {
-            var ticks = SoapySDR.Time.TimeNsToTicks(timeNs, rate);
-            var timeNsOut = SoapySDR.Time.TicksToTimeNs(ticks, rate);
+            var ticks = Pothosware.SoapySDR.Time.TimeNsToTicks(timeNs, rate);
+            var timeNsOut = Pothosware.SoapySDR.Time.TicksToTimeNs(ticks, rate);
 
             // We expect an error because timeNs specifies a subtick.
             Assert.Less(System.Math.Abs(timeNs - timeNsOut) / 1e9, rate);
@@ -35,8 +35,8 @@ public class TestTimeConversion
         var ticks = RandomLong() >> 8;
         foreach(var rate in Rates)
         {
-            var timeNs = SoapySDR.Time.TicksToTimeNs(ticks, rate);
-            var ticksOut = SoapySDR.Time.TimeNsToTicks(timeNs, rate);
+            var timeNs = Pothosware.SoapySDR.Time.TicksToTimeNs(ticks, rate);
+            var ticksOut = Pothosware.SoapySDR.Time.TimeNsToTicks(timeNs, rate);
             Assert.AreEqual(ticks, ticksOut);
         }
     }

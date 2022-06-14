@@ -20,12 +20,12 @@ public class TestSoapyTypes
         var name = "TestName";
         var description = "TestDescription";
         var units = "TestUnits";
-        var type = SoapySDR.ArgInfo.Type.Bool;
-        var range = new SoapySDR.Range(0.0, 1.0, 0.1);
+        var type = Pothosware.SoapySDR.ArgInfo.Type.Bool;
+        var range = new Pothosware.SoapySDR.Range(0.0, 1.0, 0.1);
         string[] options = { "opt1", "opt2", "opt3" };
         string[] optionNames = { "Option1", "Option2", "Option3" };
 
-        var argInfo = new SoapySDR.ArgInfo
+        var argInfo = new Pothosware.SoapySDR.ArgInfo
         {
             Key = key,
             Name = name,
@@ -33,8 +33,8 @@ public class TestSoapyTypes
             Units = units,
             ArgType = type,
             Range = range,
-            Options = new SoapySDR.StringList(options),
-            OptionNames = new SoapySDR.StringList(optionNames)
+            Options = new Pothosware.SoapySDR.StringList(options),
+            OptionNames = new Pothosware.SoapySDR.StringList(optionNames)
         };
 
         Assert.AreEqual(key, argInfo.Key);
@@ -61,19 +61,19 @@ public class TestSoapyTypes
         var step = 0.05;
 
         // No parameters
-        var range1 = new SoapySDR.Range();
+        var range1 = new Pothosware.SoapySDR.Range();
         Assert.AreEqual(0.0, range1.Minimum);
         Assert.AreEqual(0.0, range1.Maximum);
         Assert.AreEqual(0.0, range1.Step);
 
         // No step
-        var range2 = new SoapySDR.Range(minimum, maximum);
+        var range2 = new Pothosware.SoapySDR.Range(minimum, maximum);
         Assert.AreEqual(minimum, range2.Minimum);
         Assert.AreEqual(maximum, range2.Maximum);
         Assert.AreEqual(0.0, range2.Step);
 
         // All parameters
-        var range3 = new SoapySDR.Range(minimum, maximum, step);
+        var range3 = new Pothosware.SoapySDR.Range(minimum, maximum, step);
         Assert.AreEqual(minimum, range3.Minimum);
         Assert.AreEqual(maximum, range3.Maximum);
         Assert.AreEqual(step, range3.Step);

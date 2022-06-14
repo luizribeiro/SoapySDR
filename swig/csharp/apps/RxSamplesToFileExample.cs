@@ -29,7 +29,7 @@ public class RxSamplesToFileExample
         }
     }
 
-    private static void LogFunction(SoapySDR.LogLevel logLevel, string message)
+    private static void LogFunction(Pothosware.SoapySDR.LogLevel logLevel, string message)
     {
         System.Console.WriteLine("{0}: {1}: {2}", System.DateTime.Now, logLevel, message);
     }
@@ -53,11 +53,11 @@ public class RxSamplesToFileExample
     {
         try
         {
-            SoapySDR.Logger.RegisterLogHandler(LogFunction);
-            SoapySDR.Logger.LogLevel = debug ? SoapySDR.LogLevel.Debug : SoapySDR.LogLevel.Warning;
+            Pothosware.SoapySDR.Logger.RegisterLogHandler(LogFunction);
+            Pothosware.SoapySDR.Logger.LogLevel = debug ? Pothosware.SoapySDR.LogLevel.Debug : Pothosware.SoapySDR.LogLevel.Warning;
 
             System.Console.WriteLine("Creating SDR with args: \"{0}\"", args);
-            var sdr = new SoapySDR.Device(args);
+            var sdr = new Pothosware.SoapySDR.Device(args);
             System.Console.WriteLine("Found {0}\n", sdr);
 
             if(clockRate > 0)
@@ -70,45 +70,45 @@ public class RxSamplesToFileExample
             if(rate > 0)
             {
                 System.Console.WriteLine("Setting Rx rate to {0} Msps", rate / 1e6);
-                sdr.SetSampleRate(SoapySDR.Direction.Rx, chan, rate);
+                sdr.SetSampleRate(Pothosware.SoapySDR.Direction.Rx, chan, rate);
             }
-            System.Console.WriteLine("Actual Rx Rate {0} Msps\n", sdr.GetSampleRate(SoapySDR.Direction.Rx, chan) / 1e6);
+            System.Console.WriteLine("Actual Rx Rate {0} Msps\n", sdr.GetSampleRate(Pothosware.SoapySDR.Direction.Rx, chan) / 1e6);
 
             if(bw > 0)
             {
                 System.Console.WriteLine("Setting Rx bandwidth to {0} MHz", bw / 1e6);
-                sdr.SetBandwidth(SoapySDR.Direction.Rx, chan, bw);
+                sdr.SetBandwidth(Pothosware.SoapySDR.Direction.Rx, chan, bw);
             }
-            System.Console.WriteLine("Actual Rx bandwidth: {0} MHz\n", sdr.GetBandwidth(SoapySDR.Direction.Rx, chan) / 1e6);
+            System.Console.WriteLine("Actual Rx bandwidth: {0} MHz\n", sdr.GetBandwidth(Pothosware.SoapySDR.Direction.Rx, chan) / 1e6);
 
             if(antenna.Length > 0)
             {
                 System.Console.WriteLine("Setting Rx antenna to {0}\n", antenna);
-                sdr.SetAntenna(SoapySDR.Direction.Rx, chan, antenna);
+                sdr.SetAntenna(Pothosware.SoapySDR.Direction.Rx, chan, antenna);
             }
-            System.Console.WriteLine("Actual Rx antenna: {0}\n", sdr.GetAntenna(SoapySDR.Direction.Rx, chan));
+            System.Console.WriteLine("Actual Rx antenna: {0}\n", sdr.GetAntenna(Pothosware.SoapySDR.Direction.Rx, chan));
 
             if(gain > 0)
             {
                 System.Console.WriteLine("Setting Rx gain to {0} dB", gain);
-                sdr.SetGain(SoapySDR.Direction.Rx, chan, gain);
+                sdr.SetGain(Pothosware.SoapySDR.Direction.Rx, chan, gain);
             }
-            System.Console.WriteLine("Actual Rx gain: {0} dB\n", sdr.GetGain(SoapySDR.Direction.Rx, chan));
+            System.Console.WriteLine("Actual Rx gain: {0} dB\n", sdr.GetGain(Pothosware.SoapySDR.Direction.Rx, chan));
 
             if(freq > 0.0)
             {
                 System.Console.WriteLine("Tuning the frontend to {0} MHz", freq);
-                sdr.SetFrequency(SoapySDR.Direction.Rx, chan, freq);
-                System.Console.WriteLine("Actual Rx frequency: {0} MHz\n", sdr.GetFrequency(SoapySDR.Direction.Rx, chan));
+                sdr.SetFrequency(Pothosware.SoapySDR.Direction.Rx, chan, freq);
+                System.Console.WriteLine("Actual Rx frequency: {0} MHz\n", sdr.GetFrequency(Pothosware.SoapySDR.Direction.Rx, chan));
             }
 
-            var format = SoapySDR.StreamFormat.ComplexFloat32;
-            var formatSize = SoapySDR.StreamFormat.FormatToSize(format);
+            var format = Pothosware.SoapySDR.StreamFormat.ComplexFloat32;
+            var formatSize = Pothosware.SoapySDR.StreamFormat.FormatToSize(format);
 
             System.Console.WriteLine(string.Format("Create Rx stream (format: {0}, chan: {1})", format, chan));
             var rxStream = sdr.SetupRxStream(format, new uint[] { chan }, "");
             System.Console.WriteLine("Activate Rx stream");
-            rxStream.Activate(SoapySDR.StreamFlags.None);
+            rxStream.Activate(Pothosware.SoapySDR.StreamFlags.None);
 
             var mtu = rxStream.MTU;
             System.Console.WriteLine("Stream MTU: {0}", mtu);
@@ -126,12 +126,12 @@ public class RxSamplesToFileExample
 
                 var bufferSlice = floatSpan.Slice((int)totalSamps, (int)expectedSamps);
 
-                var streamFlags = SoapySDR.StreamFlags.None;
-                if ((totalSamps + expectedSamps) == numSamps) streamFlags |= SoapySDR.StreamFlags.EndBurst;
+                var streamFlags = Pothosware.SoapySDR.StreamFlags.None;
+                if ((totalSamps + expectedSamps) == numSamps) streamFlags |= Pothosware.SoapySDR.StreamFlags.EndBurst;
 
-                var streamResult = new SoapySDR.StreamResult();
+                var streamResult = new Pothosware.SoapySDR.StreamResult();
                 var status = rxStream.Read(bufferSlice, 100000, out streamResult);
-                if(status != SoapySDR.ErrorCode.None)
+                if(status != Pothosware.SoapySDR.ErrorCode.None)
                 {
                     throw new ApplicationException(string.Format("Read returned: {0}", status));
                 }

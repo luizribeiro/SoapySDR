@@ -3,7 +3,7 @@
 
 using System;
 
-namespace SoapySDR
+namespace Pothosware.SoapySDR
 {
     /// <summary>Version strings for the SoapySDR versions used at runtime and for this build.</summary>
     public partial class BuildInfo

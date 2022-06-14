@@ -160,7 +160,7 @@ public";
 /// </summary>
 /// <param name=\"direction\">The channel direction (RX or TX)</param>
 /// <param name=\"channel\">An available channel on the device</param>
-/// <returns>A list of allowed format strings. See SoapySDR.StreamFormat.</returns>
+/// <returns>A list of allowed format strings. See Pothosware.SoapySDR.StreamFormat.</returns>
 public";
 
 %csmethodmodifiers SoapySDR::Device::getNativeStreamFormat "
@@ -170,7 +170,7 @@ public";
 /// <param name=\"direction\">The channel direction (RX or TX)</param>
 /// <param name=\"channel\">An available channel on the device</param>
 /// <param name=\"fullScale\">The maximum possible value (output)</param>
-/// <returns>The native stream format string. See SoapySDR.StreamFormat.</returns>
+/// <returns>The native stream format string. See Pothosware.SoapySDR.StreamFormat.</returns>
 public";
 
 %csmethodmodifiers SoapySDR::Device::getStreamArgsInfo "

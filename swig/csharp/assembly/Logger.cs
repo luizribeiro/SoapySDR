@@ -3,7 +3,7 @@
 
 using System;
 
-namespace SoapySDR
+namespace Pothosware.SoapySDR
 {
     /// <summary>
     /// SoapySDR's logging interface.

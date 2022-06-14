@@ -3,7 +3,7 @@
 
 using System;
 
-namespace SoapySDR
+namespace Pothosware.SoapySDR
 {
     /// <summary>
     /// SoapySDR has some non-standard conversion logic, so for the sake of consistency, we'll pass

@@ -6,7 +6,7 @@ using System.Buffers;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace SoapySDR
+namespace Pothosware.SoapySDR
 {
     /// <summary>
     /// A class representing a receive stream. With this class, you can receive

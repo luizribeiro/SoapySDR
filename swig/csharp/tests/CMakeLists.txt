@@ -1,7 +1,7 @@
 function(CSHARP_UNIT_TEST name)
     set(test_name CSharp_${name})
     add_executable(${test_name} ${name}.cs TestRunner.cs)
-    target_link_libraries(${test_name} SoapySDR.CSharp)
+    target_link_libraries(${test_name} Pothosware.SoapySDR)
     
     set_property(TARGET ${test_name} PROPERTY COMPILE_FLAGS /unsafe)
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)

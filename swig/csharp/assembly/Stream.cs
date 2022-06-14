@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SoapySDR
+namespace Pothosware.SoapySDR
 {
     /// <summary>
     /// The base class for representing transmit or receive streams. This class will never be used
-    /// itself. See SoapySDR.TxStream and SoapySDR.RxStream.
+    /// itself. See Pothosware.SoapySDR.TxStream and Pothosware.SoapySDR.RxStream.
     /// </summary>
     public class Stream
     {
@@ -18,7 +18,7 @@ namespace SoapySDR
         protected bool _active = false;
 
         /// <summary>
-        /// The underlying stream format. See SoapySDR.StreamFormat.
+        /// The underlying stream format. See Pothosware.SoapySDR.StreamFormat.
         /// </summary>
         public string Format { get; }
 
@@ -69,7 +69,7 @@ namespace SoapySDR
         /// Activate the stream to prepare it for read/write operations.
         /// </summary>
         /// <param name="flags">Optional stream flags.</param>
-        /// <param name="timeNs">Optional activation time in nanoseconds. Only valid when flags includes SoapySDR.StreamFlags.HasTime.</param>
+        /// <param name="timeNs">Optional activation time in nanoseconds. Only valid when flags includes Pothosware.SoapySDR.StreamFlags.HasTime.</param>
         /// <param name="numElems">Optional element count for burst control.</param>
         /// <returns>An error code for the stream activation.</returns>
         public ErrorCode Activate(
@@ -101,7 +101,7 @@ namespace SoapySDR
         /// Deactivate the stream to end read/write operations.
         /// </summary>
         /// <param name="flags">Optional stream flags.</param>
-        /// <param name="timeNs">Optional activation time in nanoseconds. Only valid when flags includes SoapySDR.StreamFlags.HasTime.</param>
+        /// <param name="timeNs">Optional activation time in nanoseconds. Only valid when flags includes Pothosware.SoapySDR.StreamFlags.HasTime.</param>
         /// <param name="numElems">Optional element count for burst control.</param>
         /// <returns>An error code for the stream deactivation.</returns>
         public ErrorCode Deactivate(

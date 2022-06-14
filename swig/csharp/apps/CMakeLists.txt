@@ -4,7 +4,7 @@ project(SoapySDRCSharpApps CSharp)
 function(CSHARP_BUILD_APP name)
     set(target_name CSharp_${name})
     add_executable(${target_name} ${name}.cs)
-    target_link_libraries(${target_name} SoapySDR.CSharp)
+    target_link_libraries(${target_name} Pothosware.SoapySDR)
 
     set_property(
         TARGET ${target_name}

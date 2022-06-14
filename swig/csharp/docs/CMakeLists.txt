@@ -30,7 +30,7 @@ configure_file(
 set(CMAKE_CURRENT_BINARY_DIR_DOXYGEN ${CMAKE_CURRENT_BINARY_DIR}/html)
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR_DOXYGEN}
-    DEPENDS SoapySDR.CSharp ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    DEPENDS Pothosware.SoapySDR ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
     COMMENT "Generating C# documentation with doxygen"
 )

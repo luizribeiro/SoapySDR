@@ -10,7 +10,7 @@ using NUnit.Framework;
 [TestFixture]
 public class TestEnumerateDevices
 {
-    static private bool HasNullDevice(SoapySDR.KwargsList devices)
+    static private bool HasNullDevice(Pothosware.SoapySDR.KwargsList devices)
         => devices.Select(args => args.ContainsKey("driver") && (args["driver"] == "null")).Any();
 
     [Test]
@@ -18,14 +18,14 @@ public class TestEnumerateDevices
     {
         // We can't guarantee the number of devices connected to the machine, so just
         // make sure this doesn't error out.
-        _ = SoapySDR.Device.Enumerate();
+        _ = Pothosware.SoapySDR.Device.Enumerate();
     }
 
     [Test]
     public void Test_EnumerateStringParam()
     {
         var args = "driver=null,type=null";
-        Assert.IsTrue(HasNullDevice(SoapySDR.Device.Enumerate(args)));
+        Assert.IsTrue(HasNullDevice(Pothosware.SoapySDR.Device.Enumerate(args)));
     }
 
     [Test]
@@ -37,7 +37,7 @@ public class TestEnumerateDevices
         args.Add("driver", "null");
         args.Add("type", "null");
 
-        Assert.IsTrue(HasNullDevice(SoapySDR.Device.Enumerate(args)));
+        Assert.IsTrue(HasNullDevice(Pothosware.SoapySDR.Device.Enumerate(args)));
     }
 
     public static int Main(string[] args) => TestRunner.RunNUnitTest("TestEnumerateDevices");
