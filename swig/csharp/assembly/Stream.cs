@@ -8,8 +8,8 @@ using System.Linq;
 namespace Pothosware.SoapySDR
 {
     /// <summary>
-    /// The base class for representing transmit or receive streams. This class will never be used
-    /// itself. See Pothosware.SoapySDR.TxStream and Pothosware.SoapySDR.RxStream.
+    /// The base class for representing transmit or receive streams. This
+    /// class will never be used itself. See TxStream and RxStream.
     /// </summary>
     public class Stream
     {
@@ -169,7 +169,7 @@ namespace Pothosware.SoapySDR
                 throw new ArgumentException(string.Format("Stream is configured for {0} channel(s). Cannot accept {1} buffer(s).", numChannels, mems.Length));
             else if (!format.Equals(complexFormatString))
                 throw new ArgumentException(string.Format("Stream format \"{0}\" is incompatible with buffer type {1}.", format, typeof(T)));
-            else if (mems.Select(buff => buff.Length).Distinct().Count() > 0)
+            else if (mems.Select(buff => buff.Length).Distinct().Count() > 1)
                 throw new ArgumentException("All buffers must be of the same length");
             else if ((mems[0].Length % 2) != 0)
                 throw new ArgumentException("For complex interleaved streams, input buffers must be of an even size.");
