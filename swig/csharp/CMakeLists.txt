@@ -42,6 +42,13 @@ endif()
 
 enable_language(CSharp)
 
+# Hardcode target .NET framework version due to:
+# * Issues with CMake-generated files with some versions
+# * Dependency compatibility
+#
+# This can be parameterized at some point if needed.
+set(CMAKE_DOTNET_TARGET_FRAMEWORK_VERSION "v4.7.2")
+
 ########################################################################
 # Build Module
 ########################################################################

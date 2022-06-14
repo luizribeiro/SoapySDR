@@ -48,7 +48,6 @@ configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/BuildInfo.Assembly.in.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.Assembly.cs)
 
-# TODO: move all files into binary directory, only point Doxygen at binary directory
 set(csharp_srcs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.Assembly.cs
@@ -67,8 +66,6 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set_property(TARGET SoapySDR.CSharp PROPERTY COMPILE_DEFINITIONS _64BIT)
 endif()
 
-# TODO: Core? Framework? Standard? Parameterize?
-set_property(TARGET SoapySDR.CSharp PROPERTY DOTNET_TARGET_FRAMEWORK_VERSION "v4.7.2")
 set_property(
     TARGET SoapySDR.CSharp
     PROPERTY VS_DOTNET_REFERENCES

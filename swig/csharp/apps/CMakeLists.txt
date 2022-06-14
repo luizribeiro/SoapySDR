@@ -1,14 +1,11 @@
 cmake_minimum_required(VERSION 3.3.0)
 project(SoapySDRCSharpApps CSharp)
 
-find_package(SoapySDRCSharp)
-
 function(CSHARP_BUILD_APP name)
     set(target_name CSharp_${name})
     add_executable(${target_name} ${name}.cs)
     target_link_libraries(${target_name} SoapySDR.CSharp)
 
-    set_property(TARGET ${target_name} PROPERTY DOTNET_TARGET_FRAMEWORK_VERSION "v4.7.2")
     set_property(
         TARGET ${target_name}
         PROPERTY VS_DOTNET_REFERENCES
