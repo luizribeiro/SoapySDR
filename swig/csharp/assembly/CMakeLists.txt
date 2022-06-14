@@ -78,3 +78,7 @@ set_property(
 	"System.Memory_4.5.4")
 
 add_dependencies(SoapySDR.CSharp ${SWIG_TARGET_NAME})
+
+install(TARGETS SoapySDR.CSharp
+    EXPORT SoapySDRCSharpExport
+    DESTINATION ${CMAKE_INSTALL_BINDIR})
