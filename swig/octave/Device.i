@@ -27,13 +27,11 @@
 %ignore SoapySDR::Device::writeRegister(const unsigned, const unsigned);
 %ignore SoapySDR::Device::readRegister(const unsigned) const;
 
-// Ignore sensor and setting functions, we're rewriting
+// Ignore sensor and setting read functions, we're rewriting
 %ignore SoapySDR::Device::readSensor(const std::string &) const;
 %ignore SoapySDR::Device::readSensor(const int, const size_t, const std::string &) const;
 %ignore SoapySDR::Device::readSetting(const std::string &) const;
 %ignore SoapySDR::Device::readSetting(const int, const size_t, const std::string &) const;
-%ignore SoapySDR::Device::writeSetting(const std::string &, const std::string &);
-%ignore SoapySDR::Device::writeSetting(const int, const size_t, const std::string &, const std::string &);
 
 // Ignore stream-related functions, we're rewriting
 %ignore SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &) const;
@@ -307,7 +305,8 @@
         return status;
     }
 
-    octave_value readSensor(const std::string &key) const
+    // Making it non-const is the easiest way to not ignore this version
+    octave_value readSensor(const std::string &key)
     {
         const auto sensorInfo = self->getSensorInfo(key);
         switch(sensorInfo.type)
@@ -326,7 +325,8 @@
         }
     }
 
-    octave_value readSensor(const int direction, const size_t channel, const std::string &key) const
+    // Making it non-const is the easiest way to not ignore this version
+    octave_value readSensor(const int direction, const size_t channel, const std::string &key)
     {
         const auto sensorInfo = self->getSensorInfo(direction, channel, key);
         switch(sensorInfo.type)
@@ -345,7 +345,8 @@
         }
     }
 
-    octave_value readSetting(const std::string &key) const
+    // Making it non-const is the easiest way to not ignore this version
+    octave_value readSetting(const std::string &key)
     {
         const auto allSettingInfo = self->getSettingInfo();
         auto settingIter = std::find_if(
@@ -375,7 +376,8 @@
         else throw std::invalid_argument("Invalid setting: "+key);
     }
 
-    octave_value readSetting(const int direction, const size_t channel, const std::string &key) const
+    // Making it non-const is the easiest way to not ignore this version
+    octave_value readSetting(const int direction, const size_t channel, const std::string &key)
     {
         const auto allSettingInfo = self->getSettingInfo(direction, channel);
         auto settingIter = std::find_if(
@@ -405,23 +407,23 @@
         else throw std::invalid_argument("Invalid setting: "+key);
     }
 
-    void writeSetting(const std::string &key, const octave_value &value)
+    void writeSetting(const std::string &key, const ssize_t value)
     {
-        if(value.isinteger())
-            self->writeSetting(key, value.int_value());
-        else if(value.isfloat())
-            self->writeSetting(key, value.double_value());
-        else
-            self->writeSetting(key, value.string_value(true));
+        self->writeSetting(key, value);
     }
 
-    void writeSetting(const int direction, const size_t channel, const std::string &key, const octave_value &value)
+    void writeSetting(const std::string &key, const double value)
     {
-        if(value.isinteger())
-            self->writeSetting(direction, channel, key, value.int_value());
-        else if(value.isfloat())
-            self->writeSetting(direction, channel, key, value.double_value());
-        else
-            self->writeSetting(direction, channel, key, value.string_value(true));
+        self->writeSetting(key, value);
+    }
+
+    void writeSetting(const int direction, const size_t channel, const std::string &key, const ssize_t value)
+    {
+        self->writeSetting(direction, channel, key, value);
+    }
+
+    void writeSetting(const int direction, const size_t channel, const std::string &key, const double value)
+    {
+        self->writeSetting(direction, channel, key, value);
     }
 }

@@ -149,10 +149,11 @@
 %! # Settings API (TODO: all writeSetting overloads should work)
 %! #
 %!
-%! device.getSettingInfo() # TODO: attribute?
+%! #device.getSettingInfo()
+%! device.getSettingInfo("")
 %! device.writeSetting("", "")
-%! #device.writeSetting("", 0)
-%! #device.writeSetting("", 0.0)
+%! device.writeSetting("", 0)
+%! device.writeSetting("", 0.0)
 %!
 %! #
 %! # GPIO API
