@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: BSL-1.0
 
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 
 using NUnit.Framework;

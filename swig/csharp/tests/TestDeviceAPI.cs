@@ -1,7 +1,6 @@
 // Copyright (c) 2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
-using System;
 using System.Collections.Generic;
 
 using NUnit.Framework;

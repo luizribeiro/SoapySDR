@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: BSL-1.0
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Pothosware.SoapySDR

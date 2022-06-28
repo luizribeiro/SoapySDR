@@ -2,17 +2,11 @@
 // SPDX-License-Identifier: BSL-1.0
 
 using System;
-using System.Buffers;
 using System.CommandLine;
-using System.CommandLine.Builder;
 using System.CommandLine.Invocation;
-using System.CommandLine.IO;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 public class RxSamplesToFileExample
 {
