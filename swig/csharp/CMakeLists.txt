@@ -10,6 +10,10 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 include(CheckLanguage)
 check_language(CSharp)
 
+if("${MSVC_VERSION}" VERSION_GREATER_EQUAL 1920)
+    set(MSVC_VERSION_HAS_DEPS ON CACHE BOOL "Do our dependencies support this version of MSVC?")
+endif()
+
 ########################################################################
 # Find SWIG
 ########################################################################
@@ -42,7 +46,7 @@ set(SOAPYSDR_DOTNET_TARGET_VERSION "v4.7.2" CACHE STRING "Target .NET version")
 
 include(FeatureSummary)
 include(CMakeDependentOption)
-cmake_dependent_option(ENABLE_CSHARP "Enable C# bindings" ON "CMAKE_CSharp_COMPILER;ENABLE_LIBRARY;SWIG_FOUND" OFF)
+cmake_dependent_option(ENABLE_CSHARP "Enable C# bindings" ON "CMAKE_CSharp_COMPILER;MSVC_VERSION_HAS_DEPS;ENABLE_LIBRARY;SWIG_FOUND" OFF)
 add_feature_info(CSharp ENABLE_CSHARP "C# bindings ${SOAPYSDR_DOTNET_TARGET_VERSION}")
 if (NOT ENABLE_CSHARP)
     return()
