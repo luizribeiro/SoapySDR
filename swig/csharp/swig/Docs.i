@@ -1094,7 +1094,3 @@ public enum";
 ///
 /// The default log level threshold is Info. Log messages with lower priorities are dropped.</summary>
 public enum";
-
-//
-// SoapySDR::CSharp::StreamFormat
-//

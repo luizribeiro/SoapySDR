@@ -80,7 +80,7 @@ public class";
 /// Return the size of the given sample type, coming out to twice the size of the primitive type.
 ///
 /// This value is intended to be used when allocating unmanaged memory to be used for streaming.
-///</summary>
+/// </summary>
 public";
 
 %csattributes SoapySDR::CSharp::StreamFormat::ComplexFloat64 "/// <summary>Complex double-precision floating-point samples.</summary>";
@@ -93,24 +93,24 @@ public";
 /// <summary>Packed complex signed 12-bit integer samples.
 ///
 /// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
-///</summary>";
+/// </summary>";
 %csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt12 "
 /// <summary>Packed complex unsigned 12-bit integer samples.
 ///
 /// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
-///</summary>";
+/// </summary>";
 %csattributes SoapySDR::CSharp::StreamFormat::ComplexInt8 "/// <summary>Complex signed 8-bit integer samples.</summary>";
 %csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt8 "/// <summary>Complex unsigned 8-bit integer samples.</summary>";
 %csattributes SoapySDR::CSharp::StreamFormat::ComplexInt4 "
 /// <summary>Packed complex signed 4-bit integer samples.
 ///
 /// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
-///</summary>";
+/// </summary>";
 %csattributes SoapySDR::CSharp::StreamFormat::ComplexUInt4 "
 /// <summary>Packed complex unsigned 4-bit integer samples.
 ///
 /// This stream format can only be used with the non-generic stream API, as there is no native C# representation for this type.
-///</summary>";
+/// </summary>";
 
 //
 // SoapySDR::CSharp::StreamHandle
