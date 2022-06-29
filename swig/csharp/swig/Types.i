@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %{
@@ -84,7 +84,10 @@ public enum";
         else                     return false;
     }
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ (Key.GetHashCode() << 1) ^ (ArgType.GetHashCode() << 2);
+    public override int GetHashCode() => HashCodeBuilder.Create()
+        .AddValue(GetType())
+        .AddValue(Key)
+        .AddValue(ArgType);
 %}
 
 //
@@ -124,7 +127,11 @@ public enum";
         else                   return false;
     }
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ (Minimum.GetHashCode() << 1) ^ (Maximum.GetHashCode() << 2) ^ (Step.GetHashCode() << 3);
+    public override int GetHashCode() => HashCodeBuilder.Create()
+        .AddValue(GetType())
+        .AddValue(Minimum)
+        .AddValue(Maximum)
+        .AddValue(Step);
 %}
 
 //

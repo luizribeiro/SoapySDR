@@ -51,6 +51,7 @@ configure_file(
 set(csharp_srcs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/AssemblyInfo.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/BuildInfo.Assembly.cs
+    ${CMAKE_CURRENT_SOURCE_DIR}/HashCodeBuilder.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/Logger.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/RxStream.cs
     ${CMAKE_CURRENT_SOURCE_DIR}/SoapyConvertible.cs

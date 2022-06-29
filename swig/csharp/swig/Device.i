@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %{
@@ -394,7 +394,9 @@ using System.Linq;"
 
     public override bool Equals(object obj) => (obj as Device)?.swigCPtr.Equals(swigCPtr) ?? false;
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ (swigCPtr.GetHashCode() << 1);
+    public override int GetHashCode() => HashCodeBuilder.Create()
+        .AddValue(GetType())
+        .AddValue(swigCPtr);
 %}
 
 %nodefaultctor SoapySDR::Device;

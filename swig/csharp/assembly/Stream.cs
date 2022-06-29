@@ -194,6 +194,11 @@ namespace Pothosware.SoapySDR
         // For completeness, but a stream is only ever equal to itself
         public override bool Equals(object other) => ReferenceEquals(this, other);
 
-        public override int GetHashCode() => GetType().GetHashCode() ^ (_streamHandle?.GetHashCode() ?? 0);
+        public override int GetHashCode() => HashCodeBuilder.Create()
+            .AddValue(GetType())
+            .AddValue(_device)
+            .AddValue(Format)
+            .AddValue(Channels)
+            .AddValue(StreamArgs);
     }
 }
