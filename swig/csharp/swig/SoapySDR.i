@@ -65,24 +65,18 @@
 %include <std_string.i>
 
 //
-// size_t
+// size_t behavior varies by situation
 //
 
-// Without this, size_t always typedefs to unsigned int, but we need it to
-// match the size of void* for our buffer functions.
-#ifdef SIZE_T_IS_UNSIGNED_INT
-typedef unsigned int size_t;
-#else
-typedef unsigned long long size_t;
-#endif
-
-// Keep size_t stuff internal due to workaround
 %typemap(csclassmodifiers) std::vector<size_t> "internal class";
 %template(SizeListInternal) std::vector<size_t>;
 
-//
-// Do different things for different std::vector<size_t> parameters
-//
+// Without this, size_t always typedefs to unsigned int, but we need it to
+// match the size of void* for our buffer functions.
+#ifndef SIZE_T_IS_UNSIGNED_INT
+%typemap(csclassmodifiers) std::vector<unsigned> "internal class";
+%template(UnsignedListInternal) std::vector<unsigned>;
+#endif
 
 // Buffer functions do their own thing
 %typemap(cstype) const std::vector<size_t> &channels "uint[]" // SetupStream

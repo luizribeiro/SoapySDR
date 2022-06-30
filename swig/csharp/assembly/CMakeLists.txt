@@ -27,6 +27,10 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Time.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/TypeConversionInternal.cs)
 
+if(NOT ${SIZE_T_IS_UNSIGNED_INT})
+    list(APPEND csharp_swig_outputs ${CSHARP_SWIG_OUTPUT_DIRECTORY}/UnsignedListInternal.cs)
+endif()
+
 set_source_files_properties(
     FILES ${csharp_swig_outputs}
     PROPERTIES GENERATED TRUE)

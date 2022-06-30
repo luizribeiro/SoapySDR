@@ -68,15 +68,15 @@ namespace SoapySDR { namespace CSharp {
         SoapySDR::Stream* stream{ nullptr };
 
         // Ignored
-        SWIGSizeVector channels;
-        inline SWIGSizeVector GetChannels() const {return channels;}
+        std::vector<size_t> channels;
+        inline std::vector<size_t> GetChannels() const {return channels;}
 
         // Ignored
         std::string format;
         inline std::string GetFormat() const {return format;}
 
         // Ignored
-        inline SWIGSize GetPointer() const {return reinterpret_cast<SWIGSize>(stream);}
+        inline size_t GetPointer() const {return reinterpret_cast<size_t>(stream);}
     };
 
     struct StreamResult

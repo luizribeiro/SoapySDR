@@ -9,17 +9,6 @@
 #include <type_traits>
 #include <vector>
 
-// SWIG seems to struggle with size_t/uintptr_t, even with custom typemap stuff.
-#if defined(SIZE_T_IS_UNSIGNED_INT)
-using SWIGSize = uint32_t;
-#else
-using SWIGSize = uint64_t;
-#endif
-
-using SWIGSizeVector = std::vector<SWIGSize>;
-
-static_assert(sizeof(SWIGSize) == sizeof(void*), "Can't reinterpret_cast size type to void*");
-
 namespace detail
 {
     template <typename Out, typename In>

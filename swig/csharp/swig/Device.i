@@ -440,11 +440,11 @@ using System.Linq;"
     SoapySDR::CSharp::StreamHandle SetupStreamInternal(
         const SoapySDR::CSharp::Direction direction,
         const std::string& format,
-        const SWIGSizeVector& channels,
+        const std::vector<size_t>& channels,
         const SoapySDR::Kwargs& kwargs)
     {
         SoapySDR::CSharp::StreamHandle streamHandle;
-        streamHandle.stream = self->setupStream(int(direction), format, copyVector<size_t>(channels), kwargs);
+        streamHandle.stream = self->setupStream(int(direction), format, channels, kwargs);
         streamHandle.format = format;
         streamHandle.channels = channels;
 
@@ -487,7 +487,7 @@ using System.Linq;"
 
     SoapySDR::CSharp::StreamResultPairInternal ReadStreamInternal(
         const SoapySDR::CSharp::StreamHandle& streamHandle,
-        const SWIGSizeVector& buffs,
+        const std::vector<size_t>& buffs,
         const size_t numElems,
         const long timeoutUs)
     {
@@ -514,7 +514,7 @@ using System.Linq;"
 
     SoapySDR::CSharp::StreamResultPairInternal WriteStreamInternal(
         const SoapySDR::CSharp::StreamHandle& streamHandle,
-        const SWIGSizeVector& buffs,
+        const std::vector<size_t>& buffs,
         const size_t numElems,
         const SoapySDR::CSharp::StreamFlags flags,
         const long long timeNs,
@@ -564,16 +564,16 @@ using System.Linq;"
     void WriteRegisters(
         const std::string &name,
         const unsigned addr,
-        const SWIGSizeVector &value)
+        const std::vector<size_t> &value)
     {
         self->writeRegisters(name, addr, copyVector<unsigned>(value));
     }
 
-    SWIGSizeVector ReadRegisters(
+    std::vector<size_t> ReadRegisters(
         const std::string &name,
         const unsigned addr,
         const size_t length) const
     {
-        return copyVector<SWIGSize>(self->readRegisters(name, addr, length));
+        return copyVector<size_t>(self->readRegisters(name, addr, length));
     }
 };
