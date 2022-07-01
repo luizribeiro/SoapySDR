@@ -27,19 +27,16 @@ public class TestLogger
         Pothosware.SoapySDR.LogLevel logLevel = Pothosware.SoapySDR.LogLevel.Critical;
         int intArg = 1351;
         float floatArg = 41.8F;
-        DateTime dateTimeArg = DateTime.Now;
         string stringArg = "foobar";
         var cultureInfo = new CultureInfo("es-ES", false);
 
         Pothosware.SoapySDR.Logger.Log(logLevel, "message");
         Pothosware.SoapySDR.Logger.LogF(logLevel, "message: {0}", intArg);
-        Pothosware.SoapySDR.Logger.LogF(logLevel, "message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg });
+        Pothosware.SoapySDR.Logger.LogF(logLevel, "message: {0} {1} {2}", new object[] { intArg, floatArg, stringArg });
         Pothosware.SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0}", intArg);
-        Pothosware.SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg });
+        Pothosware.SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0} {1} {2}", new object[] { intArg, floatArg, stringArg });
         Pothosware.SoapySDR.Logger.LogF(logLevel, "message: {0} {1}", intArg, floatArg);
         Pothosware.SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0} {1}", intArg, floatArg);
-        Pothosware.SoapySDR.Logger.LogF(logLevel, "message: {0} {1} {2}", intArg, floatArg, dateTimeArg);
-        Pothosware.SoapySDR.Logger.LogF(logLevel, cultureInfo, "message: {0} {1} {2}", intArg, floatArg, dateTimeArg);
     }
 
     private static string GetExpectedLoggerOutput()
@@ -47,20 +44,17 @@ public class TestLogger
         Pothosware.SoapySDR.LogLevel logLevel = Pothosware.SoapySDR.LogLevel.Critical;
         int intArg = 1351;
         float floatArg = 41.8F;
-        DateTime dateTimeArg = DateTime.Now;
         string stringArg = "foobar";
         var cultureInfo = new CultureInfo("es-ES", false);
 
         string[] expectedOutputs = {
             string.Format("{0}: {1}", logLevel, string.Format("message")),
             string.Format("{0}: {1}", logLevel, string.Format("message: {0}", intArg)),
-            string.Format("{0}: {1}", logLevel, string.Format("message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg })),
+            string.Format("{0}: {1}", logLevel, string.Format("message: {0} {1} {2}", new object[] { intArg, floatArg, stringArg })),
             string.Format("{0}: {1}", logLevel, string.Format(cultureInfo, "message: {0}", intArg)),
-            string.Format("{0}: {1}", logLevel, string.Format(cultureInfo, "message: {0} {1} {2} {3}", new object[] { intArg, floatArg, dateTimeArg, stringArg })),
+            string.Format("{0}: {1}", logLevel, string.Format(cultureInfo, "message: {0} {1} {2}", new object[] { intArg, floatArg, stringArg })),
             string.Format("{0}: {1}", logLevel, string.Format("message: {0} {1}", intArg, floatArg)),
             string.Format("{0}: {1}", logLevel, string.Format(cultureInfo, "message: {0} {1}", intArg, floatArg)),
-            string.Format("{0}: {1}", logLevel, string.Format("message: {0} {1} {2}", intArg, floatArg, dateTimeArg)),
-            string.Format("{0}: {1}", logLevel, string.Format(cultureInfo, "message: {0} {1} {2}", intArg, floatArg, dateTimeArg))
         };
 
         return string.Join("\r\n", expectedOutputs) + "\r\n";
