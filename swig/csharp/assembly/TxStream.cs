@@ -73,7 +73,7 @@ namespace Pothosware.SoapySDR
             {
                 ValidateMemory(memory);
 
-                var memsAsSizes = Utility.ToSizeListInternal(
+                var memsAsSizes = Utility.ToPointerListInternal(
                     memory,
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                     out MemoryHandle[] memoryHandles);
@@ -213,7 +213,7 @@ namespace Pothosware.SoapySDR
 
                 var deviceOutput = _device.WriteStreamInternal(
                     _streamHandle,
-                    Utility.ToSizeListInternal(ptrs),
+                    Utility.ToPointerListInternal(ptrs),
                     numElems,
                     flags,
                     timeNs,

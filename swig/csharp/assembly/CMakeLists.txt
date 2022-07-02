@@ -13,9 +13,9 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/KwargsList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/LogHandlerBase.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/LogLevel.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/PointerListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Range.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/RangeList.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SizeListInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SoapySDR.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/SoapySDRPINVOKE.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StreamFlags.cs
@@ -27,10 +27,6 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Time.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/TypeConversionInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/UnsignedListInternal.cs)
-
-if(NOT ${SIZE_T_IS_UNSIGNED_INT})
-    list(APPEND csharp_swig_outputs ${CSHARP_SWIG_OUTPUT_DIRECTORY}/UnsignedListInternal.cs)
-endif()
 
 set_source_files_properties(
     FILES ${csharp_swig_outputs}

@@ -63,7 +63,7 @@ namespace Pothosware.SoapySDR
             {
                 ValidateMemory(memory);
 
-                var memsAsSizes = Utility.ToSizeListInternal(
+                var memsAsSizes = Utility.ToPointerListInternal(
                     memory,
                     out MemoryHandle[] _);
 
@@ -179,7 +179,7 @@ namespace Pothosware.SoapySDR
 
                 var deviceOutput = _device.ReadStreamInternal(
                     _streamHandle,
-                    Utility.ToSizeListInternal(ptrs),
+                    Utility.ToPointerListInternal(ptrs),
                     numElems,
                     timeoutUs);
 

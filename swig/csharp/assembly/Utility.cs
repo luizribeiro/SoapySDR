@@ -77,30 +77,25 @@ namespace Pothosware.SoapySDR
             return output;
         }
 
-        internal unsafe static SizeListInternal ToSizeListInternal<T>(
+        internal unsafe static PointerListInternal ToPointerListInternal<T>(
             Memory<T>[] memory,
             out MemoryHandle[] memoryHandles)
         {
             memoryHandles = memory.Select(mem => mem.Pin()).ToArray();
-            return ToSizeListInternal(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
+            return ToPointerListInternal(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
         }
 
-        internal unsafe static SizeListInternal ToSizeListInternal<T>(
+        internal unsafe static PointerListInternal ToPointerListInternal<T>(
             ReadOnlyMemory<T>[] memory,
             out MemoryHandle[] memoryHandles)
         {
             memoryHandles = memory.Select(mem => mem.Pin()).ToArray();
-            return ToSizeListInternal(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
+            return ToPointerListInternal(memoryHandles.Select(handle => (UIntPtr)handle.Pointer).ToArray());
         }
 
-#if _64BIT
-        internal static SizeListInternal ToSizeListInternal(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)x));
+        internal static PointerListInternal ToPointerListInternal(UIntPtr[] arr) => new PointerListInternal(arr.Select(x => (ulong)x));
 
-        internal unsafe static SizeListInternal ToSizeListInternal(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (ulong)(UIntPtr)(void*)x));
-#else
-        internal static SizeListInternal ToSizeListInternal(UIntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)x));
+        internal unsafe static PointerListInternal ToPointerListInternal(IntPtr[] arr) => new PointerListInternal(arr.Select(x => (ulong)(UIntPtr)(void*)x));
 
-        internal unsafe static SizeListInternal ToSizeListInternal(IntPtr[] arr) => new SizeListInternal(arr.Select(x => (uint)(UIntPtr)(void*)x));
-#endif
     }
 }

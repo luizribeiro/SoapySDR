@@ -89,10 +89,6 @@ using System.Linq;"
 // Ignore overloaded functions from default arguments
 %ignore SoapySDR::Device::readUART(const std::string &) const;
 
-// Ignore functions explicitly using std::vector<unsigned> due to size_t workaround
-%ignore SoapySDR::Device::writeRegisters;
-%ignore SoapySDR::Device::readRegisters;
-
 // Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNativeDeviceHandle;
 
@@ -487,7 +483,7 @@ using System.Linq;"
 
     SoapySDR::CSharp::StreamResultPairInternal ReadStreamInternal(
         const SoapySDR::CSharp::StreamHandle& streamHandle,
-        const std::vector<size_t>& buffs,
+        const std::vector<unsigned long long>& buffs,
         const size_t numElems,
         const long timeoutUs)
     {
@@ -495,7 +491,7 @@ using System.Linq;"
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
-        const auto buffPtrs = reinterpretCastVector<void>(buffs);
+        const auto buffPtrs = convertBufferVector(buffs);
         int intFlags = 0;
         auto cppRet = self->readStream(
             streamHandle.stream,
@@ -514,7 +510,7 @@ using System.Linq;"
 
     SoapySDR::CSharp::StreamResultPairInternal WriteStreamInternal(
         const SoapySDR::CSharp::StreamHandle& streamHandle,
-        const std::vector<size_t>& buffs,
+        const std::vector<unsigned long long>& buffs,
         const size_t numElems,
         const SoapySDR::CSharp::StreamFlags flags,
         const long long timeNs,
@@ -524,7 +520,7 @@ using System.Linq;"
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
-        const auto buffPtrs = reinterpretCastVector<const void>(buffs);
+        const auto buffPtrs = convertBufferVector(buffs);
         auto intFlags = int(flags);
         auto cppRet = self->writeStream(
             streamHandle.stream,
@@ -559,21 +555,5 @@ using System.Linq;"
         result.Flags = SoapySDR::CSharp::StreamFlags(intFlags);
 
         return resultPair;
-    }
-
-    void WriteRegisters(
-        const std::string &name,
-        const unsigned addr,
-        const std::vector<size_t> &value)
-    {
-        self->writeRegisters(name, addr, copyVector<unsigned>(value));
-    }
-
-    std::vector<size_t> ReadRegisters(
-        const std::string &name,
-        const unsigned addr,
-        const size_t length) const
-    {
-        return copyVector<size_t>(self->readRegisters(name, addr, length));
     }
 };

@@ -31,6 +31,7 @@
 %ignore copyVector;
 %ignore toSizeTVector;
 %ignore reinterpretCastVector;
+%ignore convertBufferVector;
 %ignore detail::copyVector;
 %include "Utility.hpp"
 
@@ -65,29 +66,12 @@
 %include <std_string.i>
 
 //
-// size_t behavior varies by situation
+// All std::vector<size_t> functions are changed to std::vector<unsigned>
+// to avoid size_t differences between architectures.
 //
 
 %typemap(csclassmodifiers) std::vector<unsigned> "internal class";
 %template(UnsignedListInternal) std::vector<unsigned>;
-
-%typemap(csclassmodifiers) std::vector<size_t> "internal class";
-%template(SizeListInternal) std::vector<size_t>;
-
-// Buffer functions do their own thing
-%typemap(cstype) const std::vector<size_t> &value "uint[]"    // WriteRegisters
-%typemap(csin,
-    pre="
-        var temp$csinput = new SizeListInternal();
-        foreach(var x in $csinput) temp$csinput.Add(x);
-    ") const std::vector<size_t> & "$csclassname.getCPtr(temp$csinput)"
-
-%typemap(cstype) std::vector<size_t> "uint[]"
-%typemap(csout, excode=SWIGEXCODE) std::vector<size_t> {
-    var sizeListPtr = $imcall;$excode
-
-    return new SizeListInternal(sizeListPtr, false).Select(x => (uint)x).ToArray();
-}
 
 %typemap(cstype) std::vector<unsigned> "uint[]"
 %typemap(csout, excode=SWIGEXCODE) std::vector<unsigned> {
@@ -101,6 +85,15 @@
     pre="
         var temp$csinput = new UnsignedListInternal($csinput);
     ") const std::vector<unsigned> & "$csclassname.getCPtr(temp$csinput)"
+
+//
+// All std::vector<void*> functions are replaced by std::vector<unsigned long long>
+// so there are no shenanigans on the C# layer. C++ will deal with getting void*
+// from uint64_t on 32-bit.
+//
+
+%typemap(csclassmodifiers) std::vector<unsigned long long> "internal class";
+%template(PointerListInternal) std::vector<unsigned long long>;
 
 ////////////////////////////////////////////////////////////////////////
 // Build info

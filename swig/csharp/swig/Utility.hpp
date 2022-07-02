@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2021 Nicholas Corgan
+// Copyright (c) 2020-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
@@ -51,3 +51,15 @@ static inline std::vector<Out*> reinterpretCastVector(const std::vector<In>& vec
 
     return ret;
 }
+
+#if _WIN64
+static inline std::vector<void*> convertBufferVector(const std::vector<unsigned long long>& vec)
+{
+    return reinterpretCastVector<void>(vec);
+}
+#else
+static inline std::vector<void*> convertBufferVector(const std::vector<unsigned long long>& vec)
+{
+    return reinterpretCastVector<void>(copyVector<uintptr_t>(vec));
+}
+#endif
