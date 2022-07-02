@@ -22,7 +22,7 @@ namespace Pothosware.SoapySDR
         ):
             base(device, format, channels, kwargs)
         {
-            _streamHandle = device.SetupStreamInternal(Direction.Rx, format, channels, kwargs);
+            _streamHandle = device.SetupStreamInternal(Direction.Rx, format, new UnsignedListInternal(channels), kwargs);
         }
 
         /// <summary>

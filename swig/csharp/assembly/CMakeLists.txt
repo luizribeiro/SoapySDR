@@ -25,7 +25,8 @@ set(csharp_swig_outputs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StreamResultPairInternal.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/StringList.cs
     ${CSHARP_SWIG_OUTPUT_DIRECTORY}/Time.cs
-    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/TypeConversionInternal.cs)
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/TypeConversionInternal.cs
+    ${CSHARP_SWIG_OUTPUT_DIRECTORY}/UnsignedListInternal.cs)
 
 if(NOT ${SIZE_T_IS_UNSIGNED_INT})
     list(APPEND csharp_swig_outputs ${CSHARP_SWIG_OUTPUT_DIRECTORY}/UnsignedListInternal.cs)

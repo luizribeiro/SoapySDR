@@ -440,11 +440,11 @@ using System.Linq;"
     SoapySDR::CSharp::StreamHandle SetupStreamInternal(
         const SoapySDR::CSharp::Direction direction,
         const std::string& format,
-        const std::vector<size_t>& channels,
+        const std::vector<unsigned>& channels,
         const SoapySDR::Kwargs& kwargs)
     {
         SoapySDR::CSharp::StreamHandle streamHandle;
-        streamHandle.stream = self->setupStream(int(direction), format, channels, kwargs);
+        streamHandle.stream = self->setupStream(int(direction), format, copyVector<size_t>(channels), kwargs);
         streamHandle.format = format;
         streamHandle.channels = channels;
 

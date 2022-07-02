@@ -68,8 +68,8 @@ namespace SoapySDR { namespace CSharp {
         SoapySDR::Stream* stream{ nullptr };
 
         // Ignored
-        std::vector<size_t> channels;
-        inline std::vector<size_t> GetChannels() const {return channels;}
+        std::vector<unsigned> channels;
+        inline std::vector<unsigned> GetChannels() const {return channels;}
 
         // Ignored
         std::string format;

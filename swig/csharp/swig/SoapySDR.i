@@ -68,18 +68,13 @@
 // size_t behavior varies by situation
 //
 
+%typemap(csclassmodifiers) std::vector<unsigned> "internal class";
+%template(UnsignedListInternal) std::vector<unsigned>;
+
 %typemap(csclassmodifiers) std::vector<size_t> "internal class";
 %template(SizeListInternal) std::vector<size_t>;
 
-// Without this, size_t always typedefs to unsigned int, but we need it to
-// match the size of void* for our buffer functions.
-#ifndef SIZE_T_IS_UNSIGNED_INT
-%typemap(csclassmodifiers) std::vector<unsigned> "internal class";
-%template(UnsignedListInternal) std::vector<unsigned>;
-#endif
-
 // Buffer functions do their own thing
-%typemap(cstype) const std::vector<size_t> &channels "uint[]" // SetupStream
 %typemap(cstype) const std::vector<size_t> &value "uint[]"    // WriteRegisters
 %typemap(csin,
     pre="
@@ -93,6 +88,19 @@
 
     return new SizeListInternal(sizeListPtr, false).Select(x => (uint)x).ToArray();
 }
+
+%typemap(cstype) std::vector<unsigned> "uint[]"
+%typemap(csout, excode=SWIGEXCODE) std::vector<unsigned> {
+    var unsignedListPtr = $imcall;$excode
+
+    return new UnsignedListInternal(unsignedListPtr, false).ToArray();
+}
+
+%typemap(cstype) const std::vector<unsigned> &value "uint[]"
+%typemap(csin,
+    pre="
+        var temp$csinput = new UnsignedListInternal($csinput);
+    ") const std::vector<unsigned> & "$csclassname.getCPtr(temp$csinput)"
 
 ////////////////////////////////////////////////////////////////////////
 // Build info
