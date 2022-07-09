@@ -2,8 +2,6 @@ if (NOT ENABLE_TESTS)
     return()
 endif()
 
-add_subdirectory(old)
-
 ########################################################################
 # Manual C++ tests
 ########################################################################
@@ -25,12 +23,12 @@ add_test(Octave_TestManualCppOctaveConversions TestManualCppOctaveConversions)
 set(tests
     TestBuildInfo
 #     TestDeviceAPI
-#     TestEnumerateDevices
-#     TestErrorCodes
-#     TestFormats
+    TestEnumerateDevices
+    TestErrorCodes
+    TestFormats
 #     TestLogger
-#     TestSoapyTypes
-#     TestTimeConversion
+    TestSoapyTypes
+    TestTimeConversion
 )
 
 # TODO: --path not portable
@@ -41,5 +39,5 @@ foreach(test ${tests})
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
     set_tests_properties(Octave_${test} PROPERTIES
-        FAIL_REGULAR_EXPRESSION "test failed")
+        FAIL_REGULAR_EXPRESSION "FAILED")
 endforeach()
