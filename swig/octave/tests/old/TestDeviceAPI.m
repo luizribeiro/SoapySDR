@@ -7,7 +7,7 @@
 %!test
 %! SoapySDR
 %!
-%! function testDirection(device, direction)
+%! function fn = testDirection(device, direction)
 %!   #
 %!   # Channels API
 %!   #
@@ -30,55 +30,9 @@
 %!   channels = [0, 1]
 %!   args = "bufflen=8192,buffers=15"
 %!   stream = device.setupStream(direction, format, channels, args)
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
 %! endfunction
 %!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
-%!
+%! #######################################################
 %!
 %! device = SoapySDR.Device("driver=null,type=null")
 %!
@@ -149,7 +103,7 @@
 %! # Settings API (TODO: all writeSetting overloads should work)
 %! #
 %!
-%! #device.getSettingInfo()
+%! device.getSettingInfo()
 %! device.getSettingInfo("")
 %! device.writeSetting("", "")
 %! device.writeSetting("", 0)

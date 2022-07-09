@@ -395,7 +395,7 @@
                 return self->readSetting<bool>(direction, channel, key);
 
             case SoapySDR::ArgInfo::INT:
-                return self->readSetting<int>(direction, channel, key);
+                return self->readSetting<ssize_t>(direction, channel, key);
 
             case SoapySDR::ArgInfo::FLOAT:
                 return self->readSetting<double>(direction, channel, key);
