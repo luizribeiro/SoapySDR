@@ -2,6 +2,8 @@ if (NOT ENABLE_TESTS)
     return()
 endif()
 
+add_subdirectory(old)
+
 ########################################################################
 # Manual C++ tests
 ########################################################################
@@ -17,4 +19,27 @@ target_link_libraries(TestManualCppOctaveConversions
 
 add_test(Octave_TestManualCppOctaveConversions TestManualCppOctaveConversions)
 
-add_subdirectory(old)
+########################################################################
+# Octave API tests
+########################################################################
+set(tests
+    TestBuildInfo
+#     TestDeviceAPI
+#     TestEnumerateDevices
+#     TestErrorCodes
+#     TestFormats
+#     TestLogger
+#     TestSoapyTypes
+#     TestTimeConversion
+)
+
+# TODO: --path not portable
+foreach(test ${tests})
+    add_test(
+        NAME Octave_${test}
+        COMMAND ${OCTAVE_EXECUTABLE} --path ${CMAKE_CURRENT_BINARY_DIR}/.. --eval "moxunit_set_path(); moxunit_runtests(filename='${test}.m')"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
+    set_tests_properties(Octave_${test} PROPERTIES
+        FAIL_REGULAR_EXPRESSION "test failed")
+endforeach()

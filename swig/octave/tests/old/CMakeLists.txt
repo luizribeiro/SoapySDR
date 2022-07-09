@@ -6,7 +6,6 @@
 # ourselves, they're not processed this way.
 ########################################################################
 set(tests
-    TestBuildInfo
     TestDeviceAPI
     TestEnumerateDevices
     TestErrorCodes
