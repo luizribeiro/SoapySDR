@@ -145,8 +145,8 @@
     SoapySDR::Octave::Stream setupStream(
         int direction,
         const std::string &format,
-        const std::vector<size_t> &channels = std::vector<size_t>(),
-        const std::string &args = "")
+        const std::vector<size_t> &channels,
+        const std::string &args)
     {
         static const std::vector<std::string> SupportedFormats
         {
