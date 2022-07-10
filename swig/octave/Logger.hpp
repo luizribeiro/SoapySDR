@@ -47,7 +47,7 @@ namespace SoapySDR { namespace Octave {
         static InternalLoggerInit loggerInit;
     }
 
-    static void log(const int logLevel, const std::string& message)
+    static inline void log(const int logLevel, const std::string& message)
     {
         SoapySDR::log(static_cast<SoapySDR::LogLevel>(logLevel), message.c_str());
     }
@@ -76,21 +76,24 @@ namespace SoapySDR { namespace Octave {
         log(logLevel.int_value(), sprintfResult(0).string_value());
     }
 
-    static void setLogLevel(const int logLevel)
+    static inline void setLogLevel(const int logLevel)
     {
         SoapySDR::setLogLevel(static_cast<SoapySDR::LogLevel>(logLevel));
     }
 
     static void registerLogger(const octave_value &octaveValue)
     {
-        if(octaveValue.is_function_handle() or octaveValue.is_inline_function())
+        if(octaveValue.is_function_handle())
         {
             SoapySDR::registerLogHandler(&detail::OctaveLogHandler);
             detail::LoggerFunction = octaveValue.function_value();
         }
-        else if(octaveValue.isnull())
-            SoapySDR::registerLogHandler(nullptr);
-        else
-            throw std::runtime_error("Logger must be a function or null");
+        else throw std::invalid_argument("Logger must be a function");
+    }
+
+    static void restoreDefaultLogger()
+    {
+        SoapySDR::registerLogHandler(nullptr);
+        detail::LoggerFunction = nullptr;
     }
 }}

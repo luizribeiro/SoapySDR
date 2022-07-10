@@ -26,7 +26,7 @@ set(tests
     TestEnumerateDevices
     TestErrorCodes
     TestFormats
-#     TestLogger
+    TestLogger
     TestSoapyTypes
     TestTimeConversion
 )
