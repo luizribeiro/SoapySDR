@@ -134,6 +134,8 @@
 %attribute(SoapySDR::Range, double, step, step);
 
 %ignore SoapySDR::ArgInfo;
+%ignore SoapySDR::ArgInfo(const SoapySDR::ArgInfo &);
+%ignore SoapySDR::Octave::argInfoListCppToOctave;
 %template(ArgInfoList) std::vector<SoapySDR::Octave::ArgInfo>;
 
 %include "Types.hpp"

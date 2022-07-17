@@ -9,6 +9,9 @@
 
 #include <octave/str-vec.h>
 
+#include <algorithm>
+#include <iterator>
+
 // This copy+paste is far from ideal, but dealing with typemaps
 // with struct members is too ugly.
 
@@ -73,5 +76,20 @@ struct ArgInfo
      */
     string_vector optionNames;
 };
+
+std::vector<SoapySDR::Octave::ArgInfo> argInfoListCppToOctave(const SoapySDR::ArgInfoList &listCpp)
+{
+    std::vector<SoapySDR::Octave::ArgInfo> listOctave;
+    std::transform(
+        listCpp.begin(),
+        listCpp.end(),
+        std::back_inserter(listOctave),
+        [](const SoapySDR::ArgInfo &argInfoCpp)
+        {
+            return SoapySDR::Octave::ArgInfo(argInfoCpp);
+        });
+
+    return listOctave;
+}
 
 }}

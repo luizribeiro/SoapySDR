@@ -28,9 +28,7 @@ function fcn = testDirection(device, direction)
     [format, fullScale] = device.getNativeStreamFormat(direction, 0)
     assertEqual(SoapySDR.StreamFormat.CS16, format)
     assert(fullScale == bitshift(1, 15))
-
-    # TODO: why is a struct vector turning into a single bool?
-    #assertEqual(0, length(device.getStreamArgsInfo(direction, 0)))
+    assertEqual(0, length(device.getStreamArgsInfo(direction, 0)))
 
     #
     # Antenna API
@@ -102,8 +100,7 @@ function fcn = testDirection(device, direction)
 
     assertEqual(0, length(device.getFrequencyRange(direction, 0)))
     assertEqual(0, length(device.getFrequencyRange(direction, 0, "")))
-    # TODO: why is a struct vector turning into a single bool?
-    #assertEqual(0, length(device.getFrequencyArgsInfo(direction, 0)))
+    assertEqual(0, length(device.getFrequencyArgsInfo(direction, 0)))
 
     #
     # Sample rate API
@@ -133,8 +130,7 @@ function fcn = testDirection(device, direction)
     # Settings API
     #
 
-    # TODO: why is a struct vector turning into a single bool?
-    #assertEqual(0, length(device.getSettingInfo(direction, 0)))
+    assertEqual(0, length(device.getSettingInfo(direction, 0)))
     device.getSettingInfo(direction, 0, "")
     assertEqual("", device.readSetting(direction, 0, ""))
     device.writeSetting(direction, 0, "", "")

@@ -6,6 +6,8 @@
 // TODO: naming convention?
 
 %{
+#include "Types.hpp"
+
 #include <SoapySDR/Device.hpp>
 
 #include <algorithm>
@@ -32,6 +34,16 @@
 %ignore SoapySDR::Device::readSensor(const int, const size_t, const std::string &) const;
 %ignore SoapySDR::Device::readSetting(const std::string &) const;
 %ignore SoapySDR::Device::readSetting(const int, const size_t, const std::string &) const;
+
+// Ignore functions that return ArgInfos, we have our own
+%ignore SoapySDR::Device::getStreamArgsInfo(const int, const size_t) const;
+%ignore SoapySDR::Device::getFrequencyArgsInfo(const int, const size_t) const;
+%ignore SoapySDR::Device::getSensorInfo(const std::string &) const;
+%ignore SoapySDR::Device::getSensorInfo(const int, const size_t, const std::string &) const;
+%ignore SoapySDR::Device::getSettingInfo() const;
+%ignore SoapySDR::Device::getSettingInfo(const std::string &) const;
+%ignore SoapySDR::Device::getSettingInfo(const int, const size_t) const;
+%ignore SoapySDR::Device::getSettingInfo(const int, const size_t, const std::string &) const;
 
 // Ignore stream-related functions, we're rewriting
 %ignore SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &) const;
@@ -140,6 +152,12 @@
         ret.append(fullScale);
 
         return ret;
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
+    std::vector<SoapySDR::Octave::ArgInfo> getStreamArgsInfo(const int direction, const size_t channel)
+    {
+        return SoapySDR::Octave::argInfoListCppToOctave(self->getStreamArgsInfo(direction, channel));
     }
 
     SoapySDR::Octave::Stream setupStream(
@@ -305,7 +323,25 @@
         return status;
     }
 
-    // Making it non-const is the easiest way to not ignore this version
+    // Making this non-const is the easiest way to not ignore this version
+    std::vector<SoapySDR::Octave::ArgInfo> getFrequencyArgsInfo(const int direction, const size_t channel)
+    {
+        return SoapySDR::Octave::argInfoListCppToOctave(self->getFrequencyArgsInfo(direction, channel));
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
+    SoapySDR::Octave::ArgInfo getSensorInfo(const std::string &key)
+    {
+        return SoapySDR::Octave::ArgInfo(self->getSensorInfo(key));
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
+    SoapySDR::Octave::ArgInfo getSensorInfo(const int direction, const size_t channel, const std::string &key)
+    {
+        return SoapySDR::Octave::ArgInfo(self->getSensorInfo(direction, channel, key));
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
     octave_value readSensor(const std::string &key)
     {
         const auto sensorInfo = self->getSensorInfo(key);
@@ -325,7 +361,7 @@
         }
     }
 
-    // Making it non-const is the easiest way to not ignore this version
+    // Making this non-const is the easiest way to not ignore this version
     octave_value readSensor(const int direction, const size_t channel, const std::string &key)
     {
         const auto sensorInfo = self->getSensorInfo(direction, channel, key);
@@ -345,7 +381,31 @@
         }
     }
 
-    // Making it non-const is the easiest way to not ignore this version
+    // Making this non-const is the easiest way to not ignore this version
+    std::vector<SoapySDR::Octave::ArgInfo> getSettingInfo()
+    {
+        return SoapySDR::Octave::argInfoListCppToOctave(self->getSettingInfo());
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
+    SoapySDR::Octave::ArgInfo getSettingInfo(const std::string &key)
+    {
+        return SoapySDR::Octave::ArgInfo(self->getSettingInfo(key));
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
+    std::vector<SoapySDR::Octave::ArgInfo> getSettingInfo(const int direction, const size_t channel)
+    {
+        return SoapySDR::Octave::argInfoListCppToOctave(self->getSettingInfo(direction, channel));
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
+    SoapySDR::Octave::ArgInfo getSettingInfo(const int direction, const size_t channel, const std::string &key)
+    {
+        return SoapySDR::Octave::ArgInfo(self->getSettingInfo(direction, channel, key));
+    }
+
+    // Making this non-const is the easiest way to not ignore this version
     octave_value readSetting(const std::string &key)
     {
         const auto allSettingInfo = self->getSettingInfo();
@@ -376,7 +436,7 @@
         else return "";
     }
 
-    // Making it non-const is the easiest way to not ignore this version
+    // Making this non-const is the easiest way to not ignore this version
     octave_value readSetting(const int direction, const size_t channel, const std::string &key)
     {
         const auto allSettingInfo = self->getSettingInfo(direction, channel);
