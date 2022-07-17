@@ -373,7 +373,7 @@
                 return self->readSetting(key);
             }
         }
-        else throw std::invalid_argument("Invalid setting: "+key);
+        else return "";
     }
 
     // Making it non-const is the easiest way to not ignore this version
@@ -404,7 +404,7 @@
                 return self->readSetting(direction, channel, key);
             }
         }
-        else throw std::invalid_argument("Invalid setting: "+key);
+        else return "";
     }
 
     void writeSetting(const std::string &key, const ssize_t value)
