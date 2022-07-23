@@ -57,6 +57,10 @@
     delete $1;
 }
 
+%typemap(out) string_vector {
+    $result = $1;
+}
+
 %typemap(out) std::vector<std::string> {
     $result = SoapySDR::Octave::stringVectorCppToOctave($1);
 }

@@ -18,8 +18,8 @@ function testArgInfo
     units = "units"
     type = SoapySDR.ArgType.FLOAT
     range = SoapySDR.Range(0.0, 1.0, 0.1)
-    options = {"opt1", "opt2", "opt3"}
-    optionNames = {"Option1", "Option2", "Option3"}
+    options = cellstr(["opt1"; "opt2"; "opt3"])
+    optionNames = cellstr(["Option1"; "Option2"; "Option3"])
 
     assertEqual(key, argInfo.key)
     assertEqual(name, argInfo.name)
