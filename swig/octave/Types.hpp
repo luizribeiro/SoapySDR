@@ -11,6 +11,9 @@
 
 #include <algorithm>
 #include <iterator>
+#include <vector>
+
+// TODO: should we use string_vector? Doesn't look right in Octave
 
 // This copy+paste is far from ideal, but dealing with typemaps
 // with struct members is too ugly.
@@ -92,6 +95,26 @@ std::vector<SoapySDR::Octave::ArgInfo> argInfoListCppToOctave(const SoapySDR::Ar
     return listOctave;
 }
 
+//
+// Test functions
+//
+
+inline SoapySDR::Range getUnitTestRange(void)
+{
+    return {0.0, 1.0, 0.1};
+}
+
+SoapySDR::RangeList getUnitTestRangeList(void)
+{
+    auto range = getUnitTestRange();
+
+    SoapySDR::RangeList rangeList;
+    for(size_t i = 0; i < 3; ++i)
+        rangeList.emplace_back(range.minimum() * i, range.maximum() * i, range.step() * i);
+
+    return rangeList;
+}
+
 SoapySDR::Octave::ArgInfo getUnitTestArgInfo(void)
 {
     SoapySDR::Octave::ArgInfo argInfo;
@@ -101,11 +124,35 @@ SoapySDR::Octave::ArgInfo getUnitTestArgInfo(void)
     argInfo.description = "description";
     argInfo.units = "units";
     argInfo.type = int(SoapySDR::ArgInfo::FLOAT);
-    argInfo.range = {0.0, 1.0, 0.1};
+    argInfo.range = getUnitTestRange();
     argInfo.options = std::vector<std::string>{"opt1", "opt2", "opt3"};
     argInfo.optionNames = std::vector<std::string>{"Option1", "Option2", "Option3"};
 
     return argInfo;
+}
+
+std::vector<SoapySDR::Octave::ArgInfo> getUnitTestArgInfoList(void)
+{
+    std::vector<SoapySDR::Octave::ArgInfo> argInfoList;
+    for(size_t i = 0; i < 3; ++i)
+    {
+        auto argInfo = getUnitTestArgInfo();
+        argInfo.key += std::to_string(i);
+        argInfo.value += std::to_string(i);
+        argInfo.name += std::to_string(i);
+        argInfo.description += std::to_string(i);
+        argInfo.units += std::to_string(i);
+        argInfo.range = {argInfo.range.minimum() * i, argInfo.range.maximum() * i, argInfo.range.step() * i};
+        for(size_t j = 0; j < 3; ++j)
+        {
+            argInfo.options(j) += ("_"+std::to_string(i));
+            argInfo.optionNames(j) += ("_"+std::to_string(i));
+        }
+
+        argInfoList.emplace_back(std::move(argInfo));
+    }
+
+    return argInfoList;
 }
 
 }}
