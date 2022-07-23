@@ -92,4 +92,20 @@ std::vector<SoapySDR::Octave::ArgInfo> argInfoListCppToOctave(const SoapySDR::Ar
     return listOctave;
 }
 
+SoapySDR::Octave::ArgInfo getUnitTestArgInfo(void)
+{
+    SoapySDR::Octave::ArgInfo argInfo;
+    argInfo.key = "key";
+    argInfo.value = "value";
+    argInfo.name = "name";
+    argInfo.description = "description";
+    argInfo.units = "units";
+    argInfo.type = int(SoapySDR::ArgInfo::FLOAT);
+    argInfo.range = {0.0, 1.0, 0.1};
+    argInfo.options = std::vector<std::string>{"opt1", "opt2", "opt3"};
+    argInfo.optionNames = std::vector<std::string>{"Option1", "Option2", "Option3"};
+
+    return argInfo;
+}
+
 }}

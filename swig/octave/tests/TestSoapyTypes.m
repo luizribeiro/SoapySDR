@@ -11,6 +11,7 @@ function test_suite=TestSoapyTypes
 function testArgInfo
     SoapySDR;
 
+    argInfo = SoapySDR.getUnitTestArgInfo()
     key = "key"
     name = "name"
     description = "description"
@@ -19,16 +20,6 @@ function testArgInfo
     range = SoapySDR.Range(0.0, 1.0, 0.1)
     options = {"opt1", "opt2", "opt3"}
     optionNames = {"Option1", "Option2", "Option3"}
-
-    argInfo = SoapySDR.ArgInfo()
-    argInfo.key = key
-    argInfo.name = name
-    argInfo.description = description
-    argInfo.units = units
-    argInfo.type = type
-    argInfo.range = range
-    #argInfo.options = options
-    #argInfo.optionNames = optionNames
 
     assertEqual(key, argInfo.key)
     assertEqual(name, argInfo.name)
@@ -39,5 +30,5 @@ function testArgInfo
     assertEqual(range.minimum, argInfo.range.minimum)
     assertEqual(range.maximum, argInfo.range.maximum)
     assertEqual(range.step, argInfo.range.step)
-    #assertEqual(options, argInfo.options)
-    #assertEqual(optionNames, argInfo.optionNames)
+    assertEqual(options, argInfo.options)
+    assertEqual(optionNames, argInfo.optionNames)
