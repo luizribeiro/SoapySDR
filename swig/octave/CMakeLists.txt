@@ -32,10 +32,6 @@ if(OCTAVE_FOUND)
     endif()
 endif()
 
-if(APPLE AND CMAKE_COMPILER_IS_GNUCXX)
-    message(WARNING "Octave bindings built with GCC on OS X are not officially supported and may not build.")
-endif()
-
 ########################################################################
 ## Feature registration
 ########################################################################
@@ -45,6 +41,10 @@ cmake_dependent_option(ENABLE_OCTAVE "Enable Octave bindings" ON "ENABLE_LIBRARY
 add_feature_info(Octave ENABLE_OCTAVE "Octave bindings v${OCTAVE_VERSION_STRING}")
 if (NOT ENABLE_OCTAVE)
     return()
+endif()
+
+if(APPLE AND CMAKE_COMPILER_IS_GNUCXX)
+    message(WARNING "Octave bindings built with GCC on OS X are not officially supported and may not build.")
 endif()
 
 ########################################################################
