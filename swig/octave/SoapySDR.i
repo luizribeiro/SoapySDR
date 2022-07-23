@@ -133,6 +133,7 @@
 %include <SoapySDR/Config.h>
 %include <SoapySDR/Version.hpp>
 
+%include <attribute.i>
 %attribute(SoapySDR::Range, double, minimum, minimum);
 %attribute(SoapySDR::Range, double, maximum, maximum);
 %attribute(SoapySDR::Range, double, step, step);
