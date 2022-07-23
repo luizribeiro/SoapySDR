@@ -104,6 +104,14 @@ jobs:
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.TIMEOUT)'
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))'
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))'
+          - name: Test Octave bindings
+            run: |
+                cd ${{github.workspace}}/build/swig/octave
+                octave --eval 'SoapySDR; SoapySDR.getAPIVersion()'
+                octave --eval 'SoapySDR; SoapySDR.getABIVersion()'
+                octave --eval 'SoapySDR; SoapySDR.Error.TIMEOUT'
+                octave --eval 'SoapySDR; SoapySDR.Error.toString(SoapySDR.Error.TIMEOUT)'
+                octave --eval 'SoapySDR; SoapySDR.Device("driver=null")'
     osx-ci:
         name: OS X
         runs-on: macos-latest
@@ -209,6 +217,15 @@ jobs:
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.TIMEOUT)'
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))'
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))'
+          - name: Test Octave bindings
+            if: ${{ matrix.test_octave }}
+            run: |
+                cd ${{github.workspace}}/build/swig/octave
+                octave --eval 'SoapySDR; SoapySDR.getAPIVersion()'
+                octave --eval 'SoapySDR; SoapySDR.getABIVersion()'
+                octave --eval 'SoapySDR; SoapySDR.Error.TIMEOUT'
+                octave --eval 'SoapySDR; SoapySDR.Error.toString(SoapySDR.Error.TIMEOUT)'
+                octave --eval 'SoapySDR; SoapySDR.Device("driver=null")'
     windows-ci:
         name: Windows
         runs-on: windows-2019
