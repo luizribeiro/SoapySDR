@@ -51,10 +51,10 @@ struct Error
     static const int TIMEOUT;
     static const int STREAM_ERROR;
     static const int CORRUPTION;
-    static const int OVERFLOW;
+    static const int OVERFLOW_ERROR;
     static const int NOT_SUPPORTED;
     static const int TIME_ERROR;
-    static const int UNDERFLOW;
+    static const int UNDERFLOW_ERROR;
 
     static inline std::string toString(int errorCode)
     {
@@ -66,10 +66,10 @@ const int Error::NONE = 0;
 const int Error::TIMEOUT = SOAPY_SDR_TIMEOUT;
 const int Error::STREAM_ERROR = SOAPY_SDR_STREAM_ERROR;
 const int Error::CORRUPTION = SOAPY_SDR_CORRUPTION;
-const int Error::OVERFLOW = SOAPY_SDR_OVERFLOW;
+const int Error::OVERFLOW_ERROR = SOAPY_SDR_OVERFLOW;
 const int Error::NOT_SUPPORTED = SOAPY_SDR_NOT_SUPPORTED;
 const int Error::TIME_ERROR = SOAPY_SDR_TIME_ERROR;
-const int Error::UNDERFLOW = SOAPY_SDR_UNDERFLOW;
+const int Error::UNDERFLOW_ERROR = SOAPY_SDR_UNDERFLOW;
 
 struct LogLevel
 {

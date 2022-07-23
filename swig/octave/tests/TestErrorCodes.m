@@ -14,8 +14,8 @@ function testErrorCodes
     assertEqual("TIMEOUT", SoapySDR.Error.toString(SoapySDR.Error.TIMEOUT));
     assertEqual("STREAM_ERROR", SoapySDR.Error.toString(SoapySDR.Error.STREAM_ERROR));
     assertEqual("CORRUPTION", SoapySDR.Error.toString(SoapySDR.Error.CORRUPTION));
-    assertEqual("OVERFLOW", SoapySDR.Error.toString(SoapySDR.Error.OVERFLOW));
+    assertEqual("OVERFLOW", SoapySDR.Error.toString(SoapySDR.Error.OVERFLOW_ERROR));
     assertEqual("NOT_SUPPORTED", SoapySDR.Error.toString(SoapySDR.Error.NOT_SUPPORTED));
     assertEqual("TIME_ERROR", SoapySDR.Error.toString(SoapySDR.Error.TIME_ERROR));
-    assertEqual("UNDERFLOW", SoapySDR.Error.toString(SoapySDR.Error.UNDERFLOW));
+    assertEqual("UNDERFLOW", SoapySDR.Error.toString(SoapySDR.Error.UNDERFLOW_ERROR));
     assertEqual("UNKNOWN", SoapySDR.Error.toString(0));
