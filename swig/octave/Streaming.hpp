@@ -138,7 +138,12 @@ TxStreamResult writeStream(
 
     const auto numSamples = interleaved ? (internalNumSamples/2) : internalNumSamples;
 
+#if SWIG_OCTAVE_PREREQ(7,0,0)
+    const auto *samplesBuff = inputSamples.data();
+#else
     const auto *samplesBuff = inputSamples.fortran_vec();
+#endif
+
     std::vector<const void *> buffs;
     for(size_t chan = 0; chan < numChannels; ++chan)
     {
