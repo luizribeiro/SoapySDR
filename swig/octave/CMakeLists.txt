@@ -1,7 +1,7 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.7)
 project(SoapySDROctave CXX)
 enable_testing()
 
@@ -19,12 +19,25 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 ########################################################################
 find_package(Octave)
 
+if(OCTAVE_FOUND)
+    if("${OCTAVE_VERSION_STRING}" VERSION_GREATER_EQUAL "6.2.0")
+        # See: https://github.com/swig/swig/pull/2020
+        if("${SWIG_VERSION}" VERSION_GREATER_EQUAL "4.1.0")
+            set(SWIG_OCTAVE_COMPATIBLE TRUE)
+        else()
+            set(SWIG_OCTAVE_COMPATIBLE FALSE)
+        endif()
+    else()
+        set(SWIG_OCTAVE_COMPATIBLE TRUE)
+    endif()
+endif()
+
 ########################################################################
 ## Feature registration
 ########################################################################
 include(FeatureSummary)
 include(CMakeDependentOption)
-cmake_dependent_option(ENABLE_OCTAVE "Enable Octave bindings" ON "ENABLE_LIBRARY;SWIG_FOUND;OCTAVE_FOUND" OFF)
+cmake_dependent_option(ENABLE_OCTAVE "Enable Octave bindings" ON "ENABLE_LIBRARY;SWIG_FOUND;OCTAVE_FOUND;SWIG_OCTAVE_COMPATIBLE" OFF)
 add_feature_info(Octave ENABLE_OCTAVE "Octave bindings v${OCTAVE_VERSION_STRING}")
 if (NOT ENABLE_OCTAVE)
     return()
