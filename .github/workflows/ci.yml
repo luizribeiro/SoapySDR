@@ -107,11 +107,11 @@ jobs:
           - name: Test Octave bindings
             run: |
                 cd ${{github.workspace}}/build/swig/octave
-                octave --eval 'SoapySDR; SoapySDR.getAPIVersion()'
-                octave --eval 'SoapySDR; SoapySDR.getABIVersion()'
-                octave --eval 'SoapySDR; SoapySDR.Error.TIMEOUT'
-                octave --eval 'SoapySDR; SoapySDR.Error.toString(SoapySDR.Error.TIMEOUT)'
-                octave --eval 'SoapySDR; SoapySDR.Device("driver=null")'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.getAPIVersion()'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.getABIVersion()'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.Error.TIMEOUT'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.Error.toString(SoapySDR.Error.TIMEOUT)'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.Device("driver=null")'
     osx-ci:
         name: OS X
         runs-on: macos-latest
@@ -221,11 +221,11 @@ jobs:
             if: ${{ matrix.test_octave }}
             run: |
                 cd ${{github.workspace}}/build/swig/octave
-                octave --eval 'SoapySDR; SoapySDR.getAPIVersion()'
-                octave --eval 'SoapySDR; SoapySDR.getABIVersion()'
-                octave --eval 'SoapySDR; SoapySDR.Error.TIMEOUT'
-                octave --eval 'SoapySDR; SoapySDR.Error.toString(SoapySDR.Error.TIMEOUT)'
-                octave --eval 'SoapySDR; SoapySDR.Device("driver=null")'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.getAPIVersion()'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.getABIVersion()'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.Error.TIMEOUT'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.Error.toString(SoapySDR.Error.TIMEOUT)'
+                octave --no-gui --eval 'SoapySDR; SoapySDR.Device("driver=null")'
     windows-ci:
         name: Windows
         runs-on: windows-2019
