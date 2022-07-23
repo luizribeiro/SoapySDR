@@ -6,6 +6,7 @@
 #include "Constants.hpp"
 
 #include <SoapySDR/Device.hpp>
+#include <SoapySDR/Formats.hpp>
 
 #include <octave/int8NDArray.h>
 #include <octave/int16NDArray.h>
@@ -17,6 +18,7 @@
 #include <octave/fMatrix.h>
 
 #include <cassert>
+#include <cstring>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -37,6 +39,7 @@ struct RxStreamResult
 {
     octave_value samples;
     int errorCode{0};
+    size_t elemsRead{0};
     int flags{0};
     long long timeNs{0};
 };
@@ -44,6 +47,7 @@ struct RxStreamResult
 struct TxStreamResult
 {
     int errorCode{0};
+    size_t elemsWritten{0};
     int flags{0};
 };
 
@@ -83,8 +87,6 @@ RxStreamResult readStream(
         buffs.emplace_back(&samplesBuff[chan * internalNumSamples]);
     }
 
-    // TODO: see if we can resize if we can't read this many elements in one run.
-    // I'm not sure if it will remove what's there shrinking a dimension.
     RxStreamResult result;
     result.errorCode = device->readStream(
         stream.internal,
@@ -93,8 +95,35 @@ RxStreamResult readStream(
         result.flags,
         result.timeNs,
         timeoutUs);
+    if(result.errorCode >= 0)
+    {
+        result.elemsRead = size_t(result.errorCode);
+        result.errorCode = 0;
 
-    result.samples = intermediateSamples;
+        if((result.elemsRead > 0) and (result.elemsRead < numSamples))
+        {
+            // We didn't read as much as we wanted, so we can't return the
+            // matrix as it is now. Making a new one and returning that will
+            // be fine, since Octave does a bunch of copies anyway.
+            const auto internalShrunkNumSamples = interleaved ? (result.elemsRead*2) : result.elemsRead;
+
+            OutputType shrunkSamples(dim_vector(
+                static_cast<octave_idx_type>(numChannels),
+                static_cast<octave_idx_type>(internalShrunkNumSamples)));
+
+            auto *shrunkSamplesBuff = shrunkSamples.fortran_vec();
+            const auto copySize = result.elemsRead * SoapySDR::formatToSize(stream.format);
+
+            for(size_t chan = 0; chan < numChannels; ++chan)
+            {
+                auto *chanBuff = &shrunkSamplesBuff[chan * internalShrunkNumSamples];
+                std::memcpy(chanBuff, buffs[chan], copySize);
+            }
+
+            result.samples = shrunkSamples;
+        }
+        else result.samples = intermediateSamples;
+    }
 
     return result;
 }
@@ -158,6 +187,11 @@ TxStreamResult writeStream(
         result.flags,
         timeNs,
         timeoutUs);
+    if(result.errorCode >= 0)
+    {
+        result.elemsWritten = size_t(result.errorCode);
+        result.errorCode = 0;
+    }
 
     return result;
 }
