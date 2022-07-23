@@ -115,34 +115,42 @@ jobs:
                       cxx: g++-9
                       build_type: Release
                       test_luajit: false
+                      test_octave: false
                     - cc: gcc-9
                       cxx: g++-9
                       build_type: Debug
                       test_luajit: false
+                      test_octave: false
                     - cc: gcc-10
                       cxx: g++-10
                       build_type: Release
                       test_luajit: false
+                      test_octave: false
                     - cc: gcc-10
                       cxx: g++-10
                       build_type: Debug
                       test_luajit: false
+                      test_octave: false
                     - cc: gcc-11
                       cxx: g++-11
                       build_type: Release
                       test_luajit: false
+                      test_octave: false
                     - cc: gcc-11
                       cxx: g++-11
                       build_type: Debug
                       test_luajit: false
+                      test_octave: false
                     - cc: clang
                       cxx: clang++
                       build_type: Release
                       test_luajit: true
+                      test_octave: true
                     - cc: clang
                       cxx: clang++
                       build_type: Debug
                       test_luajit: true
+                      test_octave: true
         env:
             CC: ${{matrix.cc}}
             CXX: ${{matrix.cxx}}
@@ -178,7 +186,7 @@ jobs:
             run: |
                 mkdir -p ${{github.workspace}}/build
                 cd ${{github.workspace}}/build
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE} ${{github.workspace}}
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE} -DENABLE_OCTAVE=${{matrix.test_octave}} ${{github.workspace}}
                 make
           - name: Install
             run: |

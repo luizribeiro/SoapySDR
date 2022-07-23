@@ -32,6 +32,10 @@ if(OCTAVE_FOUND)
     endif()
 endif()
 
+if(APPLE AND CMAKE_COMPILER_IS_GNUCXX)
+    message(WARNING "Octave bindings built with GCC on OS X are not officially supported and may not build.")
+endif()
+
 ########################################################################
 ## Feature registration
 ########################################################################
