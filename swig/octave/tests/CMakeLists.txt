@@ -1,4 +1,26 @@
-if (NOT ENABLE_TESTS)
+execute_process(
+    COMMAND ${OCTAVE_EXECUTABLE} --eval "moxunit_set_path()"
+    RESULT_VARIABLE MOXUNIT_FOUND
+    OUTPUT_QUIET
+    ERROR_QUIET
+    )
+if(MOXUNIT_FOUND EQUAL 0)
+    message(STATUS "Checking for MOxUnit - found")
+    set(MOXUNIT_FOUND TRUE)
+else()
+    message(STATUS "Checking for MOxUnit - failed")
+    set(MOXUNIT_FOUND FALSE)
+endif()
+
+########################################################################
+## Feature registration
+########################################################################
+include(FeatureSummary)
+include(CMakeDependentOption)
+cmake_dependent_option(ENABLE_OCTAVE_TESTING "Enable Octave unit tests" ON "ENABLE_TESTS;ENABLE_OCTAVE;MOXUNIT_FOUND" OFF)
+add_feature_info("Octave tests" ENABLE_OCTAVE_TESTING "Octave unit tests")
+
+if (NOT ENABLE_OCTAVE_TESTING)
     return()
 endif()
 
